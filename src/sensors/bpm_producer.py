@@ -16,7 +16,7 @@ def generate_heart_data(sensor_id="sensor_001"):
 #print(generate_heart_data(sensor_id="sensor_001"))
 
 # Configurazione MQTT
-broker = 'localhost'
+broker = 'mqtt_broker' # deve corripsondere a quello nel docker
 port = 1883
 topic = "sensors/heart"
 client_id = "heart_sensor"
@@ -42,7 +42,7 @@ def connect_mqtt():
 def publish(client):
     heart_data = generate_heart_data()
     msg = json.dumps(heart_data)  #Inserire il messaggio da mandare, in questo caso la lista
-    result = client.publish(topic, msg)
+    result = client.publish(topic, msg, qos=1)
     # result: [0, 1]
     status = result[0]
     if status == 0:
@@ -50,12 +50,13 @@ def publish(client):
     else:
         print(f"Failed to send message to topic {topic}")
 
-
+# Avvio
 def run():
     client = connect_mqtt()
     client.loop_start()
     publish(client)
     client.loop_stop()
+    print("Finished")
 
 if __name__ == '__main__':
     run()

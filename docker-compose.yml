@@ -1,0 +1,46 @@
+services:
+  bpm_producer:
+    build: .
+    container_name: bpm_producer
+    command: python src/sensors/bpm_producer.py
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      - mqtt_broker
+
+  bpm_consumer:
+    build: .
+    container_name: bpm_consumer
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: python src/data_ingestion/bronze/sensors_consumers/bpm_consumer.py
+    depends_on:
+      - mqtt_broker
+      - minio
+
+  mqtt_broker:
+    image: eclipse-mosquitto
+    container_name: mqtt_broker
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"     # interfaccia S3
+      - "9001:9001"     # console web
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+
+volumes:
+  minio_data:
+
