@@ -23,7 +23,7 @@ client_id = "heart_sensor"
 # username = 'emqx'
 # password = 'public'
 
-# Creazione del client
+# Creazione del client -> Connessione al MQTT
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc, properties=None):
         if rc == 0:

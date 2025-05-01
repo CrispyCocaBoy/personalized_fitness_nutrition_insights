@@ -1,6 +1,6 @@
 import json
 import boto3
-from datetime import datetime
+from datetime import datetime, timezone
 from paho.mqtt import client as mqtt_client
 
 # Configurazione MQTT
@@ -21,7 +21,7 @@ bucket = 'bronze'
 
 # Funzione per salvare i dati su MinIO
 def save_to_minio(data):
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     key = f'bronze/heart_data/{now.date()}/sensor_{data["id"]}_{now.timestamp()}.json'
     s3.put_object(Bucket=bucket, Key=key, Body=json.dumps(data).encode('utf-8'))
     print(f"Dato salvato su MinIO: {key}")
