@@ -6,4 +6,4 @@
 ## Docker 
 - Dockerfile: contiene le specifiche per la creazione di una docker image
 - docker-compose: Tutti i servizi (container), reti, volumi e configurazioni necessari per far girare il tuo sistema.
-- per far girare il tutto 
+- per far girare il tutto usare mettere nel terminale "docker compose up --build" (build solamente la prima volta)
