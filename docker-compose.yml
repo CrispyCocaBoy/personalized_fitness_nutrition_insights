@@ -1,8 +1,8 @@
 services:
-  bpm_producer:
+  producer:
     build: .
-    container_name: bpm_producer
-    command: python src/sensors/bpm_producer.py
+    container_name: producer
+    command: python src/sensors/wearable_producer.py
     volumes:
       - .:/app
     working_dir: /app
@@ -11,11 +11,11 @@ services:
 
   bpm_consumer:
     build: .
-    container_name: bpm_consumer
+    container_name: wearable_producer
     volumes:
       - .:/app
     working_dir: /app
-    command: python src/data_ingestion/bronze/sensors_consumers/bpm_consumer.py
+    command: python src/data_ingestion/bronze/sensors_consumers/wearable_consumer.py
     depends_on:
       - mqtt_broker
       - minio

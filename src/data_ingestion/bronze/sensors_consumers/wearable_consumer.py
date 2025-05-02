@@ -1,4 +1,4 @@
-# Stampato da chat perche stavo impazzendo
+# Consumer per i dati biometrici wearable
 import json
 import boto3
 import time
@@ -9,8 +9,8 @@ import traceback
 # === CONFIGURAZIONE ===
 broker = 'mqtt_broker'
 port = 1883
-topic = "sensors/heart"
-client_id = "heart_listener"
+topic = "sensors/datawearable"
+client_id = "datawearable_listener"
 
 minio_endpoint = 'http://minio:9000'
 access_key = 'minioadmin'
@@ -28,7 +28,8 @@ s3 = boto3.client('s3',
 # === SALVA SU MINIO ===
 def save_to_minio(data):
     now = datetime.now(timezone.utc)
-    key = f'bronze/heart_data/{now.date()}/sensor_{data["id"]}_{now.timestamp()}.json'
+    # Usa user_id e timestamp per la chiave, coerente con il nuovo formato
+    key = f'bronze/wearable_data/{now.date()}/user_{data["user_id"]}_{now.timestamp()}.json'
     s3.put_object(Bucket=bucket, Key=key, Body=json.dumps(data).encode('utf-8'))
     print(f"✅ Salvato su MinIO: {key}")
 
@@ -38,7 +39,12 @@ def on_message(client, userdata, msg):
     try:
         data = json.loads(msg.payload.decode())
         print(f"📦 Payload decodificato: {data}")
-        save_to_minio(data)
+        # Verifica che il messaggio contenga i campi attesi
+        required_fields = ["timestamp", "user_id", "device_id", "heart_rate", "activity_type"]
+        if all(field in data for field in required_fields):
+            save_to_minio(data)
+        else:
+            print("❌ Messaggio non valido: campi mancanti")
     except Exception as e:
         print("❌ Errore nel processamento del messaggio:")
         print(traceback.format_exc())
@@ -67,7 +73,7 @@ def connect_mqtt():
 
 # === AVVIO CONSUMER ===
 def run():
-    print("🚀 Avvio bpm_consumer...")
+    print("🚀 Avvio datawearable_consumer...")
     try:
         client = connect_mqtt()
         client.loop_forever()
