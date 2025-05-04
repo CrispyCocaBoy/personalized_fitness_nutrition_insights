@@ -9,6 +9,14 @@ services:
     depends_on:
       - mqtt_broker
 
+  querying:
+    build: .
+    container_name: querying
+    command: python database/users_profile/querying.py
+    volumes:
+      - .:/app
+    working_dir: /app
+
   bpm_consumer:
     build: .
     container_name: bpm_consumer
@@ -43,12 +51,12 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: postgres_db
+    container_name: users_profile_db
     restart: always
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: demographics
+      POSTGRES_DB: users_profile # contiene le demografiche
     ports:
       - "5432:5432"
     volumes:
