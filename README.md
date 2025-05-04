@@ -8,12 +8,13 @@
 - docker-compose: Tutti i servizi (container), reti, volumi e configurazioni necessari per far girare il tuo sistema.
 - per far girare il tutto usare mettere nel terminale "docker compose up --build" (build solamente la prima volta)
 
+## Gestione Databases
 Importante: 
 Per scaricare il database sql sul vostro progetto usate:
-docker exec -t postgres_db pg_dump -U admin -d demographics --clean --if-exists --no-owner < database/demographics/dump.sql
+docker exec -t users_profile_db pg_dump -U admin -d demographics --clean --if-exists --no-owner < database/users_profile/users_profile_dump.sql
 
 Allo stesso modo per caricarlo (e poi metterlo su git usare)
-docker exec -t postgres_db pg_dump -U admin -d demographics --clean --if-exists --no-owner > database/demographics/dump.sql
+docker exec -t users_profile_db pg_dump -U admin -d demographics --clean --if-exists --no-owner > database/users_profile/users_profile_dump.sql
 
 
 
