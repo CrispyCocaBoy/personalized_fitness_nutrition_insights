@@ -15,7 +15,9 @@
   docker exec -t users_profile_db pg_dump -U admin -d demographics --clean --if-exists --no-owner < database/users_profile/users_profile_dump.sql
   
   Allo stesso modo per caricarlo (e poi metterlo su git usare)
-  docker exec -t users_profile_db pg_dump -U admin -d demographics --clean --if-exists --no-owner > database/users_profile/users_profile_dump.sql
+  docker exec -t users_profile_db pg_dump -U admin -d user_profile --clean --if-exists --no-owner > database/users_profile/users_profile_dump.sql
 - Database relazionale -> mongodb
 
+### Frontend
+streamlit parte su http://localhost:8501
 
