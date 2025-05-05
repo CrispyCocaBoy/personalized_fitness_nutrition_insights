@@ -1,4 +1,17 @@
 services:
+  streamlit_app:
+    build: .
+    container_name: streamlit_app
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    working_dir: /app/src/frontend   # <-- directory principale impostata qui
+    command: >
+      streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+    depends_on:
+      - postgres
+
   bpm_producer:
     build: .
     container_name: bpm_producer
