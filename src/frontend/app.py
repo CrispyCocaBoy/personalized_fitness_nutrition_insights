@@ -13,4 +13,4 @@ with col1:
 
 with col2:
     if st.button("🆕 Registrati"):
-        st.switch_page("pages/signin.py")
+        st.switch_page("pages/signup.py")
