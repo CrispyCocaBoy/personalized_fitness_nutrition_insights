@@ -52,8 +52,8 @@ with st.form("profile_form"):
             if success == True:
                 st.success(msg)
                 st.info("Ora verrai reindirizzato per completare il profilo.")
-                time.sleep(2)
-                st.switch_page("pages/dashboard.py")
+                time.sleep(1)
+                st.switch_page("pages/set_up_profile_pt2.py")
             else:
                 st.error(msg)
 

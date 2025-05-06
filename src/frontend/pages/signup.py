@@ -62,7 +62,7 @@ with st.form("signup_form"):
                 st.success(message)
                 st.session_state["user_id"] = user_id
                 st.info("Ora verrai reindirizzato per completare il profilo.")
-                time.sleep(2)
+                time.sleep(1)
                 st.switch_page("pages/set_up_profile.py")
             else:
                 st.error(message)
