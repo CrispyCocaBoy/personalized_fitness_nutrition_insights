@@ -1,43 +1,7 @@
 # Chiede peso e altezza
-
 import streamlit as st
-import bcrypt
-from utility import database_connection as db
-import datetime
+from src.frontend.utility import database_connection as db
 import time
-
-# Funzione per aggiornare l'altezza
-def set_height(user_id, height):
-    conn = db.connection()
-    cur = conn.cursor()
-    try:
-        cur.execute("""
-            UPDATE users_profile
-            SET height = %s
-            WHERE user_id = %s
-        """, (height, user_id))
-        conn.commit()
-        conn.close()
-        return True, "Altezza salvata con successo."
-    except Exception as e:
-        conn.close()
-        return False, f"Errore altezza: {e}"
-
-# Funzione per inserire il peso
-def set_weight(user_id, weight):
-    conn = db.connection()
-    cur = conn.cursor()
-    try:
-        cur.execute("""
-            INSERT INTO weight (user_id, kg)
-            VALUES (%s, %s)
-        """, (user_id, weight))
-        conn.commit()
-        conn.close()
-        return True, "Peso salvato con successo."
-    except Exception as e:
-        conn.close()
-        return False, f"Errore peso: {e}"
 
 # UI
 st.set_page_config(page_title="Set del peso e dell'altezza", layout="centered")
@@ -57,8 +21,8 @@ with st.form("profile_form"):
     submitted = st.form_submit_button("Salva profilo")
 
     if submitted:
-        success_h, msg_h = set_height(user_id, height)
-        success_w, msg_w = set_weight(user_id, weight)
+        success_h, msg_h = db.set_height(user_id, height)
+        success_w, msg_w = db.set_weight(user_id, weight)
 
         if success_h and success_w:
             st.success("Profilo completato con successo!")

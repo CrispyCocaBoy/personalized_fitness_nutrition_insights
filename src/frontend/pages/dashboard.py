@@ -1,5 +1,4 @@
 import streamlit as st
-from utility import database_connection as db
 
 # Il futuro per questa scheda è fare in modo che si crei un mini database intenro con tutti
 # i dati relativi all'utente

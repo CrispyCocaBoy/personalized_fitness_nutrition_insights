@@ -1,24 +1,7 @@
 import streamlit as st
-import bcrypt
-from utility import database_connection as db
+from src.frontend.utility import database_connection as db
 import datetime
 import time
-
-def complete_profile(user_id, name, surname, gender, birthday):
-    conn = db.connection()
-    cur = conn.cursor()
-    try:
-        cur.execute("""
-            INSERT INTO users_profile (user_id, name, surname, gender, birthday)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (user_id, name, surname, gender, birthday))
-        conn.commit()
-        conn.close()
-        return True, "Profilo completato con successo!"
-    except Exception as e:
-        conn.close()
-        return False, f"Errore durante l'inserimento del profilo: {e}"
-
 
 # Set UI
 st.set_page_config(page_title="Completamento profilo", layout="centered")
@@ -48,7 +31,7 @@ with st.form("profile_form"):
         if not name or not surname:
             st.error("Compila tutti i campi.")
         else:
-            success, msg = complete_profile(user_id, name, surname, gender, birthday)
+            success, msg = db.complete_profile(user_id, name, surname, gender, birthday)
             if success == True:
                 st.success(msg)
                 st.info("Ora verrai reindirizzato per completare il profilo.")
