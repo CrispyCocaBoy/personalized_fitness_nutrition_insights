@@ -2,7 +2,7 @@ import psycopg2
 import bcrypt
 
 def connection():
-    return psycopg2.connect(host="postgres", dbname="users_profile", user="admin", password="admin")
+    return psycopg2.connect(host="postgres", dbname="users_device_db", user="admin", password="admin")
 
 # Register User
 def register_user(username, email, password):

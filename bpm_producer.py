@@ -3,7 +3,7 @@ import json
 import random
 from datetime import datetime, timezone
 from paho.mqtt import client as mqtt_client
-from src import database_connection as db
+from utility import database_connection as db
 
 # Configurazione MQTT
 broker = 'mqtt_broker'
@@ -60,6 +60,7 @@ def publish(client, user_ids):
 
 # Run principale
 def run():
+    print("ok")
     user_ids = get_user_ids()
     if not user_ids:
         print("❌ Nessun utente trovato nel database.")
@@ -71,4 +72,6 @@ def run():
     print("✅ Finished sending BPM data")
 
 if __name__ == '__main__':
-    run()
+    print("ok")
+    #run()
+

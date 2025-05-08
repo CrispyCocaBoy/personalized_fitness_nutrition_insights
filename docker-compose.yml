@@ -1,56 +1,28 @@
 services:
+  fake_user:
+    build: ./src/consumer_data_generator
+    container_name: fake_user
+    depends_on:
+      - postgres
+
+
   streamlit_app:
-    build: .
+    build: ./src/frontend
     container_name: streamlit_app
     ports:
       - "8501:8501"
     volumes:
       - .:/app
-    working_dir: /app/src/frontend   # <-- directory principale impostata qui
-    command: >
-      streamlit run app.py --server.port=8501 --server.address=0.0.0.0
     depends_on:
       - postgres
 
   bpm_producer:
-    build: .
+    build: ./src/sensors/bpm_producer
     container_name: bpm_producer
-    command: python src/sensors/bpm_producer.py
     volumes:
       - .:/app
-    working_dir: /app
     depends_on:
       - mqtt_broker
-
-  fake_users:
-    build: .
-    container_name: fake_users
-    command: python src/data_ingestion/bronze/consumer_generator/fake_user.py
-    volumes:
-      - .:/app
-    working_dir: /app
-    depends_on:
-      - postgres
-
-
-  querying:
-    build: .
-    container_name: querying
-    command: python database/users_profile/querying.py
-    volumes:
-      - .:/app
-    working_dir: /app
-
-  bpm_consumer:
-    build: .
-    container_name: bpm_consumer
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: python src/data_ingestion/bronze/sensors_consumers/bpm_consumer.py
-    depends_on:
-      - mqtt_broker
-      - minio
 
   mqtt_broker:
     image: eclipse-mosquitto
@@ -102,5 +74,3 @@ volumes:
   minio_data:
   pgdata:
   mongodb_data:
-
-
