@@ -1,39 +1,6 @@
 import streamlit as st
-import bcrypt
-from utility import database_connection as db
+from src.frontend.utility import database_connection as db
 import time
-
-# Inserimento nuovo utente
-def register_user(username, email, password):
-    conn = db.connection()
-    cur = conn.cursor()
-
-    # Controllo duplicati
-    cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-    if cur.fetchone():
-        conn.close()
-        return False, "Username già esistente.", None
-
-    cur.execute("SELECT * FROM users WHERE email = %s", (email,))
-    if cur.fetchone():
-        conn.close()
-        return False, "Email già esistente.", None
-
-    # Hash password
-    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-    try:
-        cur.execute(
-            "INSERT INTO users (username, email, password) VALUES (%s, %s, %s) RETURNING user_id",
-            (username, email, hashed)
-        )
-        user_id = cur.fetchone()[0]  # Recupera user_id appena creato
-        conn.commit()
-        conn.close()
-        return True, "Registrazione avvenuta con successo.", user_id
-    except Exception as e:
-        conn.close()
-        return False, f"Errore durante la registrazione: {e}", None
 
 # UI registrazione
 st.set_page_config(page_title="Registrazione", layout="centered")
@@ -57,7 +24,7 @@ with st.form("signup_form"):
         elif not username or not password:
             st.error("Username e password obbligatori.")
         else:
-            success, message, user_id = register_user(username, email, password)
+            success, message, user_id = db.register_user(username, email, password)
             if success:
                 st.success(message)
                 st.session_state["user_id"] = user_id
