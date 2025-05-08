@@ -75,12 +75,12 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: users_profile_db
+    container_name: user_device_db
     restart: always
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: users_profile # contiene le demografiche
+      POSTGRES_DB: user_device_db # contiene le demografiche
     ports:
       - "5432:5432"
     volumes:
