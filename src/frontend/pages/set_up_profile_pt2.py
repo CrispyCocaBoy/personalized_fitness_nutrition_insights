@@ -1,7 +1,7 @@
 # Chiede peso e altezza
 import streamlit as st
-from src.frontend.utility import database_connection as db
 import time
+from src.frontend.utility import database_connection as db
 
 # UI
 st.set_page_config(page_title="Set del peso e dell'altezza", layout="centered")

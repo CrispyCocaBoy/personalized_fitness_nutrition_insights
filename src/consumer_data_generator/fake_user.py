@@ -2,12 +2,12 @@ import csv
 import random
 import string
 from faker import Faker
-import database_connection as db
+from utility import database_connection as db
 
 fake = Faker('it_IT')
 
 # Parametri
-NUM_USERS = 1
+NUM_USERS = 4
 CSV_OUTPUT = "users_passwords.csv"
 GENDERS = ['Male', 'Female']
 

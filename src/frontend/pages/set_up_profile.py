@@ -1,7 +1,7 @@
 import streamlit as st
-from src.frontend.utility import database_connection as db
 import datetime
 import time
+from src.frontend.utility import database_connection as db
 
 # Set UI
 st.set_page_config(page_title="Completamento profilo", layout="centered")

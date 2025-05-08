@@ -1,4 +1,5 @@
 import streamlit as st
+from src.sensors.bpm_producer.utility import database_connection as db
 
 # UI
 st.set_page_config(page_title="Login", layout="centered")
@@ -16,7 +17,7 @@ password = st.text_input("Password", type="password")
 
 # Bottone di login
 if st.button("Accedi"):
-    status, user_id = check_credentials(login_input, password, method)
+    status, user_id = db.check_credentials(login_input, password, method)
 
     if status == "success":
         st.session_state["logged_in"] = True
