@@ -96,4 +96,53 @@ CREATE TABLE user_feature_preferences (
 INSERT INTO device_type (name, manufacturer, model, description)
 VALUES
   ('SimpleWatch', 'simpleguys', 'SW_001', 'smartwatch'),
-  ('SimpleBand', 'simpleguys', 'SB_001', 'smartband');
+  ('SimpleBand', 'simpleguys', 'SB_001', 'smartband'),
+  ('SimpleRing', 'simpleguys', 'SR_001', 'smartring'),
+  ('Phone', '','','');
+-- Feature di calcolo --
+INSERT INTO feature (name, unit, description) VALUES
+-- Cardiovascolari
+    ('bpm', 'beats/min', 'Frequenza cardiaca calcolata dal sensore PPG'),
+    ('hrv', 'ms', 'Heart Rate Variability: variazione tra intervalli tra battiti'),
+
+-- Respirazione & SpO₂
+    ('spo2', '%', 'Saturazione dell’ossigeno nel sangue stimata con LED rossi e infrarossi'),
+
+-- Movimento
+    ('steps', 'count', 'Numero di passi effettuati'),
+
+--Temperatura
+    ('skin_temp', '°C', 'Temperatura cutanea rilevata');
+
+-- Mappatura device -> sensor
+-- Assunzioni:
+-- device_type_id:
+-- 1 = SimpleWatch, 2 = SimpleBand, 3 = SimpleRing, 4 = Phone
+-- feature_id:
+-- 1 = bpm, 2 = hrv, 3 = spo2, 4 = steps, 5 = skin_temp
+
+-- SimpleWatch → tutte le feature
+INSERT INTO predefined_device_type_sensors (device_type_id, feature_id, priority) VALUES
+(1, 1, 1),  -- bpm
+(1, 2, 1),  -- hrv
+(1, 3, 1),  -- spo2
+(1, 4, 1),  -- steps
+(1, 5, 1);  -- skin_temp
+
+-- SimpleBand → tutte tranne skin_temp
+INSERT INTO predefined_device_type_sensors (device_type_id, feature_id, priority) VALUES
+(2, 1, 1),  -- bpm
+(2, 2, 1),  -- hrv
+(2, 3, 1),  -- spo2
+(2, 4, 1);  -- steps
+
+-- SimpleRing → hrv, spo2, skin_temp
+INSERT INTO predefined_device_type_sensors (device_type_id, feature_id, priority) VALUES
+(3, 1, 1),  -- bpm
+(3, 2, 1),  -- hrv
+(3, 3, 1),  -- spo2
+(3, 5, 1);  -- skin_temp
+
+-- Phone → bpm, steps
+INSERT INTO predefined_device_type_sensors (device_type_id, feature_id, priority) VALUES
+(4, 4, 1);  -- steps
