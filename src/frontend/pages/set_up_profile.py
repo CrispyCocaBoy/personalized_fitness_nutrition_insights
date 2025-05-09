@@ -1,7 +1,26 @@
 import streamlit as st
 import datetime
 import time
-from src.frontend.utility import database_connection as db
+import psycopg2
+
+def connection():
+    return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
+
+def complete_profile(user_id, name, surname, gender, birthday):
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO users_profile (user_id, name, surname, gender, birthday)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (user_id, name, surname, gender, birthday))
+        conn.commit()
+        conn.close()
+        return True, "Profilo completato con successo!"
+    except Exception as e:
+        conn.close()
+        return False, f"Errore durante l'inserimento del profilo: {e}"
+
 
 # Set UI
 st.set_page_config(page_title="Completamento profilo", layout="centered")
@@ -31,7 +50,7 @@ with st.form("profile_form"):
         if not name or not surname:
             st.error("Compila tutti i campi.")
         else:
-            success, msg = db.complete_profile(user_id, name, surname, gender, birthday)
+            success, msg = complete_profile(user_id, name, surname, gender, birthday)
             if success == True:
                 st.success(msg)
                 st.info("Ora verrai reindirizzato per completare il profilo.")

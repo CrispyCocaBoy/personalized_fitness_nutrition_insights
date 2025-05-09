@@ -12,9 +12,9 @@ CREATE TABLE users_profile (
   user_id        INT        PRIMARY KEY,
   name           VARCHAR(255),
   surname        VARCHAR(255),
-  birthdate      DATE,
-  gender         CHAR(1),
-  height_cm      NUMERIC(5,2),
+  gender         VARCHAR(255),
+  birthday       DATE,
+  height         NUMERIC(5,2),
   updated_at     TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 -- USER_PROFILE(user_id) → USER(user_id)
@@ -23,8 +23,8 @@ CREATE TABLE users_profile (
 CREATE TABLE weight (
   weight_id      SERIAL PRIMARY KEY,
   user_id        INT    NOT NULL,
-  measured_at    TIMESTAMP WITH TIME ZONE NOT NULL,
-  value_kg       NUMERIC(5,2) NOT NULL
+  weight         NUMERIC(5,2) NOT NULL,
+  measured_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 -- WEIGHT(user_id) → USER(user_id)
 
@@ -92,3 +92,8 @@ CREATE TABLE user_feature_preferences (
 -- USER_FEATURE_PREFERENCES(feature_id) → FEATURE(feature_id)
 -- USER_FEATURE_PREFERENCES(device_id)  → DEVICE(device_id)
 
+--- Impostazione device
+INSERT INTO device_type (name, manufacturer, model, description)
+VALUES
+  ('SimpleWatch', 'simpleguys', 'SW_001', 'smartwatch'),
+  ('SimpleBand', 'simpleguys', 'SB_001', 'smartband');

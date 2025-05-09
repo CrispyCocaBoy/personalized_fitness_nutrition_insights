@@ -1,5 +1,38 @@
 import streamlit as st
-from src.sensors.bpm_producer.utility import database_connection as db
+import psycopg2
+import bcrypt
+
+def connection():
+    return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
+
+def check_credentials(login_input, password, method):
+    try:
+        conn = connection()
+        cur = conn.cursor()
+
+        # Selezione in base al metodo scelto
+        if method == "Username":
+            cur.execute("SELECT user_id, password FROM users WHERE username = %s", (login_input,))
+        else:  # Email
+            cur.execute("SELECT user_id, password FROM users WHERE email = %s", (login_input,))
+
+        result = cur.fetchone()
+        conn.close()
+
+        if not result:
+            return "not_found", None  # L'utente non esiste
+
+        user_id, hashed_pw = result[0], result[1].encode('utf-8')
+
+        # Verifica della password
+        if bcrypt.checkpw(password.encode('utf-8'), hashed_pw):
+            return "success", user_id
+        else:
+            return "wrong_password", None
+
+    except Exception as e:
+        st.error(f"Errore di connessione al database: {e}")
+        return "error", None
 
 # UI
 st.set_page_config(page_title="Login", layout="centered")
@@ -17,7 +50,7 @@ password = st.text_input("Password", type="password")
 
 # Bottone di login
 if st.button("Accedi"):
-    status, user_id = db.check_credentials(login_input, password, method)
+    status, user_id = check_credentials(login_input, password, method)
 
     if status == "success":
         st.session_state["logged_in"] = True

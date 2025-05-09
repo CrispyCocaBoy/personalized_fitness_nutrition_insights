@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install streamlit
+RUN pip install psycopg2-binary
+RUN pip install bcrypt
 
 COPY . .
 
