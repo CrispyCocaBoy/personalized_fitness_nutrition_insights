@@ -9,3 +9,6 @@ if "logged_in" not in st.session_state or not st.session_state["logged_in"]:
     st.stop()
 
 st.title(f"Benvenuto, {st.session_state['user_id']}!")
+
+if st.button("⚙️"):
+    st.switch_page("pages/settings.py")

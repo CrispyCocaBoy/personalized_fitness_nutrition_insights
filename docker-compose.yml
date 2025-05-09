@@ -2,19 +2,19 @@ services:
   fake_user:
     build: ./src/consumer_data_generator
     container_name: fake_user
+    volumes:
+      - .:/app/output
     depends_on:
       - postgres
 
 
   streamlit_app:
     build: ./src/frontend
-    container_name: streamlit_app
     ports:
       - "8501:8501"
     volumes:
-      - .:/app
-    depends_on:
-      - postgres
+      - ./src/frontend:/app
+    working_dir: /app
 
   bpm_producer:
     build: ./src/sensors/bpm_producer

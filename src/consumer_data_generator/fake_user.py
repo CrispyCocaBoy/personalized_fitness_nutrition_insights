@@ -3,6 +3,7 @@ import random
 import string
 from faker import Faker
 from utility import database_connection as db
+import time
 
 fake = Faker('it_IT')
 
@@ -40,8 +41,9 @@ def main():
             db.set_height(user_id, height)
             db.set_weight(user_id, weight)
 
-            print(f"[✓] Utente registrato: {username}")
+            print(f"Utente registrato: {username}, password: {password}")
             writer.writerow([username, email, password])
+
 
 if __name__ == '__main__':
     main()
