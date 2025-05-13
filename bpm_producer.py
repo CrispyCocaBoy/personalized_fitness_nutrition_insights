@@ -3,7 +3,7 @@ import json
 import random
 from datetime import datetime, timezone
 from paho.mqtt import client as mqtt_client
-from utility import database_connection as db
+from src.utility import database_connection as db
 
 # Configurazione MQTT
 broker = 'mqtt_broker'

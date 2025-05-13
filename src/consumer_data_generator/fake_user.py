@@ -4,22 +4,29 @@ import string
 from faker import Faker
 from utility import database_connection as db
 import time
+import os
 
 fake = Faker('it_IT')
 
 # Parametri
 NUM_USERS = 4
-CSV_OUTPUT = "users_passwords.csv"
 GENDERS = ['Male', 'Female']
 
 def generate_password(length=10):
     chars = string.ascii_letters + string.digits
     return ''.join(random.choice(chars) for _ in range(length))
 
+
 def main():
-    with open(CSV_OUTPUT, mode='w', newline='', encoding='utf-8') as file:
+    file_path = "/app/output/users_passwords.csv"
+    write_header = not os.path.exists(file_path) or os.stat(file_path).st_size == 0
+
+    with open(file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['Username', 'Email', 'Password'])  # Header CSV
+
+        if write_header:
+            writer.writerow(['Username', 'Email', 'Password'])  # scrivi header solo se file vuoto/non esiste
+        # Header CSV
 
         for _ in range(NUM_USERS):
             name = fake.first_name()
@@ -47,3 +54,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    time.sleep(40)
