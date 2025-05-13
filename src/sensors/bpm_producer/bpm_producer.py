@@ -3,33 +3,24 @@ import json
 import random
 from datetime import datetime, timezone
 from paho.mqtt import client as mqtt_client
-from src.utility import database_connection as db
 
 # Configurazione MQTT
 broker = 'mqtt_broker'
 port = 1883
-topic = "sensors/heart"
-client_id = "heart_sensor"
+topic = "wearables/bpm"
+client_id = "bpm_producer"
 
-# Connessione al database PostgreSQL
+# Connessione al database PostgreSQL (placeholder)
 def get_user_ids():
-    try:
-        conn = db.connect()
-        cur = conn.cursor()
-        cur.execute("SELECT user_id FROM users")
-        user_ids = [row[0] for row in cur.fetchall()]
-        conn.close()
-        return user_ids
-    except Exception as e:
-        print(f"Errore connessione DB: {e}")
-        return []
+    # Simulazione: 3 utenti
+    return [1, 2, 3]
 
 # Generatore dati BPM
 def generate_heart_data(user_id):
     return {
-        "t": datetime.now(timezone.utc).isoformat(),
-        "id": user_id,
-        "hr": random.randint(60, 100)
+        "timestamp": int(datetime.now(timezone.utc).timestamp()),
+        "user_id": str(user_id),
+        "bpm": random.randint(60, 110)
     }
 
 # Connessione MQTT
@@ -47,20 +38,21 @@ def connect_mqtt():
 
 # Pubblica i dati BPM per tutti gli utenti
 def publish(client, user_ids):
-    for user_id in user_ids:
-        heart_data = generate_heart_data(user_id)
-        msg = json.dumps(heart_data)
-        result = client.publish(topic, msg, qos=1)
-        status = result[0]
-        if status == 0:
-            print(f"📡 Sent {msg} to `{topic}`")
-        else:
-            print(f"⚠️ Failed to send message for user {user_id}")
-        time.sleep(0.2)  # evita flooding
+    while True:
+        for user_id in user_ids:
+            heart_data = generate_heart_data(user_id)
+            msg = json.dumps(heart_data)
+            result = client.publish(topic, msg, qos=1)
+            status = result[0]
+            if status == 0:
+                print(f"📡 Sent {msg} to `{topic}`")
+            else:
+                print(f"⚠️ Failed to send message for user {user_id}")
+            time.sleep(0.5)  # attesa tra utenti
+        time.sleep(15)  # attesa tra cicli completi
 
 # Run principale
 def run():
-    print("ok")
     user_ids = get_user_ids()
     if not user_ids:
         print("❌ Nessun utente trovato nel database.")
@@ -69,9 +61,6 @@ def run():
     client.loop_start()
     publish(client, user_ids)
     client.loop_stop()
-    print("✅ Finished sending BPM data")
 
 if __name__ == '__main__':
-    print("ok")
-    #run()
-
+    run()
