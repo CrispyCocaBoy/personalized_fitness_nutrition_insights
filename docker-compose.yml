@@ -1,9 +1,11 @@
 services:
   fake_user:
-    build: ./src/consumer_data_generator
+    build:
+      context: .
+      dockerfile: ./src/consumer_data_generator/Dockerfile
     container_name: fake_user
     volumes:
-      - .:/app/output
+      - fake_generator_output:/app/output
     depends_on:
       - postgres
 
@@ -17,10 +19,10 @@ services:
     working_dir: /app
 
   bpm_producer:
-    build: ./src/sensors/bpm_producer
+    build:
+      context: .                                  # la root del progetto
+      dockerfile: src/sensors/bpm_producer/Dockerfile
     container_name: bpm_producer
-    volumes:
-      - .:/app
     depends_on:
       - mqtt_broker
 
@@ -74,3 +76,4 @@ volumes:
   minio_data:
   pgdata:
   mongodb_data:
+  fake_generator_output:

@@ -10,8 +10,9 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia tutto nella directory corrente (src/consumer_data_generator)
-COPY . .
+
+COPY src/consumer_data_generator .
+COPY utility ./utility
 
 # Installa pacchetti Python
 RUN pip install psycopg2-binary bcrypt faker
