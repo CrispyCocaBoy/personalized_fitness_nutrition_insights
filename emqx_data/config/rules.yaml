@@ -1,0 +1,8 @@
+rules:
+  - id: bpm_rule
+    rawsql: "SELECT payload FROM \"wearables/bpm\""
+    actions:
+      - name: "data_to_kafka:send"
+        params:
+          topic: "wearables.bpm"
+          resource: "kafka_bridge"
