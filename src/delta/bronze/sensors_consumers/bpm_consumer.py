@@ -39,6 +39,7 @@ try:
         .option("kafka.bootstrap.servers", "kafka:9092") \
         .option("subscribe", "wearables.bpm") \
         .option("startingOffsets", "earliest") \
+        .option("failOnDataLoss", "false") \
         .load()
 
     print("📥 Connessione a Kafka stabilita, topic: wearables.bpm")

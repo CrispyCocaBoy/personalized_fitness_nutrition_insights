@@ -2,7 +2,7 @@ import psycopg2
 from pathlib import Path
 
 # Percorso del file SQL (relativo alla posizione dello script Python stesso)
-sql_file = Path(__file__).parent / "create_database.sql"
+sql_file = Path(__file__).parent.parent / "database/create_database.sql"
 
 # Parametri di connessione
 conn_params = {
