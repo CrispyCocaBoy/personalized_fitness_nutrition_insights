@@ -15,8 +15,17 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     depends_on:
       - zookeeper
+
+  init_kafka_topic:
+    build:
+      context: .
+      dockerfile: src/kafka/Dockerfile
+    depends_on:
+      - kafka
+      - kafka-ui
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -31,13 +40,13 @@ services:
 
 
   mqtt_broker:
-    image: emqx/emqx:5.6.0
+    image:  emqx/emqx-enterprise:5.6.0
     ports:
       - "1883:1883"       # MQTT
       - "8081:8081"       # HTTP API
       - "18083:18083"     # EMQX Dashboard
     volumes:
-      - ./emqx_data/config:/opt/emqx/data/configs
+       - ./emqx_data/config/cluster.hocon:/opt/emqx/data/configs/
     container_name: mqtt_broker
     depends_on:
       - kafka
@@ -63,6 +72,8 @@ services:
     depends_on:
       - kafka
       - minio
+      - init_kafka_topic
+      - kafka-ui
 
   spark-worker:
     image: bitnami/spark:latest
@@ -93,6 +104,15 @@ services:
         - spark
         - mqtt_broker
 
+  query:
+    build:
+      context: .
+      dockerfile: src/query/Dockerfile
+    container_name: query
+    depends_on:
+      - kafka
+      - spark
+      - mqtt_broker
 
   streamlit_app:
     build: ./src/frontend
