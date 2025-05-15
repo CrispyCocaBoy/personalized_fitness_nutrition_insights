@@ -2,6 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import StructType, IntegerType, LongType
 import traceback
+import time
 
 # Schema del JSON che arriva da Kafka
 schema = StructType() \
@@ -48,6 +49,7 @@ try:
         .select("data.*")
 
     print("🧠 Schema applicato, avvio del writeStream...")
+
 
     # Scrittura su Delta Lake (MinIO)
     query = parsed_df.writeStream \
