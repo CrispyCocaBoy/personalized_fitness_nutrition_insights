@@ -61,7 +61,7 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     volumes:
-      - minio_data:/data
+      - ./minio_setting:/data
 
   spark:
     image: bitnami/spark:latest
@@ -147,6 +147,6 @@ services:
       - pgdata:/var/lib/postgresql/data
 
 volumes:
-  minio_data:
+  #minio_data:
   pgdata:
   fake_generator_output:
