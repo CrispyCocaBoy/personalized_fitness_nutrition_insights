@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+
+  mqtt_broker:
+    image: emqx/emqx:5.6.0
+    ports:
+      - "1883:1883"
+      - "8081:8081"
+      - "18083:18083"
+    depends_on:
+      - kafka
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+  spark-master:
+    environment:
+    - HOME=/tmp
+    - SPARK_OPTS=--conf spark.jars.ivy=/tmp/.ivy2
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+    container_name: spark-master
+    volumes:
+    - ./scripts:/opt/spark/work-dir/scripts  # <--- AGGIUNGI QUESTO (supponendo che gli script siano in una cartella 'scripts' locale)
+    - spark_ivy_cache:/tmp/.ivy2
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    depends_on:
+      - kafka
+      - minio
+
+
+  spark-worker:
+    image: bitnami/spark:latest
+    container_name: spark-worker
+    environment:
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark-master:7077
+      HOME: /home/sparkuser
+    volumes:
+      - spark_ivy_cache:/home/sparkuser/.ivy2
+    depends_on:
+      - spark-master
+
+volumes:
+  minio_data:
+  spark_ivy_cache:
