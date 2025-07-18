@@ -18,7 +18,7 @@ def generate_password(length=10):
 
 
 def main():
-    file_path = "/app/output/users_passwords.csv"
+    file_path = "/app/output/users_and_passwords.csv"
     write_header = not os.path.exists(file_path) or os.stat(file_path).st_size == 0
 
     with open(file_path, mode='a', newline='', encoding='utf-8') as file:

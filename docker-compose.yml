@@ -46,7 +46,7 @@ services:
       - "8081:8081"       # HTTP API
       - "18083:18083"     # EMQX Dashboard
     volumes:
-       - ./emqx_data/config/cluster.hocon:/opt/emqx/data/configs/
+       - ./volumes/emqx_data/config/cluster.hocon:/opt/emqx/data/configs/
     container_name: mqtt_broker
     depends_on:
       - kafka
@@ -61,7 +61,7 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     volumes:
-      - ./minio_setting:/data
+      - ./volumes/minio_setting:/data
 
   spark:
     image: bitnami/spark:latest
@@ -90,7 +90,7 @@ services:
       dockerfile: ./src/consumer_data_generator/Dockerfile
     container_name: fake_user
     volumes:
-      - fake_generator_output:/app/output
+      - ./database_utility/fake_user_and_password:/app/output
     depends_on:
       - postgres
 
@@ -144,9 +144,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./volumes/ps_setting:/var/lib/postgresql/data
 
 volumes:
-  #minio_data:
-  pgdata:
   fake_generator_output:
