@@ -15,6 +15,7 @@ CREATE TABLE users_profile (
   gender         VARCHAR(255),
   birthday       DATE,
   height         NUMERIC(5,2),
+  country        VARCHAR(255),
   updated_at     TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 -- USER_PROFILE(user_id) → USER(user_id)

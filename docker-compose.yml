@@ -115,12 +115,14 @@ services:
       - mqtt_broker
 
   streamlit_app:
-    build: ./src/frontend
+    build:
+      context: .
+      dockerfile: ./src/frontend/Dockerfile
     ports:
       - "8501:8501"
     volumes:
       - ./src/frontend:/app
-    working_dir: /app
+      - ./utility:/app/utility
 
   bpm_producer:
     build:

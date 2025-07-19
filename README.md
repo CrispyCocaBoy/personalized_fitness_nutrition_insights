@@ -21,3 +21,4 @@
 ### Frontend
 streamlit parte su http://localhost:8501
 
+Per i volumi utilizaiamo una tecnica chiamata host volume, dove andiamo a dafinire e quinid a slavare i volumi sull host
