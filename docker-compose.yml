@@ -51,18 +51,6 @@ services:
     depends_on:
       - kafka
 
-  minio:
-    image: minio/minio
-    ports:
-      - "9000:9000"      # API
-      - "9001:9001"      # Console
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    command: server /data --console-address ":9001"
-    volumes:
-      - ./volumes/minio_setting:/data
-
   spark:
     image: bitnami/spark:latest
     environment:
@@ -82,17 +70,6 @@ services:
       SPARK_MASTER_URL: spark://spark:7077
     depends_on:
       - spark
-
-
-  fake_user:
-    build:
-      context: .
-      dockerfile: ./src/consumer_data_generator/Dockerfile
-    container_name: fake_user
-    volumes:
-      - ./database_utility/fake_user_and_password:/app/output
-    depends_on:
-      - postgres
 
   bpm_consumer:
       build:
@@ -124,6 +101,44 @@ services:
       - ./src/frontend:/app
       - ./utility:/app/utility
 
+
+# Databases
+  postgres:
+    image: postgres:18beta1
+    container_name: user_device_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: user_device_db
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/ps_setting:/var/lib/postgresql
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"      # API
+      - "9001:9001"      # Console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./volumes/minio_setting:/data
+
+# Data Generator
+  fake_user:
+    build:
+      context: .
+      dockerfile: ./src/data_generator/producer_user_generator/Dockerfile
+    container_name: fake_user
+    volumes:
+      - ./database_utility/fake_user_and_password:/app/output/
+    depends_on:
+      - postgres
+
   bpm_producer:
     build:
       context: .                                  # la root del progetto
@@ -133,20 +148,6 @@ services:
       - mqtt_broker
     networks:
       - default
-
-
-  postgres:
-    image: postgres:15
-    container_name: user_device_db
-    restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: user_device_db # contiene le demografiche
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./volumes/ps_setting:/var/lib/postgresql/data
 
 volumes:
   fake_generator_output:
