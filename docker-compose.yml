@@ -62,10 +62,7 @@ services:
       interval: 5s
       timeout: 25s
       retries: 5
-    networks:
-      emqx-bridge:
-        aliases:
-          - node1.emqx.com
+
     ports:
       - 1883:1883     # MQTT
       - 8083:8083     # WebSocket
@@ -99,15 +96,13 @@ services:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
-      - 8082:8082
+      - 8082:8080
     environment:
       DYNAMIC_CONFIG_ENABLED: 'true'
     volumes:
       - ./volumes/kafka_setting/kui/config.yml:/etc/kafkaui/dynamic_config.yaml
     depends_on:
       - broker_kafka
-
-
 
 # Databases
   postgres:
@@ -151,14 +146,8 @@ services:
       context: .                                  # la root del progetto
       dockerfile: src/data_generator/sensors/people_simulator/Dockerfile
     container_name: people_simulator
-    networks:
-      - emqx-bridge
     depends_on:
       - emqx1
 
 volumes:
   fake_generator_output:
-
-networks:
-  emqx-bridge:
-    driver: bridge
