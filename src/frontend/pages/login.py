@@ -1,6 +1,8 @@
 import streamlit as st
 import psycopg2
 import bcrypt
+from utility import database_connection as db
+
 
 def connection():
     return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
