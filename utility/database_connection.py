@@ -1,8 +1,8 @@
-import psycopg2
+import psycopg
 import bcrypt
 
 def connection():
-    return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
+    return psycopg.connect(host="user_device_db", dbname="user_device_db", user="admin", password="admin")
 
 # Register User
 def register_user(username, email, password):
@@ -37,14 +37,14 @@ def register_user(username, email, password):
         return False, f"Errore durante la registrazione: {e}", None
 
 # Complete profile
-def complete_profile(user_id, name, surname, gender, birthday):
+def complete_profile(user_id, name, surname, gender, birthday, country):
     conn = connection()
     cur = conn.cursor()
     try:
         cur.execute("""
-            INSERT INTO users_profile (user_id, name, surname, gender, birthday)
+            INSERT INTO users_profile (user_id, name, surname, gender, birthday, country)
             VALUES (%s, %s, %s, %s, %s)
-        """, (user_id, name, surname, gender, birthday))
+        """, (user_id, name, surname, gender, birthday, country))
         conn.commit()
         return True, "Profilo completato con successo!"
     except Exception as e:
@@ -86,4 +86,5 @@ def set_weight(user_id, weight):
         return False, f"Errore peso: {e}"
     finally:
         conn.close()
+
 
