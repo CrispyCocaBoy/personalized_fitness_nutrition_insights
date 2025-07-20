@@ -7,7 +7,7 @@ import logging
 # MQTT configuration
 broker = 'emqx1'  # Docker container name of EMQX in the same network
 port = 1883       # MQTT TCP port (without TLS)
-client_id = f'python-mqtt-{random.randint(0, 1000)}'
+client_id = "people_simulator"
 username = 'emqx'
 password = 'public'
 topic_prefix = "wearables"
@@ -82,6 +82,7 @@ def publish_loop(client):
 
 # Entry point
 def run():
+    time.sleep(15)
     client = connect_mqtt()
     client.loop_start()
     publish_loop(client)
@@ -89,4 +90,5 @@ def run():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
+    print("User_sensor_on")
     run()
