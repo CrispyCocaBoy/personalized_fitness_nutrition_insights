@@ -38,19 +38,6 @@ services:
     depends_on:
       - kafka
 
-
-  mqtt_broker:
-    image:  emqx/emqx-enterprise:5.6.0
-    ports:
-      - "1883:1883"       # MQTT
-      - "8081:8081"       # HTTP API
-      - "18083:18083"     # EMQX Dashboard
-    volumes:
-       - ./volumes/emqx_data/config/cluster.hocon:/opt/emqx/data/configs/
-    container_name: mqtt_broker
-    depends_on:
-      - kafka
-
   spark:
     image: bitnami/spark:latest
     environment:
@@ -79,7 +66,7 @@ services:
       depends_on:
         - kafka
         - spark
-        - mqtt_broker
+        - emqx1
 
   query:
     build:
@@ -89,7 +76,7 @@ services:
     depends_on:
       - kafka
       - spark
-      - mqtt_broker
+      - emqx1
 
   streamlit_app:
     build:
@@ -100,6 +87,34 @@ services:
     volumes:
       - ./src/frontend:/app
       - ./utility:/app/utility
+
+# Ingestion phase
+  emqx1:
+    image: emqx/emqx-enterprise:5.10.0
+    container_name: emqx1
+    environment:
+      - "EMQX_NODE_NAME=emqx@node1.emqx.com"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.com,emqx@node2.emqx.com]"
+    healthcheck:
+      test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks:
+      emqx-bridge:
+        aliases:
+          - node1.emqx.com
+    ports:
+      - 1883:1883     # MQTT
+      - 8083:8083     # WebSocket
+      - 8084:8084     # WSS
+      - 8883:8883     # MQTT over TLS
+      - 18083:18083   # Dashboard
+    volumes:
+      - ./emqx_data/config/cluster.hocon:/opt/emqx/data/configs/
+
+## CI dovro ficcare un kafka che funziona
 
 
 # Databases
@@ -139,15 +154,19 @@ services:
     depends_on:
       - postgres
 
-  bpm_producer:
+  people_simulator:
     build:
       context: .                                  # la root del progetto
-      dockerfile: src/sensors/bpm_producer/Dockerfile
-    container_name: bpm_producer
-    depends_on:
-      - mqtt_broker
+      dockerfile: src/data_generator/sensors/people_simulator/Dockerfile
+    container_name: people_simulator
     networks:
-      - default
+      - emqx-bridge
+    depends_on:
+      - emqx1
 
 volumes:
   fake_generator_output:
+
+networks:
+  emqx-bridge:
+    driver: bridge
