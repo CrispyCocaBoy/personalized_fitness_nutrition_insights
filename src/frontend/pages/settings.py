@@ -1,19 +1,14 @@
 import time
-
 import streamlit as st
-import psycopg2
+from utility import database_connection as db
 import bcrypt
 
 # Migliore le impostazioni del dispositivo
 # Dare la possibilità di poterlo non vedere
 
-# === Connessione DB ===
-def connection():
-    return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
-
 # === Info utente ===
 def get_user_info(user_id):
-    conn = connection()
+    conn = db.connection()
     cur = conn.cursor()
     cur.execute("""
         SELECT u.username, u.email, up.name, up.surname
@@ -28,7 +23,7 @@ def get_user_info(user_id):
 
 # === Hash password attuale ===
 def get_password_hash(user_id):
-    conn = connection()
+    conn = db.connection()
     cur = conn.cursor()
     cur.execute("SELECT password FROM users WHERE user_id = %s", (user_id,))
     row = cur.fetchone()
@@ -38,7 +33,7 @@ def get_password_hash(user_id):
 
 # === Aggiorna info utente ===
 def update_user_info(user_id, username, hashed_password, name, surname):
-    conn = connection()
+    conn = db.connection()
     cur = conn.cursor()
     try:
         cur.execute("""
@@ -70,7 +65,7 @@ def update_user_info(user_id, username, hashed_password, name, surname):
 # === Ottieni lista orologi dal DB ===
 def fetch_device_names():
     try:
-        conn = connection()
+        conn = db.connection()
         cur = conn.cursor()
         cur.execute("SELECT name FROM device_type ORDER BY name;")
         results = cur.fetchall()

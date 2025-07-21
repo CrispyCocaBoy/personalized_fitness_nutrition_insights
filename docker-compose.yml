@@ -90,7 +90,16 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 3
     volumes:
-      - ./volumes/kafka_setting/broker:/var/lib/kafka/data
+      - ./volumes/kafka_setting/broker:/var/lib/kafka
+
+  init_kafka:
+    build:
+      context: .
+      dockerfile: ./src/kafka_topics/Dockerfile
+    depends_on:
+      - broker_kafka
+    container_name: init_kafka
+
 
   kafka-ui:
     container_name: kafka-ui
