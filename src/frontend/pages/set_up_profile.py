@@ -1,13 +1,11 @@
 import streamlit as st
 import datetime
 import time
-import psycopg2
+from utility import database_connection as db
 
-def connection():
-    return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
 
 def complete_profile(user_id, name, surname, gender, birthday):
-    conn = connection()
+    conn = db.connection()
     cur = conn.cursor()
     try:
         cur.execute("""

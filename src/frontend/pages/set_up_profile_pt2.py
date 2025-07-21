@@ -1,15 +1,12 @@
 # Chiede peso e altezza
 import streamlit as st
 import time
-import psycopg2
-
-def connection():
-    return psycopg2.connect(host="postgres", dbname="user_device_db", user="admin", password="admin")
+from utility import database_connection as db
 
 
 # Set weight and height
 def set_height(user_id, height):
-    conn = connection()
+    conn = db.connection()
     cur = conn.cursor()
     try:
         cur.execute("""
