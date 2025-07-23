@@ -1,0 +1,217 @@
+# This file is generated. Do not edit.
+# The configs are results of online config changes from UI/API/CLI.
+# To persist configs in this file, copy the content to etc/base.hocon.
+actions {
+  kafka_producer {
+    Kafka_bridge_bpm {
+      connector = Kafka
+      created_at = 1753041902580
+      description = ""
+      enable = true
+      fallback_actions = []
+      last_modified_at = 1753041902580
+      parameters {
+        buffer {
+          memory_overload_protection = true
+          mode = memory
+          per_partition_limit = "256MB"
+          segment_bytes = "10MB"
+        }
+        compression = no_compression
+        kafka_ext_headers = []
+        kafka_header_value_encode_mode = none
+        max_batch_bytes = "896KB"
+        max_inflight = 10
+        max_linger_bytes = "10MB"
+        max_linger_time = "0ms"
+        message {
+          key = "${.clientid}"
+          timestamp = "${.timestamp}"
+          value = "${.}"
+        }
+        partition_count_refresh_interval = "60s"
+        partition_strategy = random
+        partitions_limit = all_partitions
+        query_mode = async
+        required_acks = all_isr
+        sync_query_timeout = "5s"
+        topic = wearables_bpm
+      }
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+      }
+    }
+    kafka_bridge_hr {
+      connector = Kafka
+      created_at = 1753051631586
+      description = ""
+      enable = true
+      fallback_actions = []
+      last_modified_at = 1753051631586
+      parameters {
+        buffer {
+          memory_overload_protection = true
+          mode = memory
+          per_partition_limit = "256MB"
+          segment_bytes = "10MB"
+        }
+        compression = no_compression
+        kafka_ext_headers = []
+        kafka_header_value_encode_mode = none
+        max_batch_bytes = "896KB"
+        max_inflight = 10
+        max_linger_bytes = "10MB"
+        max_linger_time = "0ms"
+        message {
+          key = "${.clientid}"
+          timestamp = "${.timestamp}"
+          value = "${.}"
+        }
+        partition_count_refresh_interval = "60s"
+        partition_strategy = random
+        partitions_limit = all_partitions
+        query_mode = async
+        required_acks = all_isr
+        sync_query_timeout = "5s"
+        topic = wearables_hr
+      }
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+      }
+    }
+    kafka_bridge_hrv {
+      connector = Kafka
+      created_at = 1753175310841
+      enable = true
+      fallback_actions = []
+      last_modified_at = 1753175310841
+      parameters {
+        buffer {
+          memory_overload_protection = true
+          mode = memory
+          per_partition_limit = "256MB"
+          segment_bytes = "10MB"
+        }
+        compression = no_compression
+        kafka_ext_headers = []
+        kafka_header_value_encode_mode = none
+        max_batch_bytes = "896KB"
+        max_inflight = 10
+        max_linger_bytes = "10MB"
+        max_linger_time = "0ms"
+        message {
+          key = "${.clientid}"
+          timestamp = "${.timestamp}"
+          value = "${.}"
+        }
+        partition_count_refresh_interval = "60s"
+        partition_strategy = random
+        partitions_limit = all_partitions
+        query_mode = async
+        required_acks = all_isr
+        sync_query_timeout = "5s"
+        topic = wearables_hrv
+      }
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+      }
+    }
+  }
+}
+connectors {
+  kafka_producer {
+    Kafka {
+      authentication = none
+      bootstrap_hosts = "broker_kafka:9092"
+      connect_timeout = "5s"
+      description = "This will create a connection with the broker Kafka"
+      metadata_request_timeout = "5s"
+      min_metadata_refresh_interval = "3s"
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+        start_timeout = "5s"
+      }
+      socket_opts {
+        nodelay = true
+        recbuf = "1MB"
+        sndbuf = "1MB"
+        tcp_keepalive = none
+      }
+      ssl {
+        enable = false
+        middlebox_comp_mode = true
+        verify = verify_peer
+      }
+    }
+  }
+}
+log {
+  console {}
+  file {}
+}
+rule_engine {
+  ignore_sys_message = true
+  jq_function_default_timeout = "10s"
+  rules {
+    kafka_rule_bpm {
+      actions = [
+        "kafka_producer:Kafka_bridge_bpm"
+      ]
+      description = ""
+      enable = true
+      metadata {created_at = 1753041932311, last_modified_at = 1753041932311}
+      name = ""
+      sql = """~
+        SELECT
+          topic,
+          payload.user_id as user_id,
+          payload.timestamp as timestamp,
+          payload.metric as metric,
+          payload.value as value
+        FROM
+          "wearables/bpm"~"""
+    }
+    kafka_rule_hr {
+      actions = [
+        "kafka_producer:kafka_bridge_hr"
+      ]
+      description = ""
+      enable = true
+      metadata {created_at = 1753051641422, last_modified_at = 1753051641422}
+      name = ""
+      sql = """~
+        SELECT
+          topic,
+          payload.user_id as user_id,
+          payload.timestamp as timestamp,
+          payload.metric as metric,
+          payload.value as value
+        FROM
+          "wearables/hr"~"""
+    }
+    kafka_rule_hrv {
+      actions = [
+        "kafka_producer:kafka_bridge_hrv"
+      ]
+      description = ""
+      enable = true
+      metadata {created_at = 1753175315546, last_modified_at = 1753175315546}
+      sql = """~
+        SELECT
+          topic,
+          payload.user_id as user_id,
+          payload.timestamp as timestamp,
+          payload.metric as metric,
+          payload.value as value
+        FROM
+          "wearables/hrv"~"""
+    }
+  }
+}
+topic_metrics = [
+  {topic = "wearables/bpm"}
+]
