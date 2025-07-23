@@ -9,8 +9,13 @@ topics=(
   wearables_skin_temperature
 )
 
+# Setting kafka
 KAFKA_CONTAINER="broker_kafka"
 BOOTSTRAP_SERVER="broker_kafka:9092"
+
+# Setting topics
+PARTITION="1"
+REPLICATION_FACTOR="1"
 
 echo "Waiting for kafka to be ready"
 while ! nc -z $KAFKA_CONTAINER 9092; do
@@ -25,8 +30,8 @@ for topic in "${topics[@]}"; do
     --bootstrap-server "$BOOTSTRAP_SERVER" \
     --create \
     --topic "$topic" \
-    --partitions 1 \
-    --replication-factor 1 \
+    --partitions $PARTITION \
+    --replication-factor $REPLICATION_FACTOR \
     --if-not-exists
 done
 echo "Sensor topic created"
