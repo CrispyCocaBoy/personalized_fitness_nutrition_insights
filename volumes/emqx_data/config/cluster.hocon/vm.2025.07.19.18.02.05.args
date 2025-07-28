@@ -100,27 +100,12 @@
 ## Sets time warp mode: no_time_warp | single_time_warp | multi_time_warp
 +C multi_time_warp
 
-## Enable/disable Erlang monotonic time correction aginast OS.
-## In some operating systems which cannot provide a stable monotonic time source,
-## Erlang VM may exit with error log "monotonic time stepped backwards"
-## In such cases, setting this option to 'false' can prevent the VM from restarting.
-##
-## NOTE!
-## You typically never want to disable time correction.
-## If time correction is disabled, Erlang monotonic time can warp forwards or stop,
-## or even freeze for extended periods of time.
-## There are then no guarantees that the frequency of the Erlang monotonic clock is accurate or stable.
-+c true
-
 ## Prevents loading information about source filenames and line numbers.
 #+L
 
 ## Specifies how long time (in milliseconds) to spend shutting down the system.
 ## See: http://erlang.org/doc/man/erl.html
 -shutdown_time 30000
-
-## Disable the code path caching feature to allow adding dynamic patch path using `-pa`.
--cache_boot_paths false
 
 ## patches dir
 -pa "data/patches"
@@ -132,19 +117,16 @@
 ## Disable os_mon's disksup by default
 -os_mon start_disksup false
 
-## Sets unicode as the printable character range when formatting binaries
-+pc unicode
-
--pa "/opt/emqx/releases/5.10.0/consolidated"
+-pa "/opt/emqx/releases/5.6.0/consolidated"
 -kernel prevent_overlapping_partitions false
 -kernel net_ticktime 120
 -env ERL_CRASH_DUMP_BYTES 104857600
 -env ERL_CRASH_DUMP_SECONDS 30
--env ERL_CRASH_DUMP /opt/emqx/log/erl_crash.2025.07.21.09.20.13.dump
+-env ERL_CRASH_DUMP /opt/emqx/log/erl_crash.dump
 +e 262144
 +zdbbl 8192
 +Q 1048576
 -setcookie emqxsecretcookie
 +P 2097152
--name emqx@node1.emqx.com
--mnesia dir '"/opt/emqx/data/mnesia/emqx@node1.emqx.com"'
+-name emqx@172.18.0.9
+-mnesia dir '"/opt/emqx/data/mnesia/emqx@172.18.0.9"'
