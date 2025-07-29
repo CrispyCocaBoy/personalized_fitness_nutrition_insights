@@ -54,6 +54,7 @@ def main():
 
 
 if __name__ == '__main__':
+    time.sleep(2)
     #main()
-    time.sleep(10000000)
     print("User_regsitration_on")
+    time.sleep(10000000)

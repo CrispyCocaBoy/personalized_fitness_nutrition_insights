@@ -2,7 +2,15 @@ import psycopg
 import bcrypt
 
 def connection():
-    return psycopg.connect(host="user_device_db", dbname="user_device_db", user="admin", password="admin")
+    return psycopg.connect(
+        host="cockroachdb",
+        port=26257,
+        dbname="user_device_db",
+        user="root"
+        #user="admin",
+        #password="admin",
+        #sslmode="require"  # CockroachDB spesso richiede SSL
+    )
 
 # Register User
 def register_user(username, email, password):

@@ -82,11 +82,13 @@ def publish_loop(client):
 
 # Entry point
 def run():
-    time.sleep(15)
+    time.sleep(100000000)
     client = connect_mqtt()
     client.loop_start()
     publish_loop(client)
     client.loop_stop()
+    time.sleep(10)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

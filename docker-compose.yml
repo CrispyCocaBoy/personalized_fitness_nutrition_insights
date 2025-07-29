@@ -114,18 +114,15 @@ services:
       - broker_kafka
 
 # Databases
-  postgres:
-    image: postgres:18beta1
-    container_name: user_device_db
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: user_device_db
-      PGDATA: /var/lib/postgresql/18/docker
+  cockroachdb:
+    image: cockroachdb/cockroach:v25.2.0
+    container_name: cockroachdb
+    command: start-single-node --insecure --http-addr=0.0.0.0:8080
     ports:
-      - "5432:5432"
+      - "26257:26257" # Porta SQL
+      - "8087:8080"   # Admin UI
     volumes:
-      - ./volumes/ps_setting:/var/lib/postgresql
+      - ./volumes/cockroach_data:/cockroach/cockroach-data
 
   minio:
     image: minio/minio
@@ -148,7 +145,7 @@ services:
     volumes:
       - ./database_utility/fake_user_and_password:/app/output/
     depends_on:
-      - postgres
+      - cockroachdb
 
   people_simulator:
     build:
