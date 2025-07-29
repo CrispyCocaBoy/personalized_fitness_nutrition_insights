@@ -1,23 +1,9 @@
 import streamlit as st
 import datetime
 import time
+import pycountry
 from utility import database_connection as db
 
-
-def complete_profile(user_id, name, surname, gender, birthday):
-    conn = db.connection()
-    cur = conn.cursor()
-    try:
-        cur.execute("""
-            INSERT INTO users_profile (user_id, name, surname, gender, birthday)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (user_id, name, surname, gender, birthday))
-        conn.commit()
-        conn.close()
-        return True, "Profilo completato con successo!"
-    except Exception as e:
-        conn.close()
-        return False, f"Errore durante l'inserimento del profilo: {e}"
 
 
 # Set UI
@@ -41,6 +27,8 @@ with st.form("profile_form"):
         max_value=datetime.date.today(),
         value=datetime.date(2000, 1, 1),  # valore di default
         format="DD/MM/YYYY")
+    countries = [country.name for country in pycountry.countries]
+    country = st.selectbox("Paese", options=countries)
 
     submitted = st.form_submit_button("Salva profilo")
 
@@ -48,7 +36,7 @@ with st.form("profile_form"):
         if not name or not surname:
             st.error("Compila tutti i campi.")
         else:
-            success, msg = complete_profile(user_id, name, surname, gender, birthday)
+            success, msg = db.complete_profile(user_id, name, surname, gender, birthday, country)
             if success == True:
                 st.success(msg)
                 st.info("Ora verrai reindirizzato per completare il profilo.")

@@ -43,7 +43,7 @@ def complete_profile(user_id, name, surname, gender, birthday, country):
     try:
         cur.execute("""
             INSERT INTO users_profile (user_id, name, surname, gender, birthday, country)
-            VALUES (%s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """, (user_id, name, surname, gender, birthday, country))
         conn.commit()
         return True, "Profilo completato con successo!"
