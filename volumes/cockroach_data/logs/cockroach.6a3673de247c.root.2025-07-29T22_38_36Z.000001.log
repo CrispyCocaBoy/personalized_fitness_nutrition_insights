@@ -219,3 +219,54 @@ E250729 22:39:40.232838 2711 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1
 E250729 22:39:40.238810 2711 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 176  failed to get table descriptor for automatic stats on table id: 171: descriptor is being dropped
 E250729 22:39:40.239436 2711 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 177  failed to get table descriptor for automatic stats on table id: 173: descriptor is being dropped
 I250729 22:47:40.001840 792 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 178  jemalloc arenas purged (took 192.958µs)
+I250729 22:48:33.835912 1 1@cli/start.go:993 ⋮ [T1,Vsystem,n1] 179  received signal 'terminated'
+I250729 22:48:33.837241 1 1@cli/start.go:1034 ⋮ [T1,Vsystem,n1] 180  initiating graceful shutdown of server
+I250729 22:48:33.840981 12193 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 181  all tenant servers stopped
+I250729 22:48:33.841179 12193 1@server/drain.go:399 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 182  waiting for health probes to notice that the node is not ready for new sql connections
+W250729 22:48:33.841531 1215 jobs/registry.go:1069 ⋮ [T1,Vsystem,n1] 183  canceling all adopted jobs due to graceful drain request
+I250729 22:48:33.841545 1427 sql/stats/automatic_stats.go:694 ⋮ [T1,Vsystem,n1] 184  draining auto stats refresher
+I250729 22:48:33.841618 1428 sql/stats/automatic_stats.go:745 ⋮ [T1,Vsystem,n1] 185  draining stats garbage collector
+I250729 22:48:33.844586 3315 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 186  KEY VISUALIZER job 100: stepping through state succeeded
+I250729 22:48:33.845081 3243 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 187  AUTO UPDATE SQL ACTIVITY job 103: stepping through state succeeded
+W250729 22:48:33.845612 3343 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-descriptor-rangefeed›,mux_n=1,gen=2] 188  error closing mux rangefeed client: context canceled
+W250729 22:48:33.846799 3135 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-zones-rangefeed›,mux_n=1,gen=2] 189  error closing mux rangefeed client: context canceled
+W250729 22:48:33.847941 3369 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-protected-ts-records-rangefeed›,mux_n=1,gen=2] 190  error closing mux rangefeed client: context canceled
+I250729 22:48:33.905444 12193 sql/sqlstats/persistedsqlstats/provider.go:122 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 191  stopping persisted SQL stats tasks
+I250729 22:48:33.905601 12193 sql/sqlstats/persistedsqlstats/provider.go:128 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 192  persisted SQL stats tasks successfully shut down
+I250729 22:48:33.905647 12193 sql/stats/automatic_stats.go:516 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 193  starting to wait for auto-stats tasks to shut down
+I250729 22:48:33.905678 12193 sql/stats/automatic_stats.go:519 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 194  auto-stats tasks successfully shut down
+I250729 22:48:33.905702 12193 jobs/registry.go:2060 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 195  starting to wait for job registry to shut down
+I250729 22:48:33.905765 12193 jobs/registry.go:2063 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 196  job registry tasks successfully shut down
+W250729 22:48:33.929461 1163 sql/sqlliveness/slinstance/slinstance.go:331 ⋮ [T1,Vsystem,n1] 197  exiting heartbeat loop
+I250729 22:48:33.929588 1163 sql/sqlliveness/slinstance/slinstance.go:316 ⋮ [T1,Vsystem,n1] 198  draining heartbeat loop
+I250729 22:48:33.930561 12193 server/drain.go:482 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 199  SQL server drained successfully; SQL queries cannot execute any more
+I250729 22:48:33.930607 12193 server/drain.go:361 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 200  done draining clients
+I250729 22:48:33.932087 12193 1@server/drain.go:312 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 201  drain remaining: 83
+I250729 22:48:33.932137 12193 1@server/drain.go:314 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 202  drain details: descriptor leases: 82, liveness record: 1
+I250729 22:48:34.133462 12193 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 203  all tenant servers stopped
+W250729 22:48:34.134251 12316 sql/sqlstats/persistedsqlstats/flush.go:235 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 204  failed to flush transaction statistics: upsert-txn-stats: cannot acquire lease when draining
+W250729 22:48:34.134528 12315 sql/sqlstats/persistedsqlstats/flush.go:254 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 205  failed to flush statement statistics: upsert-stmt-stats: cannot acquire lease when draining
+I250729 22:48:34.134665 12193 sql/sqlstats/persistedsqlstats/provider.go:122 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 206  stopping persisted SQL stats tasks
+I250729 22:48:34.134713 12193 sql/sqlstats/persistedsqlstats/provider.go:128 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 207  persisted SQL stats tasks successfully shut down
+I250729 22:48:34.134754 12193 sql/stats/automatic_stats.go:516 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 208  starting to wait for auto-stats tasks to shut down
+I250729 22:48:34.134792 12193 sql/stats/automatic_stats.go:519 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 209  auto-stats tasks successfully shut down
+I250729 22:48:34.134828 12193 jobs/registry.go:2060 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 210  starting to wait for job registry to shut down
+I250729 22:48:34.134857 12193 jobs/registry.go:2063 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 211  job registry tasks successfully shut down
+I250729 22:48:34.135566 12193 server/drain.go:482 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 212  SQL server drained successfully; SQL queries cannot execute any more
+I250729 22:48:34.135607 12193 server/drain.go:361 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 213  done draining clients
+I250729 22:48:34.136452 12193 1@server/drain.go:312 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 214  drain remaining: 0
+I250729 22:48:34.136504 12193 1@server/drain.go:564 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 215  graceful drain complete
+W250729 22:48:34.136602 1653 server/structlogging/hot_ranges_log.go:92 ⋮ [T1,Vsystem,n1] 216  hot ranges stats logging scheduler stopped: %!s(<nil>)
+W250729 22:48:34.136736 1227 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹sql_instances›,mux_n=1,gen=2] 217  error closing mux rangefeed client: context canceled
+W250729 22:48:34.136834 1518 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-boundaries-watcher›,mux_n=1,gen=2] 218  error closing mux rangefeed client: context canceled
+W250729 22:48:34.136919 1069 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹lease›,mux_n=1,gen=2] 219  error closing mux rangefeed client: context canceled
+W250729 22:48:34.136934 1177 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹table-stats-cache›,mux_n=1,gen=2] 220  error closing mux rangefeed client: context canceled
+W250729 22:48:34.136985 1385 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹settings-watcher›,mux_n=1,gen=2] 221  error closing mux rangefeed client: context canceled
+I250729 22:48:34.136979 563 server/start_listen.go:112 ⋮ [T1,Vsystem,n1] 222  server shutting down: instructing cmux to stop accepting
+W250729 22:48:34.137165 1656 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-entry-watcher›,mux_n=1,gen=2] 223  error closing mux rangefeed client: context canceled
+W250729 22:48:34.137219 1406 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹system-config-cache›,mux_n=1,gen=2] 224  error closing mux rangefeed client: context canceled
+W250729 22:48:34.137125 1240 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹spanconfig-subscriber›,mux_n=1,gen=2] 225  error closing mux rangefeed client: context canceled
+W250729 22:48:34.137130 1473 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-settings-watcher›,mux_n=1,gen=2] 226  error closing mux rangefeed client: context canceled
+I250729 22:48:34.150974 12193 server/server_controller.go:409 ⋮ [T1,Vsystem,n1] 227  server controller shutting down
+I250729 22:48:34.151050 12193 server/server_controller.go:418 ⋮ [T1,Vsystem,n1] 228  waiting for tenant servers to report stopped
+I250729 22:48:34.151193 1 1@cli/start.go:1105 ⋮ [T1,Vsystem,n1] 229  server drained and shutdown completed
