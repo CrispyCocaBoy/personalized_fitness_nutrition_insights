@@ -52,9 +52,16 @@ def main():
             print(f"Utente registrato: {username}, password: {password}")
             writer.writerow([username, email, password])
 
+            device_type_id, device_type_name  = db.random_selection()
+            db.bind_device(user_id, device_type_id, device_type_name)
+
+
+
+
+
 
 if __name__ == '__main__':
     time.sleep(2)
-    #main()
-    print("User_regsitration_on")
+    main()
+    print("User_registration_on")
     time.sleep(10000000)

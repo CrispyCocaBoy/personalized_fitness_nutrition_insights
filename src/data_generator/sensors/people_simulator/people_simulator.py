@@ -53,6 +53,7 @@ def connect_mqtt():
 
 # Create a payload for a single metric
 def generate_payload(metric, value):
+
     return {
         "sensor_id": 1,
         "timestamp": int(time.time()),
