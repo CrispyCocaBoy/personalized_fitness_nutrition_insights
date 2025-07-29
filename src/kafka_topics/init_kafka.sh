@@ -1,12 +1,13 @@
 #!/bin/bash
 
 topics=(
-  wearables_bpm
-  wearables_hr
-  wearables_hrv
-  wearables_spo2
-  wearables_steps
-  wearables_skin_temperature
+  wearables.ppg.raw
+  wearables.skin-temp.raw
+  wearables.accelerometer.raw
+  wearables.gyroscope.raw
+  wearables.altimeter.raw
+  wearables.barometer.raw
+  wearables.ceda.raw
 )
 
 # Setting kafka

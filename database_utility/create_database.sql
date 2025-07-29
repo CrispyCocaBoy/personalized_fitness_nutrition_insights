@@ -120,7 +120,7 @@ VALUES
 INSERT INTO sensor_type (name, unit, description) VALUES
 ('PPG', 'ADC', 'Raw PPG signal from green/red/IR LEDs'),
 ('SkinTemp', '°C', 'Skin temperature sensor'),
-('Accelerometer', 'm/s²', '3-axis accelerometer'),
+('Accelerometer', 'm/s^2', '3-axis accelerometer'),
 ('Gyroscope', '°/s', '3-axis gyroscope'),
 ('Altimeter', 'm', 'Altitude estimated from pressure'),
 ('Barometer', 'hPa', 'Atmospheric pressure'),

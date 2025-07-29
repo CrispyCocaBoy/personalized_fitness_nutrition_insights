@@ -3,13 +3,127 @@
 # To persist configs in this file, copy the content to etc/base.hocon.
 actions {
   kafka_producer {
-    Kafka_bridge_bpm {
-      connector = Kafka
-      created_at = 1753041902580
+    bridge_kafka_Altimeter {
+      connector = Kafka_connectors
+      created_at = 1753829046237
+      enable = true
+      fallback_actions = []
+      last_modified_at = 1753829046237
+      parameters {
+        buffer {
+          memory_overload_protection = true
+          mode = memory
+          per_partition_limit = "256MB"
+          segment_bytes = "10MB"
+        }
+        compression = no_compression
+        kafka_ext_headers = []
+        kafka_header_value_encode_mode = none
+        max_batch_bytes = "896KB"
+        max_inflight = 10
+        max_linger_bytes = "10MB"
+        max_linger_time = "0ms"
+        message {
+          key = "${.clientid}"
+          timestamp = "${.timestamp}"
+          value = "${.}"
+        }
+        partition_count_refresh_interval = "60s"
+        partition_strategy = random
+        partitions_limit = all_partitions
+        query_mode = async
+        required_acks = all_isr
+        sync_query_timeout = "5s"
+        topic = "wearables.altimeter.raw"
+      }
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+      }
+    }
+    bridge_kafka_Barometer {
+      connector = Kafka_connectors
+      created_at = 1753829112364
+      enable = true
+      fallback_actions = []
+      last_modified_at = 1753829112364
+      parameters {
+        buffer {
+          memory_overload_protection = true
+          mode = memory
+          per_partition_limit = "256MB"
+          segment_bytes = "10MB"
+        }
+        compression = no_compression
+        kafka_ext_headers = []
+        kafka_header_value_encode_mode = none
+        max_batch_bytes = "896KB"
+        max_inflight = 10
+        max_linger_bytes = "10MB"
+        max_linger_time = "0ms"
+        message {
+          key = "${.clientid}"
+          timestamp = "${.timestamp}"
+          value = "${.}"
+        }
+        partition_count_refresh_interval = "60s"
+        partition_strategy = random
+        partitions_limit = all_partitions
+        query_mode = async
+        required_acks = all_isr
+        sync_query_timeout = "5s"
+        topic = "wearables.barometer.raw"
+      }
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+      }
+    }
+    bridge_kafka_Gyroscope {
+      connector = Kafka_connectors
+      created_at = 1753828916798
+      enable = true
+      fallback_actions = []
+      last_modified_at = 1753828916798
+      parameters {
+        buffer {
+          memory_overload_protection = true
+          mode = memory
+          per_partition_limit = "256MB"
+          segment_bytes = "10MB"
+        }
+        compression = no_compression
+        kafka_ext_headers = []
+        kafka_header_value_encode_mode = none
+        max_batch_bytes = "896KB"
+        max_inflight = 10
+        max_linger_bytes = "10MB"
+        max_linger_time = "0ms"
+        message {
+          key = "${.clientid}"
+          timestamp = "${.timestamp}"
+          value = "${.}"
+        }
+        partition_count_refresh_interval = "60s"
+        partition_strategy = random
+        partitions_limit = all_partitions
+        query_mode = async
+        required_acks = all_isr
+        sync_query_timeout = "5s"
+        topic = "wearables.gyroscope.raw"
+      }
+      resource_opts {
+        health_check_interval = "15s"
+        health_check_timeout = "60s"
+      }
+    }
+    bridge_kafka_PPG {
+      connector = Kafka_connectors
+      created_at = 1753828327973
       description = ""
       enable = true
       fallback_actions = []
-      last_modified_at = 1753041902580
+      last_modified_at = 1753828327973
       parameters {
         buffer {
           memory_overload_protection = true
@@ -35,20 +149,20 @@ actions {
         query_mode = async
         required_acks = all_isr
         sync_query_timeout = "5s"
-        topic = wearables_bpm
+        topic = "wearables.ppg.raw"
       }
       resource_opts {
         health_check_interval = "15s"
         health_check_timeout = "60s"
       }
     }
-    kafka_bridge_hr {
-      connector = Kafka
-      created_at = 1753051631586
+    bridge_kafka_SkinTemp {
+      connector = Kafka_connectors
+      created_at = 1753828552715
       description = ""
       enable = true
       fallback_actions = []
-      last_modified_at = 1753051631586
+      last_modified_at = 1753828552715
       parameters {
         buffer {
           memory_overload_protection = true
@@ -74,19 +188,19 @@ actions {
         query_mode = async
         required_acks = all_isr
         sync_query_timeout = "5s"
-        topic = wearables_hr
+        topic = "wearables.skin-temp.raw"
       }
       resource_opts {
         health_check_interval = "15s"
         health_check_timeout = "60s"
       }
     }
-    kafka_bridge_hrv {
-      connector = Kafka
-      created_at = 1753175310841
+    bridge_kafka_accelerometer {
+      connector = Kafka_connectors
+      created_at = 1753828831583
       enable = true
       fallback_actions = []
-      last_modified_at = 1753175310841
+      last_modified_at = 1753828831583
       parameters {
         buffer {
           memory_overload_protection = true
@@ -112,19 +226,19 @@ actions {
         query_mode = async
         required_acks = all_isr
         sync_query_timeout = "5s"
-        topic = wearables_hrv
+        topic = "wearables.accelerometer.raw"
       }
       resource_opts {
         health_check_interval = "15s"
         health_check_timeout = "60s"
       }
     }
-    kafka_bridge_skin_temp {
-      connector = Kafka
-      created_at = 1753176646793
+    bridge_kafka_cEDA {
+      connector = Kafka_connectors
+      created_at = 1753829185941
       enable = true
       fallback_actions = []
-      last_modified_at = 1753176646793
+      last_modified_at = 1753829185941
       parameters {
         buffer {
           memory_overload_protection = true
@@ -150,83 +264,7 @@ actions {
         query_mode = async
         required_acks = all_isr
         sync_query_timeout = "5s"
-        topic = wearables_skin_temperature
-      }
-      resource_opts {
-        health_check_interval = "15s"
-        health_check_timeout = "60s"
-      }
-    }
-    kafka_bridge_spo2 {
-      connector = Kafka
-      created_at = 1753175891483
-      enable = true
-      fallback_actions = []
-      last_modified_at = 1753175891483
-      parameters {
-        buffer {
-          memory_overload_protection = true
-          mode = memory
-          per_partition_limit = "256MB"
-          segment_bytes = "10MB"
-        }
-        compression = no_compression
-        kafka_ext_headers = []
-        kafka_header_value_encode_mode = none
-        max_batch_bytes = "896KB"
-        max_inflight = 10
-        max_linger_bytes = "10MB"
-        max_linger_time = "0ms"
-        message {
-          key = "${.clientid}"
-          timestamp = "${.timestamp}"
-          value = "${.}"
-        }
-        partition_count_refresh_interval = "60s"
-        partition_strategy = random
-        partitions_limit = all_partitions
-        query_mode = async
-        required_acks = all_isr
-        sync_query_timeout = "5s"
-        topic = wearables_spo2
-      }
-      resource_opts {
-        health_check_interval = "15s"
-        health_check_timeout = "60s"
-      }
-    }
-    kafka_bridge_steps {
-      connector = Kafka
-      created_at = 1753176172858
-      enable = true
-      fallback_actions = []
-      last_modified_at = 1753176172858
-      parameters {
-        buffer {
-          memory_overload_protection = true
-          mode = memory
-          per_partition_limit = "256MB"
-          segment_bytes = "10MB"
-        }
-        compression = no_compression
-        kafka_ext_headers = []
-        kafka_header_value_encode_mode = none
-        max_batch_bytes = "896KB"
-        max_inflight = 10
-        max_linger_bytes = "10MB"
-        max_linger_time = "0ms"
-        message {
-          key = "${.clientid}"
-          timestamp = "${.timestamp}"
-          value = "${.}"
-        }
-        partition_count_refresh_interval = "60s"
-        partition_strategy = random
-        partitions_limit = all_partitions
-        query_mode = async
-        required_acks = all_isr
-        sync_query_timeout = "5s"
-        topic = wearables_steps
+        topic = "wearables.ceda.raw"
       }
       resource_opts {
         health_check_interval = "15s"
@@ -237,7 +275,7 @@ actions {
 }
 connectors {
   kafka_producer {
-    Kafka {
+    Kafka_connectors {
       authentication = none
       bootstrap_hosts = "broker_kafka:9092"
       connect_timeout = "5s"
@@ -271,14 +309,13 @@ rule_engine {
   ignore_sys_message = true
   jq_function_default_timeout = "10s"
   rules {
-    kafka_rule_bpm {
+    rule_kafka_Accelerometer {
       actions = [
-        "kafka_producer:Kafka_bridge_bpm"
+        "kafka_producer:bridge_kafka_accelerometer"
       ]
       description = ""
       enable = true
-      metadata {last_modified_at = 1753263275780}
-      name = ""
+      metadata {created_at = 1753828844752, last_modified_at = 1753828844752}
       sql = """~
         SELECT
           topic,
@@ -287,16 +324,15 @@ rule_engine {
           payload.metric as metric,
           payload.value as value
         FROM
-          "wearables/bpm"~"""
+          "wearables/Accelerometer"~"""
     }
-    kafka_rule_hr {
+    rule_kafka_Altimeter {
       actions = [
-        "kafka_producer:kafka_bridge_hr"
+        "kafka_producer:bridge_kafka_Altimeter"
       ]
       description = ""
       enable = true
-      metadata {last_modified_at = 1753263266058}
-      name = ""
+      metadata {created_at = 1753829050683, last_modified_at = 1753829050683}
       sql = """~
         SELECT
           topic,
@@ -305,16 +341,15 @@ rule_engine {
           payload.metric as metric,
           payload.value as value
         FROM
-          "wearables/hr"~"""
+          "wearables/Altimeter"~"""
     }
-    kafka_rule_hrv {
+    rule_kafka_Barometer {
       actions = [
-        "kafka_producer:kafka_bridge_hrv"
+        "kafka_producer:bridge_kafka_Barometer"
       ]
       description = ""
       enable = true
-      metadata {last_modified_at = 1753263249985}
-      name = ""
+      metadata {created_at = 1753829116728, last_modified_at = 1753829116728}
       sql = """~
         SELECT
           topic,
@@ -323,16 +358,15 @@ rule_engine {
           payload.metric as metric,
           payload.value as value
         FROM
-          "wearables/hrv"~"""
+          "wearables/Barometer"~"""
     }
-    kafka_rule_skin_temp {
+    rule_kafka_Gyroscope {
       actions = [
-        "kafka_producer:kafka_bridge_skin_temp"
+        "kafka_producer:bridge_kafka_Gyroscope"
       ]
       description = ""
       enable = true
-      metadata {last_modified_at = 1753263238481}
-      name = ""
+      metadata {created_at = 1753828937130, last_modified_at = 1753828937130}
       sql = """~
         SELECT
           topic,
@@ -341,15 +375,15 @@ rule_engine {
           payload.metric as metric,
           payload.value as value
         FROM
-          "wearables/skin_temperature"~"""
+          "wearables/Gyroscope"~"""
     }
-    kafka_rule_spo2 {
+    rule_kafka_PPG {
       actions = [
-        "kafka_producer:kafka_bridge_spo2"
+        "kafka_producer:bridge_kafka_PPG"
       ]
       description = ""
       enable = true
-      metadata {last_modified_at = 1753263225197}
+      metadata {created_at = 1753828330565, last_modified_at = 1753828330565}
       name = ""
       sql = """~
         SELECT
@@ -359,15 +393,15 @@ rule_engine {
           payload.metric as metric,
           payload.value as value
         FROM
-          "wearables/spo2"~"""
+          "wearables/PPG"~"""
     }
-    kafka_rule_steps {
+    rule_kafka_SkinTemp {
       actions = [
-        "kafka_producer:kafka_bridge_steps"
+        "kafka_producer:bridge_kafka_SkinTemp"
       ]
       description = ""
       enable = true
-      metadata {last_modified_at = 1753263213476}
+      metadata {created_at = 1753828556662, last_modified_at = 1753828556662}
       name = ""
       sql = """~
         SELECT
@@ -377,10 +411,24 @@ rule_engine {
           payload.metric as metric,
           payload.value as value
         FROM
-          "wearables/steps"~"""
+          "wearables/SkinTemp"~"""
+    }
+    rule_kafka_cEDA {
+      actions = [
+        "kafka_producer:bridge_kafka_cEDA"
+      ]
+      description = ""
+      enable = true
+      metadata {created_at = 1753829198553, last_modified_at = 1753829198553}
+      sql = """~
+        SELECT
+          topic,
+          payload.sensor_id as sensor_id,
+          payload.timestamp as timestamp,
+          payload.metric as metric,
+          payload.value as value
+        FROM
+          "wearables/cEDA"~"""
     }
   }
 }
-topic_metrics = [
-  {topic = "wearables/bpm"}
-]

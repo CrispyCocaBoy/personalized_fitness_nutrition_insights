@@ -1,0 +1,340 @@
+I250729 21:05:44.271044 1 util/log/file_sync_buffer.go:237 ⋮ [config]   file created at: 2025/07/29 21:05:44
+I250729 21:05:44.271098 1 util/log/file_sync_buffer.go:237 ⋮ [config]   running on machine: ‹01968d7cd730›
+I250729 21:05:44.271116 1 util/log/file_sync_buffer.go:237 ⋮ [config]   binary: CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250729 21:05:44.271124 1 util/log/file_sync_buffer.go:237 ⋮ [config]   arguments: [‹/cockroach/cockroach› ‹start-single-node› ‹--certs-dir=certs› ‹--advertise-addr=127.0.0.1:26257› ‹--insecure› ‹--http-addr=0.0.0.0:8080›]
+I250729 21:05:44.271144 1 util/log/file_sync_buffer.go:237 ⋮ [config]   log format (utf8=✓): crdb-v2
+I250729 21:05:44.271150 1 util/log/file_sync_buffer.go:237 ⋮ [config]   line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid [chan@]file:line redactionmark \[tags\] [counter] msg
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1  ALL SECURITY CONTROLS HAVE BEEN DISABLED!
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +This mode is intended for non-production testing only.
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +In this mode:
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Your cluster is open to any client that can access ‹any of your IP addresses›.
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders with access to your machine or network can observe client-server traffic.
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can log in without password and read or write any data in the cluster.
+W250729 21:05:44.260509 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can consume all your server's resources and cause unavailability.
+I250729 21:05:44.281967 1 1@cli/start.go:1448 ⋮ [n?] 2  To start a secure server without mandating TLS for clients,
+I250729 21:05:44.281967 1 1@cli/start.go:1448 ⋮ [n?] 2 +consider --accept-sql-without-tls instead. For other options, see:
+I250729 21:05:44.281967 1 1@cli/start.go:1448 ⋮ [n?] 2 +
+I250729 21:05:44.281967 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://go.crdb.dev/issue-v/53404/v25.2
+I250729 21:05:44.281967 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://www.cockroachlabs.com/docs/v25.2/secure-a-cluster.html
+I250729 21:05:44.282343 1 server/status/recorder.go:856 ⋮ [n?] 3  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+W250729 21:05:44.282538 1 1@cli/start.go:1360 ⋮ [n?] 4  Using the default setting for --cache (128 MiB).
+W250729 21:05:44.282538 1 1@cli/start.go:1360 ⋮ [n?] 4 +  A significantly larger value is usually needed for good performance.
+W250729 21:05:44.282538 1 1@cli/start.go:1360 ⋮ [n?] 4 +  If you have a dedicated server a reasonable setting is --cache=.25 (2.2 GiB).
+I250729 21:05:44.282695 1 server/status/recorder.go:856 ⋮ [n?] 5  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250729 21:05:44.282716 1 1@cli/start.go:1477 ⋮ [n?] 6  CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250729 21:05:44.288273 1 server/status/recorder.go:856 ⋮ [n?] 7  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250729 21:05:44.288312 1 1@cli/start.go:554 ⋮ [n?] 8  soft memory limit of Go runtime is set to 4.9 GiB
+I250729 21:05:44.288326 1 1@cli/start.go:591 ⋮ [n?] 9  GC target percentage of Go runtime is set to 300%
+I250729 21:05:44.307700 1 server/status/recorder.go:856 ⋮ [T1,Vsystem,n?] 10  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250729 21:05:44.307804 1 server/config.go:674 ⋮ [T1,Vsystem,n?] 11  system total memory: 8.7 GiB
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12  server configuration:
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +max offset             500000000
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +cache size             128 MiB
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +SQL memory pool size   2.2 GiB
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan interval          10m0s
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan min idle time     10ms
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan max idle time     1s
+I250729 21:05:44.307839 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +event log enabled      true
+I250729 21:05:44.307908 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13  using local environment variables:
+I250729 21:05:44.307908 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13 +COCKROACH_CHANNEL=official-docker
+I250729 21:05:44.307930 1 1@cli/start.go:1345 ⋮ [T1,Vsystem,n?] 14  process identity: uid 0 euid 0 gid 0 egid 0
+I250729 21:05:44.322155 1 1@cli/start.go:1500 ⋮ [T1,Vsystem,n?] 15  GEOS loaded from directory ‹/usr/local/lib/cockroach›
+I250729 21:05:44.325959 1 1@cli/start.go:777 ⋮ [T1,Vsystem,n?] 16  starting cockroach node
+I250729 21:05:46.974939 56 server/config.go:880 ⋮ [T1,Vsystem,n?] 17  1 storage engine initialized
+I250729 21:05:46.975341 56 server/config.go:883 ⋮ [T1,Vsystem,n?] 18  Pebble cache size: 128 MiB
+I250729 21:05:46.975352 56 server/config.go:883 ⋮ [T1,Vsystem,n?] 19  store 0: max size 0 B, max open file limit 1043576
+I250729 21:05:46.975355 56 server/config.go:883 ⋮ [T1,Vsystem,n?] 20  store 0: /cockroach/cockroach-data: rw encrypted=false fs:{bdev=/run/host_mark/Users fstype=fakeowner mountpoint=/cockroach/cockroach-data mountopts=rw,nosuid,nodev,relatime,fakeowner}
+I250729 21:05:46.980398 135 util/cidr/cidr.go:299 ⋮ [T1,Vsystem,n?] 21  CIDR lookup updated with 0 destinations
+I250729 21:05:47.058688 56 1@server/clock_monotonicity.go:61 ⋮ [T1,Vsystem,n?] 22  monitoring forward clock jumps based on server.clock.forward_jump_check.enabled
+I250729 21:05:47.069026 56 1@server/clock_monotonicity.go:136 ⋮ [T1,Vsystem,n1] 23  Sleeping till wall time 1753823147069021847 to catches up to 1753823147558652556 to ensure monotonicity. Sub: 489.630709ms
+I250729 21:05:47.069132 580 1@server/server.go:1802 ⋮ [T1,Vsystem,n1] 24  connecting to gossip network to verify cluster ID "ad7eb413-6f81-429f-8b5f-ee89af2e84c8"
+W250729 21:05:47.560390 56 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25  Running a server without --sql-addr, with a combined RPC/SQL listener, is deprecated.
+W250729 21:05:47.560390 56 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25 +This feature will be removed in a later version of CockroachDB.
+W250729 21:05:47.560470 56 1@gossip/gossip.go:1460 ⋮ [T1,Vsystem,n1] 26  no addresses found; use --join to specify a connected node
+I250729 21:05:47.563657 597 kv/kvserver/kvstorage/init.go:250 ⋮ [T1,Vsystem,n1,s1] 27  beginning range descriptor iteration
+I250729 21:05:47.564393 597 kv/kvserver/kvstorage/init.go:374 ⋮ [T1,Vsystem,n1,s1] 28  range descriptor iteration done: 55 range descriptors, 0 intents, 0 tombstones; stats: ‹seeked 114 times (58 internal); stepped 0 times (0 internal); blocks: 152KB cached, 10KB not cached (read time: 127.125µs); points: 56 (1.1KB keys, 1.6KB values); separated: 7 (203B, 0B fetched)›
+I250729 21:05:47.565686 597 kv/kvserver/kvstorage/init.go:501 ⋮ [T1,Vsystem,n1,s1] 29  loaded replica ID for 55/55 replicas
+I250729 21:05:47.565927 597 kv/kvserver/kvstorage/init.go:518 ⋮ [T1,Vsystem,n1,s1] 30  loaded Raft state for 55/55 replicas
+I250729 21:05:47.565946 597 kv/kvserver/kvstorage/init.go:545 ⋮ [T1,Vsystem,n1,s1] 31  loaded 55 replicas
+I250729 21:05:47.565962 597 kv/kvserver/kvstorage/init.go:576 ⋮ [T1,Vsystem,n1,s1] 32  verified 55/55 replicas
+I250729 21:05:47.575634 597 kv/kvserver/store.go:2369 ⋮ [T1,Vsystem,n1,s1] 33  initialized 55/55 replicas
+I250729 21:05:47.576430 597 server/node.go:690 ⋮ [T1,Vsystem,n1] 34  initialized store s1 in 15ms (55 replicas)
+I250729 21:05:47.576670 56 kv/kvserver/stores.go:261 ⋮ [T1,Vsystem,n1] 35  read 0 node addresses from persistent storage
+I250729 21:05:47.576748 580 1@server/server.go:1805 ⋮ [T1,Vsystem,n1] 36  node connected via gossip
+I250729 21:05:47.577599 56 server/node.go:801 ⋮ [T1,Vsystem,n1] 37  started with attributes []
+I250729 21:05:47.577716 56 server/goroutinedumper/goroutinedumper.go:117 ⋮ [T1,Vsystem,n1] 38  writing goroutine dumps to ‹/cockroach/cockroach-data/logs/goroutine_dump›
+I250729 21:05:47.577796 56 server/profiler/heapprofiler.go:72 ⋮ [T1,Vsystem,n1] 39  writing go heap profiles to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250729 21:05:47.577912 56 server/profiler/memory_monitoring_profiler.go:66 ⋮ [T1,Vsystem,n1] 40  writing memory monitoring dumps to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250729 21:05:47.577925 56 server/profiler/cgoprofiler.go:66 ⋮ [T1,Vsystem,n1] 41  to enable jmalloc profiling: "export MALLOC_CONF=prof:true" or "ln -s prof:true /etc/malloc.conf"
+I250729 21:05:47.577948 56 server/profiler/statsprofiler.go:68 ⋮ [T1,Vsystem,n1] 42  writing memory stats to ‹/cockroach/cockroach-data/logs/heap_profiler› at last every 1h0m0s
+I250729 21:05:47.578199 56 server/profiler/activequeryprofiler.go:88 ⋮ [T1,Vsystem,n1] 43  writing go query profiles to ‹/cockroach/cockroach-data/logs/heap_profiler›
+I250729 21:05:47.578219 56 server/profiler/cpuprofiler.go:87 ⋮ [T1,Vsystem,n1] 44  writing cpu profile dumps to ‹/cockroach/cockroach-data/logs/pprof_dump›
+I250729 21:05:47.578514 56 1@server/server.go:1999 ⋮ [T1,Vsystem,n1] 45  starting http server at ‹[::]:8080› (use: ‹127.0.0.1:8080›)
+I250729 21:05:47.578527 56 1@server/server.go:2007 ⋮ [T1,Vsystem,n1] 46  starting grpc/postgres server at ‹[::]:26257›
+I250729 21:05:47.578541 56 1@server/server.go:2008 ⋮ [T1,Vsystem,n1] 47  advertising CockroachDB node at ‹127.0.0.1:26257›
+I250729 21:05:47.591575 652 kv/kvserver/storeliveness/support_manager.go:285 ⋮ [T1,Vsystem,n1,s1] 48  starting to heartbeat store {NodeID:1 StoreID:1}
+I250729 21:05:47.617766 652 kv/kvserver/storeliveness/supporter_state.go:298 ⋮ [T1,Vsystem,n1,s1] 49  provided support for store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:14 Expiration:1753823103.133974880,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:15 Expiration:1753823150.591650180,0}
+I250729 21:05:47.630379 652 kv/kvserver/storeliveness/requester_state.go:425 ⋮ [T1,Vsystem,n1,s1] 50  received support from store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:15 Expiration:0,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:15 Expiration:1753823150.591650180,0}
+I250729 21:05:47.721451 56 1@util/log/event_log.go:39 ⋮ [T1,Vsystem,n1] 51 ={"Timestamp":1753823147721422680,"EventType":"node_restart","NodeID":1,"StartedAt":1753823147560550930,"LastUp":1753823097750439712}
+I250729 21:05:47.722681 914 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 52  settings-watcher: established range feed cache
+I250729 21:05:47.723735 896 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 53  spanconfig-subscriber: established range feed cache
+I250729 21:05:47.760976 56 sql/sqlliveness/slinstance/slinstance.go:435 ⋮ [T1,Vsystem,n1] 54  starting SQL liveness instance
+I250729 21:05:47.775960 931 sql/sqlliveness/slstorage/slstorage.go:540 ⋮ [T1,Vsystem,n1] 55  inserted sqlliveness session 010180ddec176546f449de95ca37f313dc29ea with expiry 1753823187.761226930,0
+I250729 21:05:47.776271 931 sql/sqlliveness/slinstance/slinstance.go:247 ⋮ [T1,Vsystem,n1] 56  created new SQL liveness session 010180ddec176546f449de95ca37f313dc29ea
+I250729 21:05:47.776377 56 sql/sqlinstance/instancestorage/instancestorage.go:338 ⋮ [T1,Vsystem,n1] 57  assigning instance id to rpc addr ‹127.0.0.1:26257› and sql addr ‹127.0.0.1:26257›
+I250729 21:05:47.780233 56 server/server_sql.go:1618 ⋮ [T1,Vsystem,n1] 58  bound sqlinstance: Instance{RegionPrefix: gA==, InstanceID: 1, SQLAddr: ‹127.0.0.1:26257›, RPCAddr: ‹127.0.0.1:26257›, SessionID: 010180ddec176546f449de95ca37f313dc29ea, Locality: , BinaryVersion: 25.2}
+I250729 21:05:47.780759 56 upgrade/upgrademanager/manager.go:171 ⋮ [T1,Vsystem,n1] 59  running permanent upgrades up to version: 25.2
+I250729 21:05:47.783364 1213 sql/sqlstats/persistedsqlstats/provider.go:159 ⋮ [T1,Vsystem,n1] 60  starting sql-stats-worker with initial delay: 9m53.903435719s
+I250729 21:05:47.784604 1163 kv/kvserver/replica_rangefeed.go:882 ⋮ [T1,Vsystem,n1,rangefeed=‹lease›,mux_n=1,gen=2,r6/1:‹/Table/{0-4}›,sm=1,sid=1,s1] 61  RangeFeed closed timestamp 1753819088.748083553,0 is behind by 1h7m39.036516752s (behind=1h7m39.036516752s target=3s nudge=true cancel=false)
+I250729 21:05:47.784961 1226 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 62  system-config-cache: established range feed cache
+I250729 21:05:47.785849 1210 sql/temporary_schema.go:506 ⋮ [T1,Vsystem,n1] 63  running temporary object cleanup background job
+I250729 21:05:47.804709 1210 sql/temporary_schema.go:556 ⋮ [T1,Vsystem,n1] 64  found 0 temporary schemas
+I250729 21:05:47.804779 1210 sql/temporary_schema.go:559 ⋮ [T1,Vsystem,n1] 65  early exiting temporary schema cleaner as no temporary schemas were found
+I250729 21:05:47.804792 1210 sql/temporary_schema.go:560 ⋮ [T1,Vsystem,n1] 66  completed temporary object cleanup job
+I250729 21:05:47.804843 1210 sql/temporary_schema.go:641 ⋮ [T1,Vsystem,n1] 67  temporary object cleaner next scheduled to run at 2025-07-29 21:35:47.783497555 +0000 UTC m=+1804.291941545
+I250729 21:05:47.827619 56 upgrade/upgrademanager/manager.go:233 ⋮ [T1,Vsystem,n1] 68  detected the last permanent upgrade (v0.0-upgrading-step-004) to have already completed; no permanent upgrades will run
+I250729 21:05:47.827701 56 server/server_sql.go:1720 ⋮ [T1,Vsystem,n1] 69  done ensuring all necessary startup migrations have run
+I250729 21:05:47.832336 56 server/license/enforcer.go:262 ⋮ [T1,Vsystem,n1] 70  trial license expiry initialized to 1970-01-01 00:00:00 +0000 UTC
+I250729 21:05:47.832515 56 server/license/enforcer.go:298 ⋮ [T1,Vsystem,n1] 71  fetched existing cluster init grace period end time: 2025-08-05 14:00:31 +0000 UTC
+I250729 21:05:47.832623 56 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 72  enforcer license updated: type is none, grace period ends at "2025-08-05 14:00:31 +0000 UTC", telemetry required: false
+I250729 21:05:47.832648 56 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 73  enforcer license updated: type is none, grace period ends at "2025-08-05 14:00:31 +0000 UTC", telemetry required: false
+I250729 21:05:47.850441 1444 jobs/job_scheduler.go:407 ⋮ [T1,Vsystem,n1] 74  waiting 2m0s before scheduled jobs daemon start
+I250729 21:05:47.851176 1452 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 75  tenant-settings-watcher: established range feed cache
+I250729 21:05:47.851557 1454 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 76  tenant-entry-watcher: established range feed cache
+I250729 21:05:47.851856 1454 multitenant/tenantcapabilities/tenantcapabilitieswatcher/watcher.go:285 ⋮ [T1,Vsystem,n1] 77  received results of a full table scan for tenant capabilities
+I250729 21:05:47.860568 1462 sql/syntheticprivilegecache/cache.go:202 ⋮ [T1,Vsystem,n1] 78  warmed privileges for virtual tables in 29.019417ms
+I250729 21:05:47.866780 56 server/license/enforcer.go:582 ⋮ [T1,Vsystem,n1] 79  disable all license enforcement
+I250729 21:05:47.866813 56 1@server/server_sql.go:1971 ⋮ [T1,Vsystem,n1] 80  serving sql connections
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81  node startup completed:
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +CockroachDB node starting at 2025-07-29 21:05:47.866839055 +0000 UTC m=+4.375283003 (took 3.7s)
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +build:               CCL v25.2.0 @ 2025/05/15 21:07:42 (go1.23.7 X:nocoverageredesign)
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +malloc_conf:         prof:false,prof_active:true,background_thread:true,thp:never,metadata_thp:disabled,narenas:48,dirty_decay_ms:2000,muzzy_decay_ms:0
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +webui:               ‹http://127.0.0.1:8080›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +sql:                 ‹postgresql://root@127.0.0.1:26257/defaultdb?sslmode=disable›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +sql (JDBC):          ‹jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable&user=root›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +RPC client flags:    ‹/cockroach/cockroach <client cmd> --host=127.0.0.1:26257 --insecure›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +logs:                ‹/cockroach/cockroach-data/logs›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +temp dir:            ‹/cockroach/cockroach-data/cockroach-temp855652354›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +external I/O path:   ‹/cockroach/cockroach-data/extern›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +store[0]:            ‹path=/cockroach/cockroach-data›
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +clusterID:           ad7eb413-6f81-429f-8b5f-ee89af2e84c8
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +status:              restarted pre-existing node
+I250729 21:05:47.866967 56 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 81 +nodeID:              1
+I250729 21:05:47.871249 1450 server/auto_upgrade.go:81 ⋮ [T1,Vsystem,n1] 82  no need to upgrade, cluster already at the newest version
+I250729 21:05:48.686115 596 1@gossip/gossip.go:1476 ⋮ [T1,Vsystem,n1] 83  node has connected to cluster via gossip
+I250729 21:05:48.687574 596 kv/kvserver/stores.go:280 ⋮ [T1,Vsystem,n1] 84  wrote 0 node addresses to persistent storage
+I250729 21:05:50.239955 1445 server/diagnostics/update_checker.go:144 ⋮ [T1,Vsystem,n1] 85  a new version is available: ‹25.2.2›, details: ‹https://www.cockroachlabs.com/docs/releases/v25.2#v25-2-2›
+I250729 21:06:21.958158 1224 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 86  claimed 10 jobs
+I250729 21:06:21.966461 2225 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603906756608001] 87  job 1093603906756608001: resuming execution
+I250729 21:06:21.966474 2326 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603907597500417] 88  job 1093603907597500417: resuming execution
+I250729 21:06:21.966471 2223 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603906042331137] 89  job 1093603906042331137: resuming execution
+I250729 21:06:21.966507 2221 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093560487254097921] 90  job 1093560487254097921: resuming execution
+I250729 21:06:21.966517 2222 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603905577320449] 91  job 1093603905577320449: resuming execution
+I250729 21:06:21.966518 2224 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603906293301249] 92  job 1093603906293301249: resuming execution
+I250729 21:06:21.966524 2322 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603906985492481] 93  job 1093603906985492481: resuming execution
+I250729 21:06:21.966528 2323 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603907184328705] 94  job 1093603907184328705: resuming execution
+I250729 21:06:21.966528 2325 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603907388440577] 95  job 1093603907388440577: resuming execution
+I250729 21:06:21.966540 2324 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093603905826619393] 96  job 1093603905826619393: resuming execution
+I250729 21:06:21.994806 2238 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603906985492481] 97  SCHEMA CHANGE GC job 1093603906985492481: stepping through state running
+I250729 21:06:21.994859 2318 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603907388440577] 98  SCHEMA CHANGE GC job 1093603907388440577: stepping through state running
+I250729 21:06:21.994922 2302 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603906293301249] 99  SCHEMA CHANGE GC job 1093603906293301249: stepping through state running
+I250729 21:06:21.995140 2359 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603905826619393] 100  SCHEMA CHANGE GC job 1093603905826619393: stepping through state running
+I250729 21:06:21.994807 2330 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093560487254097921] 101  SCHEMA CHANGE GC job 1093560487254097921: stepping through state running
+I250729 21:06:21.995307 2332 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603907184328705] 102  SCHEMA CHANGE GC job 1093603907184328705: stepping through state running
+I250729 21:06:21.995669 2341 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603907597500417] 103  SCHEMA CHANGE GC job 1093603907597500417: stepping through state running
+I250729 21:06:21.996101 2377 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603906042331137] 104  SCHEMA CHANGE GC job 1093603906042331137: stepping through state running
+I250729 21:06:21.997408 2260 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603906756608001] 105  SCHEMA CHANGE GC job 1093603906756608001: stepping through state running
+I250729 21:06:21.998012 2030 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093603905577320449] 106  SCHEMA CHANGE GC job 1093603905577320449: stepping through state running
+I250729 21:06:22.027237 2377 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906042331137] 107  updated progress status: deleting data, payload: ‹tables:<id:159 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.027599 2330 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093560487254097921] 108  updated progress status: deleting data, payload: ‹tables:<id:141 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.027700 2260 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906756608001] 109  updated progress status: deleting data, payload: ‹tables:<id:153 status:WAITING_FOR_MVCC_GC > tables:<id:154 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.027716 2341 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907597500417] 110  updated progress status: deleting data, payload: ‹tables:<id:155 status:WAITING_FOR_MVCC_GC > tables:<id:156 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.027779 2302 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906293301249] 111  updated progress status: deleting data, payload: ‹tables:<id:160 status:CLEARED > tables:<id:161 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.027816 2318 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907388440577] 112  updated progress status: deleting data, payload: ‹tables:<id:157 status:WAITING_FOR_MVCC_GC > tables:<id:158 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.027939 2332 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907184328705] 113  updated progress status: deleting data, payload: ‹tables:<id:151 status:WAITING_FOR_MVCC_GC > tables:<id:152 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.028019 2377 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906042331137] 114  deleting data for table 159
+I250729 21:06:22.028128 2238 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906985492481] 115  updated progress status: deleting data, payload: ‹tables:<id:146 status:WAITING_FOR_MVCC_GC > tables:<id:147 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.028144 2260 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906756608001] 116  deleting data for table 153
+I250729 21:06:22.028266 2030 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905577320449] 117  updated progress status: deleting data, payload: ‹tables:<id:148 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+W250729 21:06:22.028298 2302 sql/gcjob/gc_job.go:139 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906293301249] 118  table descriptor 160 not found while attempting to GC, skipping
+I250729 21:06:22.028038 2330 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093560487254097921] 119  deleting data for table 141
+I250729 21:06:22.028399 2359 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905826619393] 120  updated progress status: deleting data, payload: ‹tables:<id:149 status:WAITING_FOR_MVCC_GC > tables:<id:150 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.028539 2332 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907184328705] 121  deleting data for table 151
+I250729 21:06:22.028547 2341 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907597500417] 122  deleting data for table 155
+I250729 21:06:22.028608 2030 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905577320449] 123  deleting data for table 148
+I250729 21:06:22.028612 2238 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906985492481] 124  deleting data for table 146
+I250729 21:06:22.028648 2302 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906293301249] 125  deleting data for table 161
+I250729 21:06:22.028755 2318 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907388440577] 126  deleting data for table 157
+I250729 21:06:22.028811 2359 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905826619393] 127  deleting data for table 149
+I250729 21:06:22.029910 2260 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906756608001] 128  deleting data for table 154
+I250729 21:06:22.031109 2332 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907184328705] 129  deleting data for table 152
+I250729 21:06:22.031449 2341 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907597500417] 130  deleting data for table 156
+I250729 21:06:22.031926 2238 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906985492481] 131  deleting data for table 147
+I250729 21:06:22.032365 2318 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907388440577] 132  deleting data for table 158
+I250729 21:06:22.032800 2359 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905826619393] 133  deleting data for table 150
+I250729 21:06:22.041757 2332 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907184328705] 134  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:151 status:WAITING_FOR_MVCC_GC > tables:<id:152 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.041757 2260 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906756608001] 135  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:153 status:WAITING_FOR_MVCC_GC > tables:<id:154 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042131 2238 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906985492481] 136  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:146 status:WAITING_FOR_MVCC_GC > tables:<id:147 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042145 2330 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093560487254097921] 137  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:141 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042146 2302 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906293301249] 138  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:160 status:CLEARED > tables:<id:161 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042198 2318 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907388440577] 139  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:157 status:WAITING_FOR_MVCC_GC > tables:<id:158 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042279 2377 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603906042331137] 140  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:159 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042296 2359 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905826619393] 141  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:149 status:WAITING_FOR_MVCC_GC > tables:<id:150 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042293 2030 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603905577320449] 142  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:148 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:22.042397 2341 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093603907597500417] 143  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:155 status:WAITING_FOR_MVCC_GC > tables:<id:156 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+E250729 21:06:47.847673 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 144  failed to get table descriptor for automatic stats on table id: 151: descriptor is being dropped
+E250729 21:06:47.852049 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 145  failed to get table descriptor for automatic stats on table id: 146: descriptor is being dropped
+E250729 21:06:47.853221 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 146  failed to get table descriptor for automatic stats on table id: 149: descriptor is being dropped
+E250729 21:06:47.854384 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 147  failed to get table descriptor for automatic stats on table id: 119: descriptor is being dropped
+E250729 21:06:47.855387 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 148  failed to get table descriptor for automatic stats on table id: 131: descriptor is being dropped
+W250729 21:06:47.857522 2180 sql/stats/automatic_stats.go:1016 ⋮ [T1,Vsystem,n1] 149  failed to create statistics on table 131: create-stats: descriptor is being dropped
+E250729 21:06:47.858014 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 150  failed to get table descriptor for automatic stats on table id: 150: descriptor is being dropped
+E250729 21:06:47.866599 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 151  failed to get table descriptor for automatic stats on table id: 147: descriptor is being dropped
+E250729 21:06:47.873879 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 152  failed to get table descriptor for automatic stats on table id: 141: descriptor is being dropped
+E250729 21:06:47.874986 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 153  failed to get table descriptor for automatic stats on table id: 154: descriptor is being dropped
+E250729 21:06:47.881207 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 154  failed to get table descriptor for automatic stats on table id: 153: descriptor is being dropped
+E250729 21:06:47.886703 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 155  failed to get table descriptor for automatic stats on table id: 129: descriptor is being dropped
+W250729 21:06:47.887740 2180 sql/stats/automatic_stats.go:1016 ⋮ [T1,Vsystem,n1] 156  failed to create statistics on table 129: create-stats: descriptor is being dropped
+E250729 21:06:47.889234 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 157  failed to get table descriptor for automatic stats on table id: 157: descriptor is being dropped
+E250729 21:06:47.897654 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 158  failed to get table descriptor for automatic stats on table id: 159: descriptor is being dropped
+E250729 21:06:47.906238 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 159  failed to get table descriptor for automatic stats on table id: 121: descriptor is being dropped
+E250729 21:06:47.911424 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 160  failed to get table descriptor for automatic stats on table id: 152: descriptor is being dropped
+E250729 21:06:47.912050 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 161  failed to get table descriptor for automatic stats on table id: 156: descriptor is being dropped
+E250729 21:06:47.912582 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 162  failed to get table descriptor for automatic stats on table id: 155: descriptor is being dropped
+E250729 21:06:47.913173 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 163  failed to get table descriptor for automatic stats on table id: 158: descriptor is being dropped
+E250729 21:06:47.916922 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 164  failed to get table descriptor for automatic stats on table id: 139: descriptor is being dropped
+E250729 21:06:47.924459 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 165  failed to get table descriptor for automatic stats on table id: 148: descriptor is being dropped
+E250729 21:06:47.925047 2180 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 166  failed to get table descriptor for automatic stats on table id: 161: descriptor is being dropped
+I250729 21:06:52.472130 1224 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 167  claimed 10 jobs
+I250729 21:06:52.478124 3791 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093559274189160449] 168  job 1093559274189160449: resuming execution
+I250729 21:06:52.478341 3786 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=101] 169  job 101: resuming execution
+I250729 21:06:52.478374 3788 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093559115764924417] 170  job 1093559115764924417: resuming execution
+I250729 21:06:52.478434 3783 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=103] 171  job 103: resuming execution
+I250729 21:06:52.478506 3782 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=100] 172  job 100: resuming execution
+I250729 21:06:52.478580 3784 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=105] 173  job 105: resuming execution
+I250729 21:06:52.478925 3790 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093559115283496961] 174  job 1093559115283496961: resuming execution
+I250729 21:06:52.478811 3789 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093559273691873281] 175  job 1093559273691873281: resuming execution
+I250729 21:06:52.479334 3785 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093560486776274945] 176  job 1093560486776274945: resuming execution
+I250729 21:06:52.479571 3787 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=104] 177  job 104: resuming execution
+I250729 21:06:52.483473 3815 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=101] 178  POLL JOBS STATS job 101: stepping through state running
+I250729 21:06:52.483575 3829 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 179  AUTO UPDATE SQL ACTIVITY job 103: stepping through state running
+I250729 21:06:52.483696 3773 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=105] 180  UPDATE TABLE METADATA CACHE job 105: stepping through state running
+I250729 21:06:52.483769 3241 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 181  KEY VISUALIZER job 100: stepping through state running
+I250729 21:06:52.483919 3844 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093559115283496961] 182  SCHEMA CHANGE GC job 1093559115283496961: stepping through state running
+I250729 21:06:52.484494 3069 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093559115764924417] 183  SCHEMA CHANGE GC job 1093559115764924417: stepping through state running
+I250729 21:06:52.484496 2537 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=104] 184  MVCC STATISTICS UPDATE job 104: stepping through state running
+I250729 21:06:52.484656 2459 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093560486776274945] 185  SCHEMA CHANGE GC job 1093560486776274945: stepping through state running
+I250729 21:06:52.487563 2537 sql/mvcc_statistics_update_job.go:63 ⋮ [T1,Vsystem,n1,job=MVCC STATISTICS UPDATE id=104] 186  starting mvcc statistics update job
+I250729 21:06:52.487697 3072 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093559274189160449] 187  SCHEMA CHANGE GC job 1093559274189160449: stepping through state running
+I250729 21:06:52.487804 3723 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093559273691873281] 188  SCHEMA CHANGE GC job 1093559273691873281: stepping through state running
+I250729 21:06:52.488149 3829 sql/sql_activity_update_job.go:88 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 189  starting sql stats activity flush job
+I250729 21:06:52.500658 3723 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559273691873281] 190  updated progress status: deleting data, payload: ‹tables:<id:129 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.501249 2459 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093560486776274945] 191  updated progress status: deleting data, payload: ‹tables:<id:139 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.501316 3844 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559115283496961] 192  updated progress status: deleting data, payload: ‹tables:<id:119 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.501449 3069 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559115764924417] 193  updated progress status: deleting data, payload: ‹tables:<id:121 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.501571 3072 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559274189160449] 194  updated progress status: deleting data, payload: ‹tables:<id:131 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.501890 3723 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559273691873281] 195  deleting data for table 129
+I250729 21:06:52.501913 2459 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093560486776274945] 196  deleting data for table 139
+I250729 21:06:52.501934 3844 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559115283496961] 197  deleting data for table 119
+I250729 21:06:52.502244 3069 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559115764924417] 198  deleting data for table 121
+I250729 21:06:52.502271 3072 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559274189160449] 199  deleting data for table 131
+I250729 21:06:52.516284 3723 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559273691873281] 200  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:129 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.516421 3069 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559115764924417] 201  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:121 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.517534 2459 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093560486776274945] 202  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:139 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.518200 3844 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559115283496961] 203  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:119 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:06:52.518337 3072 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1093559274189160449] 204  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:131 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250729 21:07:19.975289 1224 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 205  claimed 1 jobs
+I250729 21:07:19.980032 4471 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093557394742509569] 206  job 1093557394742509569: resuming execution
+I250729 21:07:19.984432 4475 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093557394742509569] 207  AUTO SPAN CONFIG RECONCILIATION job 1093557394742509569: stepping through state running
+I250729 21:07:20.042003 4475 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:241 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569] 208  established range feed over system.descriptors starting at time 1753823240.000755084,0
+I250729 21:07:20.042063 4475 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:300 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569] 209  established range feed over system.zones starting at time 1753823240.000755084,0
+I250729 21:07:20.042096 4475 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:401 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569] 210  established range feed over system.protected_ts_records starting at time 1753823240.000755084,0
+I250729 21:07:47.866074 1444 jobs/job_scheduler.go:171 ⋮ [T1,Vsystem,n1] 211  Starting job for schedule 1093557394989973505 (‹"sql-stats-compaction"›); scheduled to run at 2025-07-29 21:00:00 +0000 UTC; next run scheduled for 2025-07-29 22:00:00 +0000 UTC
+I250729 21:07:47.956907 5034 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 212 ={"Timestamp":1753823267956902472,"EventType":"status_change","JobID":1093641397659238401,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:07:47.968783 5034 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093641397659238401,create-stats-distsql] 213  using computed sample size of 10000 for histogram construction
+I250729 21:07:48.000539 5034 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 214 ={"Timestamp":1753823268000535097,"EventType":"status_change","JobID":1093641397659238401,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:07:48.015793 5116 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 215 ={"Timestamp":1753823268015790055,"EventType":"status_change","JobID":1093641397871869953,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:07:48.017332 5116 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093641397871869953,create-stats-distsql] 216  using computed sample size of 10000 for histogram construction
+I250729 21:07:48.043004 5116 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 217 ={"Timestamp":1753823268043001389,"EventType":"status_change","JobID":1093641397871869953,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:07:54.975942 1224 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 218  claimed 1 jobs
+I250729 21:07:54.980457 5321 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093641397424521217] 219  job 1093641397424521217: resuming execution
+I250729 21:07:54.983770 5325 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093641397424521217] 220  AUTO SQL STATS COMPACTION job 1093641397424521217: stepping through state running
+I250729 21:07:54.992537 5325 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1093641397424521217] 221 ={"Timestamp":1753823274992531753,"EventType":"status_change","JobID":1093641397424521217,"JobType":"AUTO SQL STATS COMPACTION","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:07:54.992587 5325 sql/compact_sql_stats.go:37 ⋮ [T1,Vsystem,n1,job=AUTO SQL STATS COMPACTION id=1093641397424521217] 222  starting sql stats compaction job
+I250729 21:07:55.052815 5325 sql/compact_sql_stats.go:101 ⋮ [T1,Vsystem,n1,job=AUTO SQL STATS COMPACTION id=1093641397424521217] 223  sql stats compaction job terminated with status = succeeded
+I250729 21:07:55.054132 5325 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093641397424521217] 224  AUTO SQL STATS COMPACTION job 1093641397424521217: stepping through state succeeded
+I250729 21:07:55.059709 5325 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1093641397424521217] 225 ={"Timestamp":1753823275059706044,"EventType":"status_change","JobID":1093641397424521217,"JobType":"AUTO SQL STATS COMPACTION","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:15:48.104292 12888 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 226 ={"Timestamp":1753823748104287430,"EventType":"status_change","JobID":1093642970989395969,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:15:48.107704 12888 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093642970989395969,create-stats-distsql] 227  using computed sample size of 10000 for histogram construction
+I250729 21:15:48.118095 12888 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093642970989395969,create-stats-distsql] 228  using computed sample size of 10000 for histogram construction
+I250729 21:15:48.143925 12888 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 229 ={"Timestamp":1753823748143922139,"EventType":"status_change","JobID":1093642970989395969,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:18:57.653015 788 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 230  jemalloc arenas purged (took 35.375µs)
+I250729 21:19:48.208816 16413 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 231 ={"Timestamp":1753823988208810889,"EventType":"status_change","JobID":1093643757756874753,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:19:48.214545 16413 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093643757756874753,create-stats-distsql] 232  using computed sample size of 10000 for histogram construction
+I250729 21:19:48.243887 16413 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 233 ={"Timestamp":1753823988243884722,"EventType":"status_change","JobID":1093643757756874753,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:19:48.261348 16915 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 234 ={"Timestamp":1753823988261346514,"EventType":"status_change","JobID":1093643757969506305,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:19:48.264709 16915 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093643757969506305,create-stats-distsql] 235  using computed sample size of 10000 for histogram construction
+I250729 21:19:48.294022 16915 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 236 ={"Timestamp":1753823988294019847,"EventType":"status_change","JobID":1093643757969506305,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:20:57.680319 788 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 237  jemalloc arenas purged (took 194.417µs)
+I250729 21:22:57.702041 788 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 238  jemalloc arenas purged (took 267.584µs)
+I250729 21:24:57.710009 788 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 239  jemalloc arenas purged (took 665.583µs)
+I250729 21:25:48.366541 22721 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 240 ={"Timestamp":1753824348366538180,"EventType":"status_change","JobID":1093644937914908673,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:25:48.372322 22721 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093644937914908673,create-stats-distsql] 241  using computed sample size of 10000 for histogram construction
+I250729 21:25:48.401978 22721 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 242 ={"Timestamp":1753824348401974750,"EventType":"status_change","JobID":1093644937914908673,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:25:48.420541 22791 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 243 ={"Timestamp":1753824348420539041,"EventType":"status_change","JobID":1093644938136485889,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250729 21:25:48.424098 22791 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093644938136485889,create-stats-distsql] 244  using computed sample size of 10000 for histogram construction
+I250729 21:25:48.434341 22791 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1093644938136485889,create-stats-distsql] 245  using computed sample size of 10000 for histogram construction
+I250729 21:25:48.460645 22791 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 246 ={"Timestamp":1753824348460643708,"EventType":"status_change","JobID":1093644938136485889,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250729 21:26:15.336951 1 1@cli/start.go:993 ⋮ [T1,Vsystem,n1] 247  received signal 'terminated'
+I250729 21:26:15.338866 1 1@cli/start.go:1034 ⋮ [T1,Vsystem,n1] 248  initiating graceful shutdown of server
+I250729 21:26:15.341795 23347 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 249  all tenant servers stopped
+I250729 21:26:15.342036 23347 1@server/drain.go:399 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 250  waiting for health probes to notice that the node is not ready for new sql connections
+W250729 21:26:15.342748 1222 jobs/registry.go:1069 ⋮ [T1,Vsystem,n1] 251  canceling all adopted jobs due to graceful drain request
+I250729 21:26:15.342824 1458 sql/stats/automatic_stats.go:745 ⋮ [T1,Vsystem,n1] 252  draining stats garbage collector
+I250729 21:26:15.342763 305 sql/stats/automatic_stats.go:694 ⋮ [T1,Vsystem,n1] 253  draining auto stats refresher
+I250729 21:26:15.344118 3241 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 254  KEY VISUALIZER job 100: stepping through state succeeded
+W250729 21:26:15.349646 4456 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-protected-ts-records-rangefeed›,mux_n=1,gen=2] 257  error closing mux rangefeed client: context canceled
+W250729 21:26:15.351329 4540 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-zones-rangefeed›,mux_n=1,gen=2] 258  error closing mux rangefeed client: context canceled
+I250729 21:26:15.344242 3829 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 255  AUTO UPDATE SQL ACTIVITY job 103: stepping through state succeeded
+W250729 21:26:15.345137 4543 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-descriptor-rangefeed›,mux_n=1,gen=2] 256  error closing mux rangefeed client: context canceled
+I250729 21:26:15.390557 23347 sql/sqlstats/persistedsqlstats/provider.go:122 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 259  stopping persisted SQL stats tasks
+I250729 21:26:15.390713 23347 sql/sqlstats/persistedsqlstats/provider.go:128 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 260  persisted SQL stats tasks successfully shut down
+I250729 21:26:15.390985 23347 sql/stats/automatic_stats.go:516 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 261  starting to wait for auto-stats tasks to shut down
+I250729 21:26:15.391079 23347 sql/stats/automatic_stats.go:519 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 262  auto-stats tasks successfully shut down
+I250729 21:26:15.391131 23347 jobs/registry.go:2060 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 263  starting to wait for job registry to shut down
+I250729 21:26:15.391183 23347 jobs/registry.go:2063 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 264  job registry tasks successfully shut down
+W250729 21:26:15.412665 931 sql/sqlliveness/slinstance/slinstance.go:331 ⋮ [T1,Vsystem,n1] 265  exiting heartbeat loop
+I250729 21:26:15.412753 931 sql/sqlliveness/slinstance/slinstance.go:316 ⋮ [T1,Vsystem,n1] 266  draining heartbeat loop
+I250729 21:26:15.414052 23347 server/drain.go:482 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 267  SQL server drained successfully; SQL queries cannot execute any more
+I250729 21:26:15.414105 23347 server/drain.go:361 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 268  done draining clients
+I250729 21:26:15.414963 23347 1@server/drain.go:312 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 269  drain remaining: 83
+I250729 21:26:15.415004 23347 1@server/drain.go:314 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 270  drain details: liveness record: 1, descriptor leases: 82
+I250729 21:26:15.616588 23347 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 271  all tenant servers stopped
+W250729 21:26:15.617482 23413 sql/sqlstats/persistedsqlstats/flush.go:235 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 272  failed to flush transaction statistics: upsert-txn-stats: cannot acquire lease when draining
+W250729 21:26:15.617997 23412 sql/sqlstats/persistedsqlstats/flush.go:254 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 273  failed to flush statement statistics: upsert-stmt-stats: cannot acquire lease when draining
+I250729 21:26:15.618073 23347 sql/sqlstats/persistedsqlstats/provider.go:122 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 274  stopping persisted SQL stats tasks
+I250729 21:26:15.618108 23347 sql/sqlstats/persistedsqlstats/provider.go:128 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 275  persisted SQL stats tasks successfully shut down
+I250729 21:26:15.618139 23347 sql/stats/automatic_stats.go:516 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 276  starting to wait for auto-stats tasks to shut down
+I250729 21:26:15.618168 23347 sql/stats/automatic_stats.go:519 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 277  auto-stats tasks successfully shut down
+I250729 21:26:15.618197 23347 jobs/registry.go:2060 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 278  starting to wait for job registry to shut down
+I250729 21:26:15.618226 23347 jobs/registry.go:2063 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 279  job registry tasks successfully shut down
+I250729 21:26:15.618912 23347 server/drain.go:482 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 280  SQL server drained successfully; SQL queries cannot execute any more
+I250729 21:26:15.618955 23347 server/drain.go:361 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 281  done draining clients
+I250729 21:26:15.619666 23347 1@server/drain.go:312 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 282  drain remaining: 0
+I250729 21:26:15.619757 23347 1@server/drain.go:564 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 283  graceful drain complete
+W250729 21:26:15.620073 1690 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-settings-watcher›,mux_n=1,gen=2] 284  error closing mux rangefeed client: context canceled
+I250729 21:26:15.620209 579 server/start_listen.go:112 ⋮ [T1,Vsystem,n1] 292  server shutting down: instructing cmux to stop accepting
+W250729 21:26:15.620122 1716 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-entry-watcher›,mux_n=1,gen=2] 285  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620122 1563 server/structlogging/hot_ranges_log.go:92 ⋮ [T1,Vsystem,n1] 286  hot ranges stats logging scheduler stopped: %!s(<nil>)
+W250729 21:26:15.620268 1162 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹lease›,mux_n=1,gen=2] 288  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620262 1269 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹sql_instances›,mux_n=1,gen=2] 287  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620305 1491 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹system-config-cache›,mux_n=1,gen=2] 289  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620336 1364 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹spanconfig-subscriber›,mux_n=1,gen=2] 290  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620332 1500 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-boundaries-watcher›,mux_n=1,gen=2] 293  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620337 1327 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹settings-watcher›,mux_n=1,gen=2] 291  error closing mux rangefeed client: context canceled
+W250729 21:26:15.620504 1435 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹table-stats-cache›,mux_n=1,gen=2] 294  error closing mux rangefeed client: context canceled
+I250729 21:26:15.715827 23347 server/server_controller.go:409 ⋮ [T1,Vsystem,n1] 295  server controller shutting down
+I250729 21:26:15.715991 23347 server/server_controller.go:418 ⋮ [T1,Vsystem,n1] 296  waiting for tenant servers to report stopped
+I250729 21:26:15.716156 1 1@cli/start.go:1105 ⋮ [T1,Vsystem,n1] 297  server drained and shutdown completed

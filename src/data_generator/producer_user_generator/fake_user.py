@@ -9,7 +9,7 @@ import os
 fake = Faker('it_IT')
 
 # Parametri
-NUM_USERS = 4
+NUM_USERS = 1
 GENDERS = ['Male', 'Female']
 
 def generate_password(length=10):
@@ -61,7 +61,7 @@ def main():
 
 
 if __name__ == '__main__':
-    time.sleep(2)
+    time.sleep(10)
     main()
     print("User_registration_on")
-    time.sleep(10000000)
+    time.sleep(40)
