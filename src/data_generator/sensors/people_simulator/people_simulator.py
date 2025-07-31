@@ -257,6 +257,10 @@ def get_user_data():
 
 def get_user_timestamp(country):
     """Calculate timestamp based on user's country timezone"""
+
+    return int(time.time() * 1000) # USA I MILLISECONDI
+
+    """ Currently it doesn't work
     try:
         timezone_str = COUNTRY_TIMEZONE_MAP.get(country, 'UTC')
         user_timezone = pytz.timezone(timezone_str)
@@ -264,7 +268,7 @@ def get_user_timestamp(country):
         return int(local_time.timestamp())
     except Exception as e:
         logging.warning(f"Error getting timezone for country {country}: {e}. Using UTC.")
-        return int(time.time())
+        return int(time.time()) """
 
 
 # ---------------------------
@@ -349,6 +353,7 @@ def publish_loop(client):
     last_refresh = 0
     refresh_interval = 300  # Refresh user data every 5 minutes
     user_info = {}
+    time.sleep(100)
 
     while True:
         try:
@@ -370,7 +375,7 @@ def publish_loop(client):
             logging.info(f"Published {published_count} sensor readings")
 
             # Wait before next iteration
-            time.sleep(5)
+            time.sleep(1)
 
         except KeyboardInterrupt:
             logging.info("Received keyboard interrupt. Shutting down...")

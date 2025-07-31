@@ -8,6 +8,7 @@ topics=(
   wearables.altimeter.raw
   wearables.barometer.raw
   wearables.ceda.raw
+  users_changes # CDC
 )
 
 # Setting kafka

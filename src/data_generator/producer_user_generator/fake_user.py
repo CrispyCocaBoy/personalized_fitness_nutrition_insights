@@ -17,7 +17,7 @@ def generate_password(length=10):
     return ''.join(random.choice(chars) for _ in range(length))
 
 
-def main():
+def generate_user():
     file_path = "/app/output/users_and_passwords.csv"
     write_header = not os.path.exists(file_path) or os.stat(file_path).st_size == 0
 
@@ -55,13 +55,17 @@ def main():
             device_type_id, device_type_name  = db.random_selection()
             db.bind_device(user_id, device_type_id, device_type_name)
 
+def stream_user(flag = True):
+    while flag == True:
+        generate_user()
+        print("User_registration_on")
+        time.sleep(120)
+
 
 
 
 
 
 if __name__ == '__main__':
-    time.sleep(10)
-    main()
-    print("User_registration_on")
-    time.sleep(40)
+    time.sleep(15)
+    stream_user()

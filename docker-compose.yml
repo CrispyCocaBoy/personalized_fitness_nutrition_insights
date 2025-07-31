@@ -50,7 +50,7 @@ services:
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_LISTENERS: PLAINTEXT://broker_kafka:9092, CONTROLLER://broker_kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://broker_kafka:9092,CONTROLLER://broker_kafka:9093
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker_kafka:9092
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
@@ -85,6 +85,7 @@ services:
       - broker_kafka
 
 # Databases
+  # SQL-type
   cockroachdb:
     image: cockroachdb/cockroach:v25.2.0
     container_name: cockroachdb
@@ -95,6 +96,7 @@ services:
     volumes:
       - ./volumes/cockroach_data:/cockroach/cockroach-data
 
+  # Datalakehouse
   minio:
     image: minio/minio
     ports:
@@ -107,7 +109,63 @@ services:
     volumes:
       - ./volumes/minio_setting:/data
 
-# Data Generator
+  # Cache
+  ## Redis community
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"         # Porta standard Redis
+    volumes:
+      - ./volumes/redis_data:/data
+    restart: unless-stopped
+
+  ## UI for Redis
+  redisinsight:
+    image: redis/redisinsight
+    container_name: redisinsight
+    ports:
+      - "5540:5540"
+
+  # Change Data Capture
+  ## Kafka connector
+  kafka-connect:
+    image: confluentinc/cp-kafka-connect:7.6.0
+    container_name: kafka-connect
+    ports:
+      - "8097:8083"
+    environment:
+      CONNECT_REST_PORT: 8083
+      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
+      CONNECT_BOOTSTRAP_SERVERS: broker_kafka:9092
+      CONNECT_GROUP_ID: "kafka-connect-group"
+      CONNECT_CONFIG_STORAGE_TOPIC: "connect-configs"
+      CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "connect-status"
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/usr/local/share/kafka/plugins"
+    volumes:
+      - ./volumes/kafka_connect/plugins:/usr/local/share/kafka/plugins
+    depends_on:
+      - broker_kafka
+
+  change_data_capture:
+    build:
+      context: ./src/change_data_capture
+      dockerfile: Dockerfile
+    container_name: change_data_capture
+    depends_on:
+      - broker_kafka
+      - redis
+    environment:
+      KAFKA_BOOTSTRAP: broker_kafka:9092
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  # Data Generator
   fake_user:
     build:
       context: .
@@ -125,6 +183,7 @@ services:
     container_name: people_simulator
     depends_on:
       - emqx1
+      - bronze_layer
 
 # ETL process
   ## Spark Master
@@ -165,15 +224,27 @@ services:
       - spark-master
 
   ## Bronze layer job
-  bpm_consumer:
+  bronze_layer:
     build:
       context: .
       dockerfile: src/delta/bronze/sensors_consumers/Dockerfile
-    container_name: bpm_consumer
+    container_name: bronze_layer
     depends_on:
       - broker_kafka
       - spark-master
       - emqx1
 
+  ## Latency monitor
+  latency-monitor:
+    build:
+      context: .
+      dockerfile: src/latency_monitor/Dockerfile
+    container_name: latency-monitor
+    depends_on:
+      - spark-master
+      - minio
+      - bronze_layer
+
+# Cache
 volumes:
   fake_generator_output:
