@@ -1,34 +1,5 @@
 services:
 
-  spark:
-    image: bitnami/spark:latest
-    environment:
-      SPARK_MODE: master
-    ports:
-      - "8080:8080"
-    depends_on:
-      - broker_kafka
-      - minio
-      - kafka-ui
-
-  spark-worker:
-    image: bitnami/spark:latest
-    environment:
-      SPARK_MODE: worker
-      SPARK_MASTER_URL: spark://spark:7077
-    depends_on:
-      - spark
-
-  bpm_consumer:
-      build:
-        context: .
-        dockerfile: src/delta/bronze/sensors_consumers/Dockerfile
-      container_name: bpm_consumer
-      depends_on:
-        - broker_kafka
-        - spark
-        - emqx1
-
   query:
     build:
       context: .
@@ -36,7 +7,6 @@ services:
     container_name: query
     depends_on:
       - broker_kafka
-      - spark
       - emqx1
 
   streamlit_app:
@@ -50,6 +20,7 @@ services:
       - ./utility:/app/utility
 
 # Ingestion phase
+## MQTT protocol
   emqx1:
     image: emqx/emqx-enterprise:5.10.0
     container_name: emqx1
@@ -153,6 +124,55 @@ services:
       dockerfile: src/data_generator/sensors/people_simulator/Dockerfile
     container_name: people_simulator
     depends_on:
+      - emqx1
+
+# ETL process
+  ## Spark Master
+  spark-master:
+    image: bitnami/spark:latest
+    container_name: spark-master
+    command: /opt/bitnami/scripts/spark/run.sh master
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "8085:8080"
+      - "7077:7077"
+
+  ## Spark Worker 1
+  spark-worker-1:
+    image: bitnami/spark:latest
+    container_name: spark-worker-1
+    command: /opt/bitnami/scripts/spark/run.sh worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+    depends_on:
+      - spark-master
+
+  ## Spark Worker 2
+  spark-worker-2:
+    image: bitnami/spark:latest
+    container_name: spark-worker-2
+    command: /opt/bitnami/scripts/spark/run.sh worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+    depends_on:
+      - spark-master
+
+  ## Bronze layer job
+  bpm_consumer:
+    build:
+      context: .
+      dockerfile: src/delta/bronze/sensors_consumers/Dockerfile
+    container_name: bpm_consumer
+    depends_on:
+      - broker_kafka
+      - spark-master
       - emqx1
 
 volumes:
