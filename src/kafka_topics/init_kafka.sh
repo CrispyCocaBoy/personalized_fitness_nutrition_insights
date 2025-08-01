@@ -9,6 +9,7 @@ topics=(
   wearables.barometer.raw
   wearables.ceda.raw
   users_changes # CDC
+  silver_layer_bridge
 )
 
 # Setting kafka

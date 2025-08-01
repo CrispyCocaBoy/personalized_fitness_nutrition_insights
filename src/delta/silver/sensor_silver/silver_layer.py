@@ -1,10 +1,9 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
-    col, from_json, current_timestamp, expr, when
+    col, from_json, current_timestamp, expr, when, to_json, struct
 )
 from pyspark.sql.types import StructType, StringType, DoubleType, LongType, StructField
 import redis
-
 
 # SparkSession
 spark = (
@@ -13,7 +12,7 @@ spark = (
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     .config("spark.sql.adaptive.enabled", "true")
-    .config("spark.sql.shuffle.partitions", "4")  # meno shuffle per microbatch piccoli
+    .config("spark.sql.shuffle.partitions", "4")
     .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
     .getOrCreate()
 )
@@ -50,7 +49,6 @@ sensor_topics = [
     "wearables.ceda.raw"
 ]
 
-
 # Lettura streaming da Kafka
 df_parsed = (
     spark.readStream.format("kafka")
@@ -77,7 +75,6 @@ df_parsed = (
     )
 )
 
-
 # Redis Connection Helper
 def get_redis_connection():
     try:
@@ -93,10 +90,10 @@ def get_redis_connection():
         return None
 
 # =========================================
-# foreachBatch con lookup Redis ottimizzato
+# foreachBatch con lookup Redis + Kafka
 # =========================================
 def enrich_with_redis(batch_df, batch_id):
-    if not batch_df.take(1):  # evita count() costoso
+    if not batch_df.take(1):
         print(f"⚠️ Batch {batch_id} vuoto")
         return
 
@@ -112,7 +109,6 @@ def enrich_with_redis(batch_df, batch_id):
             pipe.get(k)
         user_ids = pipe.execute()
 
-        # close connection
         try:
             client.close()
         except:
@@ -120,7 +116,6 @@ def enrich_with_redis(batch_df, batch_id):
 
         return [(*row, user_id) for row, user_id in zip(rows_list, user_ids)]
 
-    # Aggiungi colonna user_id
     schema_with_user = StructType(batch_df.schema.fields + [StructField("user_id", StringType(), True)])
     enriched_df = spark.createDataFrame(batch_df.rdd.mapPartitions(redis_lookup_partition), schema=schema_with_user)
 
@@ -129,10 +124,10 @@ def enrich_with_redis(batch_df, batch_id):
         print(f"⚠️ Batch {batch_id}: nessun sensore mappato in Redis")
         return
 
-    # Scrittura Delta ottimizzata
+    # 1️⃣ Scrittura Delta
     (
         valid_data
-        .coalesce(1)  # evita troppi file piccoli per microbatch
+        .coalesce(1)
         .write
         .format("delta")
         .mode("append")
@@ -141,7 +136,23 @@ def enrich_with_redis(batch_df, batch_id):
         .save("s3a://silver/sensor_data/")
     )
 
-    print(f"✅ Batch {batch_id}: scritti {valid_data.count()} record")
+    # 2️⃣ Scrittura Kafka topic silver_layer
+    kafka_df = valid_data.selectExpr(
+        "CAST(user_id AS STRING) as key",
+        "to_json(struct(*)) as value"
+    )
+
+    (
+        kafka_df
+        .write
+        .format("kafka")
+        .option("kafka.bootstrap.servers", "broker_kafka:9092")
+        .option("topic", "silver_layer")
+        .mode("append")
+        .save()
+    )
+
+    print(f"✅ Batch {batch_id}: scritti {valid_data.count()} record su Delta + Kafka")
 
 # =========================================
 # Streaming Query
@@ -155,13 +166,13 @@ query = (
     .start()
 )
 
-print("✅ Streaming Silver Layer con lookup Redis distribuito avviato")
-print("📁 Output in s3a://silver/sensor_data/ partizionato per user_id")
+print("✅ Streaming Silver Layer con lookup Redis + Kafka avviato")
+print("📁 Output in s3a://silver/sensor_data/ e Kafka topic silver_layer")
 
 try:
     query.awaitTermination()
 except KeyboardInterrupt:
-    print("⏹️ Arresto job richiesto dall'utente")
+    print("⏹Arresto job richiesto dall'utente")
     query.stop()
 finally:
     spark.stop()
