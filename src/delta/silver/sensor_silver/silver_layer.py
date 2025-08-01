@@ -1,32 +1,45 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, from_json, current_timestamp, expr
-from pyspark.sql.types import StructType, StringType, DoubleType, LongType
+from pyspark.sql.functions import (
+    col, from_json, current_timestamp, expr, when
+)
+from pyspark.sql.types import StructType, StringType, DoubleType, LongType, StructField
+import redis
 
-try:
-    spark = SparkSession.builder \
-        .appName("BronzeLayerOptimized") \
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
-        .getOrCreate()
-    spark.sparkContext.setLogLevel("WARN")
 
-    # Configurazione MinIO (S3A)
-    hadoopConf = spark._jsc.hadoopConfiguration()
-    hadoopConf.set("fs.s3a.access.key", "minioadmin")
-    hadoopConf.set("fs.s3a.secret.key", "minioadmin")
-    hadoopConf.set("fs.s3a.endpoint", "http://minio:9000")
-    hadoopConf.set("fs.s3a.path.style.access", "true")
-    hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+# SparkSession
+spark = (
+    SparkSession.builder
+    .appName("SilverLayerPerUserWithRedisLookup")
+    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    .config("spark.sql.adaptive.enabled", "true")
+    .config("spark.sql.shuffle.partitions", "4")  # meno shuffle per microbatch piccoli
+    .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
+    .getOrCreate()
+)
+spark.sparkContext.setLogLevel("WARN")
+print("✅ Spark session created")
 
-    print("✅ Spark session creata e configurazione MinIO caricata")
+# MinIO setting
+hadoopConf = spark._jsc.hadoopConfiguration()
+hadoopConf.set("fs.s3a.access.key", "minioadmin")
+hadoopConf.set("fs.s3a.secret.key", "minioadmin")
+hadoopConf.set("fs.s3a.endpoint", "http://minio:9000")
+hadoopConf.set("fs.s3a.path.style.access", "true")
+hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 
-except Exception as e:
-    print("❌ ERRORE nella creazione SparkSession o configurazione MinIO:", e)
-    raise
+print("✅ Minio configured")
 
-# ========================
-# 2️⃣ Schema e topic
-# ========================
+# =========================================
+# Schema Kafka
+# =========================================
+sensor_schema = StructType([
+    StructField("sensor_id", StringType()),
+    StructField("timestamp", LongType()),
+    StructField("metric", StringType()),
+    StructField("value", DoubleType())
+])
+
 sensor_topics = [
     "wearables.ppg.raw",
     "wearables.skin-temp.raw",
@@ -37,54 +50,118 @@ sensor_topics = [
     "wearables.ceda.raw"
 ]
 
-sensor_schema = StructType() \
-    .add("sensor_id", StringType()) \
-    .add("timestamp", LongType()) \
-    .add("metric", StringType()) \
-    .add("value", DoubleType())
 
-def create_stream(topic):
+# Lettura streaming da Kafka
+df_parsed = (
+    spark.readStream.format("kafka")
+    .option("kafka.bootstrap.servers", "broker_kafka:9092")
+    .option("subscribe", ",".join(sensor_topics))
+    .option("startingOffsets", "earliest")
+    .option("failOnDataLoss", "false")
+    .load()
+    .selectExpr("CAST(value AS STRING) as json", "topic")
+    .select(from_json(col("json"), sensor_schema).alias("data"), col("topic"))
+    .select("data.*", "topic")
+    .withColumn("ingest_ts", current_timestamp())
+    .withColumn("latency_sec", expr("(unix_timestamp() * 1000 - timestamp) / 1000.0").cast(DoubleType()))
+    .withColumn(
+        "measurement_type",
+        when(col("topic") == "wearables.ppg.raw", "ppg")
+        .when(col("topic") == "wearables.skin-temp.raw", "skin_temp")
+        .when(col("topic") == "wearables.accelerometer.raw", "accelerometer")
+        .when(col("topic") == "wearables.gyroscope.raw", "gyroscope")
+        .when(col("topic") == "wearables.altimeter.raw", "altimeter")
+        .when(col("topic") == "wearables.barometer.raw", "barometer")
+        .when(col("topic") == "wearables.ceda.raw", "ceda")
+        .otherwise("unknown")
+    )
+)
+
+
+# Redis Connection Helper
+def get_redis_connection():
     try:
-        df_kafka = spark.readStream.format("kafka") \
-            .option("kafka.bootstrap.servers", "broker_kafka:9092") \
-            .option("subscribe", topic) \
-            .option("startingOffsets", "latest") \
-            .option("failOnDataLoss", "false") \
-            .load()
-
-        print(f"✅ readStream avviato per topic: {topic}")
-
-        df_parsed = df_kafka.selectExpr("CAST(value AS STRING) as json") \
-            .select(from_json(col("json"), sensor_schema).alias("data")) \
-            .select("data.*") \
-            .withColumn("ingest_ts", current_timestamp()) \
-            .withColumn(
-                "latency_sec",
-                expr("(unix_timestamp() * 1000 - timestamp) / 1000.0").cast(DoubleType())
-            )
-
-        query = (
-            df_parsed.writeStream
-            .format("delta")
-            .outputMode("append")
-            .trigger(processingTime="5 second")  # TIME_FOR_BATCH
-            .option("checkpointLocation", f"s3a://bronze/checkpoints/{topic}/")
-            .option("mergeSchema", "true")
-            .start(f"s3a://bronze/{topic}/")
+        r = redis.StrictRedis(
+            host='redis', port=6379, db=1,
+            decode_responses=True,
+            socket_timeout=2, socket_connect_timeout=2,
+            retry_on_timeout=True
         )
+        r.ping()
+        return r
+    except:
+        return None
 
-        print(f"✅ Streaming query avviata per topic: {topic}")
+# =========================================
+# foreachBatch con lookup Redis ottimizzato
+# =========================================
+def enrich_with_redis(batch_df, batch_id):
+    if not batch_df.take(1):  # evita count() costoso
+        print(f"⚠️ Batch {batch_id} vuoto")
+        return
 
-        return query
+    def redis_lookup_partition(rows):
+        client = get_redis_connection()
+        rows_list = list(rows)
+        if not client:
+            return [(*row, None) for row in rows_list]
 
-    except Exception as e:
-        print(f"❌ ERRORE nello stream del topic {topic}:", e)
-        raise
+        keys = [f"sensor:{row.sensor_id}" for row in rows_list]
+        pipe = client.pipeline()
+        for k in keys:
+            pipe.get(k)
+        user_ids = pipe.execute()
 
-queries = [create_stream(topic) for topic in sensor_topics]
+        # close connection
+        try:
+            client.close()
+        except:
+            pass
+
+        return [(*row, user_id) for row, user_id in zip(rows_list, user_ids)]
+
+    # Aggiungi colonna user_id
+    schema_with_user = StructType(batch_df.schema.fields + [StructField("user_id", StringType(), True)])
+    enriched_df = spark.createDataFrame(batch_df.rdd.mapPartitions(redis_lookup_partition), schema=schema_with_user)
+
+    valid_data = enriched_df.filter(col("user_id").isNotNull())
+    if not valid_data.take(1):
+        print(f"⚠️ Batch {batch_id}: nessun sensore mappato in Redis")
+        return
+
+    # Scrittura Delta ottimizzata
+    (
+        valid_data
+        .coalesce(1)  # evita troppi file piccoli per microbatch
+        .write
+        .format("delta")
+        .mode("append")
+        .option("mergeSchema", "true")
+        .partitionBy("user_id")
+        .save("s3a://silver/sensor_data/")
+    )
+
+    print(f"✅ Batch {batch_id}: scritti {valid_data.count()} record")
+
+# =========================================
+# Streaming Query
+# =========================================
+query = (
+    df_parsed.writeStream
+    .foreachBatch(enrich_with_redis)
+    .outputMode("append")
+    .trigger(processingTime="10 seconds")
+    .option("checkpointLocation", "s3a://silver/checkpoints/silver_per_user_redis_lookup/")
+    .start()
+)
+
+print("✅ Streaming Silver Layer con lookup Redis distribuito avviato")
+print("📁 Output in s3a://silver/sensor_data/ partizionato per user_id")
 
 try:
-    for q in queries:
-        q.awaitTermination()
+    query.awaitTermination()
 except KeyboardInterrupt:
-    print("🛑 Interruzione manuale delle query streaming.")
+    print("⏹️ Arresto job richiesto dall'utente")
+    query.stop()
+finally:
+    spark.stop()

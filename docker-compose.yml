@@ -1,14 +1,4 @@
 services:
-
-  query:
-    build:
-      context: .
-      dockerfile: src/query/Dockerfile
-    container_name: query
-    depends_on:
-      - broker_kafka
-      - emqx1
-
   streamlit_app:
     build:
       context: .
@@ -126,32 +116,11 @@ services:
     container_name: redisinsight
     ports:
       - "5540:5540"
+    volumes:
+      - ./volumes/redis_data:/data
 
   # Change Data Capture
   ## Kafka connector
-  kafka-connect:
-    image: confluentinc/cp-kafka-connect:7.6.0
-    container_name: kafka-connect
-    ports:
-      - "8097:8083"
-    environment:
-      CONNECT_REST_PORT: 8083
-      CONNECT_REST_ADVERTISED_HOST_NAME: kafka-connect
-      CONNECT_BOOTSTRAP_SERVERS: broker_kafka:9092
-      CONNECT_GROUP_ID: "kafka-connect-group"
-      CONNECT_CONFIG_STORAGE_TOPIC: "connect-configs"
-      CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
-      CONNECT_STATUS_STORAGE_TOPIC: "connect-status"
-      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/usr/local/share/kafka/plugins"
-    volumes:
-      - ./volumes/kafka_connect/plugins:/usr/local/share/kafka/plugins
-    depends_on:
-      - broker_kafka
-
   change_data_capture:
     build:
       context: ./src/change_data_capture
@@ -206,7 +175,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_CORES=4
     depends_on:
       - spark-master
 
@@ -219,7 +188,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_CORES=4
     depends_on:
       - spark-master
 
@@ -234,16 +203,27 @@ services:
       - spark-master
       - emqx1
 
-  ## Latency monitor
-  latency-monitor:
+  ## Silver layer job
+  silver_layer:
     build:
       context: .
-      dockerfile: src/latency_monitor/Dockerfile
-    container_name: latency-monitor
+      dockerfile: src/delta/silver/sensor_silver/Dockerfile
+    container_name: silver_layer
     depends_on:
+      - broker_kafka
       - spark-master
-      - minio
-      - bronze_layer
+      - emqx1
+
+  ## Latency monitor
+#  latency-monitor:
+#   build:
+#     context: .
+#      dockerfile: src/latency_monitor/Dockerfile
+#    container_name: latency-monitor
+#    depends_on:
+#      - spark-master
+#      - minio
+#      - bronze_layer
 
 # Cache
 volumes:

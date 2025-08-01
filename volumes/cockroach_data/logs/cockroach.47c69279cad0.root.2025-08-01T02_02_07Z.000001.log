@@ -1,0 +1,710 @@
+I250801 02:02:07.563948 1 util/log/file_sync_buffer.go:237 ⋮ [config]   file created at: 2025/08/01 02:02:07
+I250801 02:02:07.563983 1 util/log/file_sync_buffer.go:237 ⋮ [config]   running on machine: ‹47c69279cad0›
+I250801 02:02:07.563998 1 util/log/file_sync_buffer.go:237 ⋮ [config]   binary: CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250801 02:02:07.564005 1 util/log/file_sync_buffer.go:237 ⋮ [config]   arguments: [‹/cockroach/cockroach› ‹start-single-node› ‹--certs-dir=certs› ‹--advertise-addr=127.0.0.1:26257› ‹--insecure› ‹--http-addr=0.0.0.0:8080›]
+I250801 02:02:07.564026 1 util/log/file_sync_buffer.go:237 ⋮ [config]   log format (utf8=✓): crdb-v2
+I250801 02:02:07.564030 1 util/log/file_sync_buffer.go:237 ⋮ [config]   line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid [chan@]file:line redactionmark \[tags\] [counter] msg
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1  ALL SECURITY CONTROLS HAVE BEEN DISABLED!
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +This mode is intended for non-production testing only.
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +In this mode:
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Your cluster is open to any client that can access ‹any of your IP addresses›.
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders with access to your machine or network can observe client-server traffic.
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can log in without password and read or write any data in the cluster.
+W250801 02:02:07.561869 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can consume all your server's resources and cause unavailability.
+I250801 02:02:07.624409 1 1@cli/start.go:1448 ⋮ [n?] 2  To start a secure server without mandating TLS for clients,
+I250801 02:02:07.624409 1 1@cli/start.go:1448 ⋮ [n?] 2 +consider --accept-sql-without-tls instead. For other options, see:
+I250801 02:02:07.624409 1 1@cli/start.go:1448 ⋮ [n?] 2 +
+I250801 02:02:07.624409 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://go.crdb.dev/issue-v/53404/v25.2
+I250801 02:02:07.624409 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://www.cockroachlabs.com/docs/v25.2/secure-a-cluster.html
+I250801 02:02:07.626279 1 server/status/recorder.go:856 ⋮ [n?] 3  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+W250801 02:02:07.626321 1 1@cli/start.go:1360 ⋮ [n?] 4  Using the default setting for --cache (128 MiB).
+W250801 02:02:07.626321 1 1@cli/start.go:1360 ⋮ [n?] 4 +  A significantly larger value is usually needed for good performance.
+W250801 02:02:07.626321 1 1@cli/start.go:1360 ⋮ [n?] 4 +  If you have a dedicated server a reasonable setting is --cache=.25 (2.2 GiB).
+I250801 02:02:07.626437 1 server/status/recorder.go:856 ⋮ [n?] 5  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250801 02:02:07.626445 1 1@cli/start.go:1477 ⋮ [n?] 6  CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250801 02:02:07.626866 1 server/status/recorder.go:856 ⋮ [n?] 7  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250801 02:02:07.626872 1 1@cli/start.go:554 ⋮ [n?] 8  soft memory limit of Go runtime is set to 4.9 GiB
+I250801 02:02:07.626883 1 1@cli/start.go:591 ⋮ [n?] 9  GC target percentage of Go runtime is set to 300%
+I250801 02:02:07.765572 1 server/status/recorder.go:856 ⋮ [T1,Vsystem,n?] 10  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250801 02:02:07.765609 1 server/config.go:674 ⋮ [T1,Vsystem,n?] 11  system total memory: 8.7 GiB
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12  server configuration:
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +max offset             500000000
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +cache size             128 MiB
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +SQL memory pool size   2.2 GiB
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan interval          10m0s
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan min idle time     10ms
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan max idle time     1s
+I250801 02:02:07.765626 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +event log enabled      true
+I250801 02:02:07.765671 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13  using local environment variables:
+I250801 02:02:07.765671 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13 +COCKROACH_CHANNEL=official-docker
+I250801 02:02:07.765684 1 1@cli/start.go:1345 ⋮ [T1,Vsystem,n?] 14  process identity: uid 0 euid 0 gid 0 egid 0
+I250801 02:02:07.774258 1 1@cli/start.go:1500 ⋮ [T1,Vsystem,n?] 15  GEOS loaded from directory ‹/usr/local/lib/cockroach›
+I250801 02:02:07.774345 1 1@cli/start.go:777 ⋮ [T1,Vsystem,n?] 16  starting cockroach node
+I250801 02:02:12.455063 38 server/config.go:880 ⋮ [T1,Vsystem,n?] 17  1 storage engine initialized
+I250801 02:02:12.455226 38 server/config.go:883 ⋮ [T1,Vsystem,n?] 18  Pebble cache size: 128 MiB
+I250801 02:02:12.455274 38 server/config.go:883 ⋮ [T1,Vsystem,n?] 19  store 0: max size 0 B, max open file limit 1043576
+I250801 02:02:12.455279 38 server/config.go:883 ⋮ [T1,Vsystem,n?] 20  store 0: /cockroach/cockroach-data: rw encrypted=false fs:{bdev=/run/host_mark/Users fstype=fakeowner mountpoint=/cockroach/cockroach-data mountopts=rw,nosuid,nodev,relatime,fakeowner}
+I250801 02:02:12.484904 140 util/cidr/cidr.go:299 ⋮ [T1,Vsystem,n?] 21  CIDR lookup updated with 0 destinations
+I250801 02:02:12.669850 38 1@server/clock_monotonicity.go:61 ⋮ [T1,Vsystem,n?] 22  monitoring forward clock jumps based on server.clock.forward_jump_check.enabled
+I250801 02:02:12.778984 38 1@server/clock_monotonicity.go:136 ⋮ [T1,Vsystem,n1] 23  Sleeping till wall time 1754013732778979428 to catches up to 1754013733169773179 to ensure monotonicity. Sub: 390.793751ms
+I250801 02:02:12.779089 593 1@server/server.go:1802 ⋮ [T1,Vsystem,n1] 24  connecting to gossip network to verify cluster ID "ad7eb413-6f81-429f-8b5f-ee89af2e84c8"
+W250801 02:02:13.170487 38 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25  Running a server without --sql-addr, with a combined RPC/SQL listener, is deprecated.
+W250801 02:02:13.170487 38 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25 +This feature will be removed in a later version of CockroachDB.
+W250801 02:02:13.170716 38 1@gossip/gossip.go:1460 ⋮ [T1,Vsystem,n1] 26  no addresses found; use --join to specify a connected node
+I250801 02:02:13.181124 110 kv/kvserver/kvstorage/init.go:250 ⋮ [T1,Vsystem,n1,s1] 27  beginning range descriptor iteration
+I250801 02:02:13.181648 110 kv/kvserver/kvstorage/init.go:374 ⋮ [T1,Vsystem,n1,s1] 28  range descriptor iteration done: 57 range descriptors, 0 intents, 0 tombstones; stats: ‹seeked 118 times (60 internal); stepped 0 times (0 internal); blocks: 64KB cached; points: 58 (1.2KB keys, 1.7KB values); separated: 4 (120B, 0B fetched)›
+I250801 02:02:13.190392 110 kv/kvserver/kvstorage/init.go:501 ⋮ [T1,Vsystem,n1,s1] 29  loaded replica ID for 57/57 replicas
+I250801 02:02:13.192061 110 kv/kvserver/kvstorage/init.go:518 ⋮ [T1,Vsystem,n1,s1] 30  loaded Raft state for 57/57 replicas
+I250801 02:02:13.192113 110 kv/kvserver/kvstorage/init.go:545 ⋮ [T1,Vsystem,n1,s1] 31  loaded 57 replicas
+I250801 02:02:13.192132 110 kv/kvserver/kvstorage/init.go:576 ⋮ [T1,Vsystem,n1,s1] 32  verified 57/57 replicas
+I250801 02:02:13.204339 110 kv/kvserver/store.go:2369 ⋮ [T1,Vsystem,n1,s1] 33  initialized 57/57 replicas
+I250801 02:02:13.204551 110 server/node.go:690 ⋮ [T1,Vsystem,n1] 34  initialized store s1 in 31ms (57 replicas)
+I250801 02:02:13.204596 38 kv/kvserver/stores.go:261 ⋮ [T1,Vsystem,n1] 35  read 0 node addresses from persistent storage
+I250801 02:02:13.207342 593 1@server/server.go:1805 ⋮ [T1,Vsystem,n1] 36  node connected via gossip
+I250801 02:02:13.207895 38 server/node.go:801 ⋮ [T1,Vsystem,n1] 37  started with attributes []
+I250801 02:02:13.208139 38 server/goroutinedumper/goroutinedumper.go:117 ⋮ [T1,Vsystem,n1] 38  writing goroutine dumps to ‹/cockroach/cockroach-data/logs/goroutine_dump›
+I250801 02:02:13.208310 38 server/profiler/heapprofiler.go:72 ⋮ [T1,Vsystem,n1] 39  writing go heap profiles to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250801 02:02:13.208383 38 server/profiler/memory_monitoring_profiler.go:66 ⋮ [T1,Vsystem,n1] 40  writing memory monitoring dumps to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250801 02:02:13.208400 38 server/profiler/cgoprofiler.go:66 ⋮ [T1,Vsystem,n1] 41  to enable jmalloc profiling: "export MALLOC_CONF=prof:true" or "ln -s prof:true /etc/malloc.conf"
+I250801 02:02:13.208433 38 server/profiler/statsprofiler.go:68 ⋮ [T1,Vsystem,n1] 42  writing memory stats to ‹/cockroach/cockroach-data/logs/heap_profiler› at last every 1h0m0s
+I250801 02:02:13.208861 38 server/profiler/activequeryprofiler.go:88 ⋮ [T1,Vsystem,n1] 43  writing go query profiles to ‹/cockroach/cockroach-data/logs/heap_profiler›
+I250801 02:02:13.208892 38 server/profiler/cpuprofiler.go:87 ⋮ [T1,Vsystem,n1] 44  writing cpu profile dumps to ‹/cockroach/cockroach-data/logs/pprof_dump›
+I250801 02:02:13.209422 38 1@server/server.go:1999 ⋮ [T1,Vsystem,n1] 45  starting http server at ‹[::]:8080› (use: ‹127.0.0.1:8080›)
+I250801 02:02:13.209444 38 1@server/server.go:2007 ⋮ [T1,Vsystem,n1] 46  starting grpc/postgres server at ‹[::]:26257›
+I250801 02:02:13.209454 38 1@server/server.go:2008 ⋮ [T1,Vsystem,n1] 47  advertising CockroachDB node at ‹127.0.0.1:26257›
+I250801 02:02:13.218075 269 kv/kvserver/storeliveness/support_manager.go:285 ⋮ [T1,Vsystem,n1,s1] 48  starting to heartbeat store {NodeID:1 StoreID:1}
+I250801 02:02:13.220657 269 kv/kvserver/storeliveness/supporter_state.go:298 ⋮ [T1,Vsystem,n1,s1] 49  provided support for store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:59 Expiration:1754013701.594299551,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:60 Expiration:1754013736.218209595,0}
+I250801 02:02:13.223595 269 kv/kvserver/storeliveness/requester_state.go:425 ⋮ [T1,Vsystem,n1,s1] 50  received support from store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:60 Expiration:0,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:60 Expiration:1754013736.218209595,0}
+I250801 02:02:13.253968 38 1@util/log/event_log.go:39 ⋮ [T1,Vsystem,n1] 51 ={"Timestamp":1754013733253953470,"EventType":"node_restart","NodeID":1,"StartedAt":1754013733170872387,"LastUp":1754013696168585592}
+I250801 02:02:13.254314 63 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 52  settings-watcher: established range feed cache
+I250801 02:02:13.254354 61 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 53  spanconfig-subscriber: established range feed cache
+I250801 02:02:13.271391 38 sql/sqlliveness/slinstance/slinstance.go:435 ⋮ [T1,Vsystem,n1] 54  starting SQL liveness instance
+I250801 02:02:13.292692 971 sql/sqlliveness/slstorage/slstorage.go:540 ⋮ [T1,Vsystem,n1] 55  inserted sqlliveness session 01018020a7c11170f9493c9f91d5442d0c3c23 with expiry 1754013773.271533095,0
+I250801 02:02:13.292849 971 sql/sqlliveness/slinstance/slinstance.go:247 ⋮ [T1,Vsystem,n1] 56  created new SQL liveness session 01018020a7c11170f9493c9f91d5442d0c3c23
+I250801 02:02:13.292926 38 sql/sqlinstance/instancestorage/instancestorage.go:338 ⋮ [T1,Vsystem,n1] 57  assigning instance id to rpc addr ‹127.0.0.1:26257› and sql addr ‹127.0.0.1:26257›
+I250801 02:02:13.302420 38 server/server_sql.go:1618 ⋮ [T1,Vsystem,n1] 58  bound sqlinstance: Instance{RegionPrefix: gA==, InstanceID: 1, SQLAddr: ‹127.0.0.1:26257›, RPCAddr: ‹127.0.0.1:26257›, SessionID: 01018020a7c11170f9493c9f91d5442d0c3c23, Locality: , BinaryVersion: 25.2}
+I250801 02:02:13.302768 38 upgrade/upgrademanager/manager.go:171 ⋮ [T1,Vsystem,n1] 59  running permanent upgrades up to version: 25.2
+I250801 02:02:13.305451 1239 sql/sqlstats/persistedsqlstats/provider.go:159 ⋮ [T1,Vsystem,n1] 60  starting sql-stats-worker with initial delay: 11m22.008447955s
+I250801 02:02:13.305987 1271 kv/kvserver/replica_rangefeed.go:882 ⋮ [T1,Vsystem,n1,rangefeed=‹lease›,mux_n=1,gen=2,r6/1:‹/Table/{0-4}›,sm=1,sid=1,s1] 61  RangeFeed closed timestamp 1754013604.098557384,0 is behind by 2m9.207428295s (behind=2m9.207428295s target=3s nudge=true cancel=false)
+I250801 02:02:13.306257 1236 sql/temporary_schema.go:506 ⋮ [T1,Vsystem,n1] 62  running temporary object cleanup background job
+I250801 02:02:13.306378 1252 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 63  system-config-cache: established range feed cache
+I250801 02:02:13.333585 1236 sql/temporary_schema.go:556 ⋮ [T1,Vsystem,n1] 64  found 0 temporary schemas
+I250801 02:02:13.333761 1236 sql/temporary_schema.go:559 ⋮ [T1,Vsystem,n1] 65  early exiting temporary schema cleaner as no temporary schemas were found
+I250801 02:02:13.334099 1236 sql/temporary_schema.go:560 ⋮ [T1,Vsystem,n1] 66  completed temporary object cleanup job
+I250801 02:02:13.334133 1236 sql/temporary_schema.go:641 ⋮ [T1,Vsystem,n1] 67  temporary object cleaner next scheduled to run at 2025-08-01 02:32:13.305431762 +0000 UTC m=+1806.908317421
+I250801 02:02:13.362903 38 upgrade/upgrademanager/manager.go:233 ⋮ [T1,Vsystem,n1] 68  detected the last permanent upgrade (v0.0-upgrading-step-004) to have already completed; no permanent upgrades will run
+I250801 02:02:13.362943 38 server/server_sql.go:1720 ⋮ [T1,Vsystem,n1] 69  done ensuring all necessary startup migrations have run
+I250801 02:02:13.363324 38 server/license/enforcer.go:262 ⋮ [T1,Vsystem,n1] 70  trial license expiry initialized to 1970-01-01 00:00:00 +0000 UTC
+I250801 02:02:13.363361 38 server/license/enforcer.go:298 ⋮ [T1,Vsystem,n1] 71  fetched existing cluster init grace period end time: 2025-08-05 14:00:31 +0000 UTC
+I250801 02:02:13.363410 38 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 72  enforcer license updated: type is none, grace period ends at "2025-08-05 14:00:31 +0000 UTC", telemetry required: false
+I250801 02:02:13.363420 38 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 73  enforcer license updated: type is none, grace period ends at "2025-08-05 14:00:31 +0000 UTC", telemetry required: false
+I250801 02:02:13.387579 929 sql/syntheticprivilegecache/cache.go:202 ⋮ [T1,Vsystem,n1] 74  warmed privileges for virtual tables in 16.744041ms
+I250801 02:02:13.410806 1579 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 75  released orphaned lease: ID=6 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.411101 1577 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 76  released orphaned lease: ID=4 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.411138 1576 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 77  released orphaned lease: ID=3 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.411138 1578 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 78  released orphaned lease: ID=5 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.411197 1575 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 79  released orphaned lease: ID=1 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.412284 1631 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 80  released orphaned lease: ID=12 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.412482 1468 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 81  released orphaned lease: ID=7 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.412561 1469 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 82  released orphaned lease: ID=8 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.412622 1630 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 83  released orphaned lease: ID=11 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.412674 1629 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 84  released orphaned lease: ID=9 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.414413 1636 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 85  released orphaned lease: ID=19 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.414678 1569 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 86  released orphaned lease: ID=13 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.414820 1634 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 87  released orphaned lease: ID=14 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.414932 1635 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 88  released orphaned lease: ID=15 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.415326 1659 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 89  tenant-settings-watcher: established range feed cache
+I250801 02:02:13.415573 1661 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 90  tenant-entry-watcher: established range feed cache
+I250801 02:02:13.416403 1651 jobs/job_scheduler.go:407 ⋮ [T1,Vsystem,n1] 91  waiting 2m0s before scheduled jobs daemon start
+I250801 02:02:13.415761 1661 multitenant/tenantcapabilities/tenantcapabilitieswatcher/watcher.go:285 ⋮ [T1,Vsystem,n1] 92  received results of a full table scan for tenant capabilities
+I250801 02:02:13.417816 1632 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 93  released orphaned lease: ID=21 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.416780 1667 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 94  released orphaned lease: ID=25 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.417990 1637 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 95  released orphaned lease: ID=20 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.418012 1633 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 96  released orphaned lease: ID=23 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.418020 1666 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 97  released orphaned lease: ID=24 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.418629 1647 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 98  released orphaned lease: ID=26 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.418931 1479 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 99  released orphaned lease: ID=27 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.418980 1480 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 100  released orphaned lease: ID=28 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.419752 1481 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 101  released orphaned lease: ID=30 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.419841 1690 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 102  released orphaned lease: ID=32 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.421054 1648 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 103  released orphaned lease: ID=34 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.421202 1482 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 104  released orphaned lease: ID=31 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.421416 182 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 105  released orphaned lease: ID=33 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.421460 183 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 106  released orphaned lease: ID=35 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.421470 1649 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 107  released orphaned lease: ID=36 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.423859 1691 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 108  released orphaned lease: ID=39 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.424059 38 server/license/enforcer.go:582 ⋮ [T1,Vsystem,n1] 109  disable all license enforcement
+I250801 02:02:13.424081 38 1@server/server_sql.go:1971 ⋮ [T1,Vsystem,n1] 110  serving sql connections
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111  node startup completed:
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +CockroachDB node starting at 2025-08-01 02:02:13.424140262 +0000 UTC m=+7.027025879 (took 6.5s)
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +build:               CCL v25.2.0 @ 2025/05/15 21:07:42 (go1.23.7 X:nocoverageredesign)
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +malloc_conf:         prof:false,prof_active:true,background_thread:true,thp:never,metadata_thp:disabled,narenas:48,dirty_decay_ms:2000,muzzy_decay_ms:0
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +webui:               ‹http://127.0.0.1:8080›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +sql:                 ‹postgresql://root@127.0.0.1:26257/defaultdb?sslmode=disable›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +sql (JDBC):          ‹jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable&user=root›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +RPC client flags:    ‹/cockroach/cockroach <client cmd> --host=127.0.0.1:26257 --insecure›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +logs:                ‹/cockroach/cockroach-data/logs›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +temp dir:            ‹/cockroach/cockroach-data/cockroach-temp1997892085›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +external I/O path:   ‹/cockroach/cockroach-data/extern›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +store[0]:            ‹path=/cockroach/cockroach-data›
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +clusterID:           ad7eb413-6f81-429f-8b5f-ee89af2e84c8
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +status:              restarted pre-existing node
+I250801 02:02:13.424356 38 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 111 +nodeID:              1
+I250801 02:02:13.424720 1657 server/auto_upgrade.go:81 ⋮ [T1,Vsystem,n1] 112  no need to upgrade, cluster already at the newest version
+I250801 02:02:13.424815 1485 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 113  released orphaned lease: ID=37 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.425116 1719 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 114  released orphaned lease: ID=42 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.425345 1718 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 115  released orphaned lease: ID=41 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.425686 1486 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 116  released orphaned lease: ID=40 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.442720 1672 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 117  released orphaned lease: ID=46 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.443302 1746 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 118  released orphaned lease: ID=45 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.443412 1450 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 119  released orphaned lease: ID=43 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.443521 1701 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 120  released orphaned lease: ID=44 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.459600 119 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 121  released orphaned lease: ID=47 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.459941 1694 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 122  released orphaned lease: ID=52 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.460063 1693 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 123  released orphaned lease: ID=51 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.460103 1692 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 124  released orphaned lease: ID=50 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.460771 1451 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 125  released orphaned lease: ID=48 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.461498 1697 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 126  released orphaned lease: ID=54 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.461627 1553 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 127  released orphaned lease: ID=53 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.461698 1735 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 128  released orphaned lease: ID=56 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.461773 1762 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 129  released orphaned lease: ID=55 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.465165 1737 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 130  released orphaned lease: ID=59 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.465516 1736 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 131  released orphaned lease: ID=58 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.466190 1739 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 132  released orphaned lease: ID=61 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.466244 1738 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 133  released orphaned lease: ID=60 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.466265 120 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 134  released orphaned lease: ID=57 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.468039 1452 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 135  released orphaned lease: ID=62 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.469070 1456 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 136  released orphaned lease: ID=66 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.469417 1453 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 137  released orphaned lease: ID=63 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.469526 1454 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 138  released orphaned lease: ID=64 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.470097 1455 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 139  released orphaned lease: ID=65 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.470686 1763 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 140  released orphaned lease: ID=67 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.470912 1780 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 141  released orphaned lease: ID=69 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.471038 1779 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 142  released orphaned lease: ID=68 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.472271 1487 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 143  released orphaned lease: ID=71 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.472649 1781 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 144  released orphaned lease: ID=70 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.472820 1488 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 145  released orphaned lease: ID=72 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.472888 1810 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 146  released orphaned lease: ID=101 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.472938 1769 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 147  released orphaned lease: ID=100 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.473583 1582 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 148  released orphaned lease: ID=104 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.474503 1783 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 149  released orphaned lease: ID=198 ver=6 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.474653 1782 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 150  released orphaned lease: ID=105 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.474733 1784 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 151  released orphaned lease: ID=199 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.474973 1785 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 152  released orphaned lease: ID=200 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.475164 1583 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 153  released orphaned lease: ID=201 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.475981 1787 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 154  released orphaned lease: ID=206 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.476157 1584 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 155  released orphaned lease: ID=202 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.476283 1585 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 156  released orphaned lease: ID=203 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.476377 1786 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 157  released orphaned lease: ID=205 ver=4 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.476393 1826 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 158  released orphaned lease: ID=204 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.477632 1827 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 159  released orphaned lease: ID=211 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.477838 1788 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 160  released orphaned lease: ID=207 ver=4 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.477932 1789 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 161  released orphaned lease: ID=208 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.478271 1790 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 162  released orphaned lease: ID=209 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.478292 1740 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 163  released orphaned lease: ID=210 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.478925 1791 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 164  released orphaned lease: ID=212 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.478954 1792 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 165  released orphaned lease: ID=213 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:13.478967 1793 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 166  released orphaned lease: ID=214 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250801 02:02:14.262024 109 1@gossip/gossip.go:1476 ⋮ [T1,Vsystem,n1] 167  node has connected to cluster via gossip
+I250801 02:02:14.263346 109 kv/kvserver/stores.go:280 ⋮ [T1,Vsystem,n1] 168  wrote 0 node addresses to persistent storage
+I250801 02:02:15.187081 1652 server/diagnostics/update_checker.go:144 ⋮ [T1,Vsystem,n1] 169  a new version is available: ‹25.2.3›, details: ‹https://www.cockroachlabs.com/docs/releases/v25.2#v25-2-3›
+I250801 02:02:45.246138 1250 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 170  claimed 10 jobs
+I250801 02:02:45.273286 2442 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264950769287169] 173  job 1094264950769287169: resuming execution
+I250801 02:02:45.273043 2437 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264951400431617] 174  job 1094264951400431617: resuming execution
+I250801 02:02:45.273074 2443 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264951109419009] 175  job 1094264951109419009: resuming execution
+I250801 02:02:45.273331 2444 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264992044843009] 176  job 1094264992044843009: resuming execution
+I250801 02:02:45.272925 2445 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264992746831873] 171  job 1094264992746831873: resuming execution
+I250801 02:02:45.272936 2436 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264993314865153] 178  job 1094264993314865153: resuming execution
+I250801 02:02:45.273028 2440 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264992380321793] 177  job 1094264992380321793: resuming execution
+I250801 02:02:45.272985 2439 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264991676497921] 179  job 1094264991676497921: resuming execution
+I250801 02:02:45.272943 2438 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264991326961665] 172  job 1094264991326961665: resuming execution
+I250801 02:02:45.272947 2441 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094264993044758529] 180  job 1094264993044758529: resuming execution
+I250801 02:02:45.294913 2537 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264993044758529] 181  SCHEMA CHANGE GC job 1094264993044758529: stepping through state running
+I250801 02:02:45.295071 2547 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264992746831873] 182  SCHEMA CHANGE GC job 1094264992746831873: stepping through state running
+I250801 02:02:45.295113 2562 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264951109419009] 183  SCHEMA CHANGE GC job 1094264951109419009: stepping through state running
+I250801 02:02:45.295169 2449 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264992044843009] 184  SCHEMA CHANGE GC job 1094264992044843009: stepping through state running
+I250801 02:02:45.295283 1705 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264992380321793] 185  SCHEMA CHANGE GC job 1094264992380321793: stepping through state running
+I250801 02:02:45.295388 1819 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264993314865153] 186  SCHEMA CHANGE GC job 1094264993314865153: stepping through state running
+I250801 02:02:45.295532 2023 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264951400431617] 187  SCHEMA CHANGE GC job 1094264951400431617: stepping through state running
+I250801 02:02:45.294913 2463 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264991676497921] 188  SCHEMA CHANGE GC job 1094264991676497921: stepping through state running
+I250801 02:02:45.296293 2040 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264950769287169] 189  SCHEMA CHANGE GC job 1094264950769287169: stepping through state running
+I250801 02:02:45.296968 2503 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264991326961665] 190  SCHEMA CHANGE GC job 1094264991326961665: stepping through state running
+I250801 02:02:45.339499 2040 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264950769287169] 191  updated progress status: deleting data, payload: ‹tables:<id:182 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.339849 2537 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993044758529] 192  updated progress status: deleting data, payload: ‹tables:<id:191 status:WAITING_FOR_MVCC_GC > tables:<id:192 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.339906 1819 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993314865153] 193  updated progress status: deleting data, payload: ‹tables:<id:189 status:WAITING_FOR_MVCC_GC > tables:<id:190 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340050 1705 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992380321793] 194  updated progress status: deleting data, payload: ‹tables:<id:180 status:WAITING_FOR_MVCC_GC > tables:<id:181 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340167 2023 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951400431617] 195  updated progress status: deleting data, payload: ‹tables:<id:193 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340167 2503 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991326961665] 196  updated progress status: deleting data, payload: ‹tables:<id:194 status:WAITING_FOR_MVCC_GC > tables:<id:195 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340324 2562 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951109419009] 197  updated progress status: deleting data, payload: ‹tables:<id:183 status:WAITING_FOR_MVCC_GC > tables:<id:184 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340570 2547 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992746831873] 198  updated progress status: deleting data, payload: ‹tables:<id:185 status:WAITING_FOR_MVCC_GC > tables:<id:186 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340736 2449 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992044843009] 199  updated progress status: deleting data, payload: ‹tables:<id:187 status:WAITING_FOR_MVCC_GC > tables:<id:188 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340736 2503 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991326961665] 200  deleting data for table 194
+I250801 02:02:45.340987 2463 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991676497921] 201  updated progress status: deleting data, payload: ‹tables:<id:196 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.340998 1705 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992380321793] 202  deleting data for table 180
+I250801 02:02:45.341103 1819 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993314865153] 203  deleting data for table 189
+I250801 02:02:45.341180 2023 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951400431617] 204  deleting data for table 193
+I250801 02:02:45.341359 2040 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264950769287169] 205  deleting data for table 182
+I250801 02:02:45.341340 2547 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992746831873] 206  deleting data for table 185
+I250801 02:02:45.341497 2562 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951109419009] 207  deleting data for table 183
+I250801 02:02:45.341652 2537 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993044758529] 208  deleting data for table 191
+I250801 02:02:45.342243 2449 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992044843009] 209  deleting data for table 187
+I250801 02:02:45.341624 2463 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991676497921] 210  deleting data for table 196
+I250801 02:02:45.347383 2503 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991326961665] 211  deleting data for table 195
+I250801 02:02:45.347460 1705 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992380321793] 212  deleting data for table 181
+I250801 02:02:45.347892 1819 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993314865153] 213  deleting data for table 190
+I250801 02:02:45.350049 2547 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992746831873] 214  deleting data for table 186
+I250801 02:02:45.350871 2562 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951109419009] 215  deleting data for table 184
+I250801 02:02:45.352760 2537 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993044758529] 216  deleting data for table 192
+I250801 02:02:45.354690 2449 sql/gcjob/table_garbage_collection.go:203 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992044843009] 217  deleting data for table 188
+I250801 02:02:45.362803 2040 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264950769287169] 218  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:182 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.363057 2463 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991676497921] 219  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:196 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.363188 2503 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991326961665] 220  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:194 status:WAITING_FOR_MVCC_GC > tables:<id:195 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.365093 2023 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951400431617] 221  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:193 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.366657 1705 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992380321793] 222  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:180 status:WAITING_FOR_MVCC_GC > tables:<id:181 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.370222 1819 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993314865153] 223  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:189 status:WAITING_FOR_MVCC_GC > tables:<id:190 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.372676 2547 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992746831873] 224  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:185 status:WAITING_FOR_MVCC_GC > tables:<id:186 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.372769 2562 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264951109419009] 225  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:183 status:WAITING_FOR_MVCC_GC > tables:<id:184 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.374406 2449 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264992044843009] 226  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:187 status:WAITING_FOR_MVCC_GC > tables:<id:188 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:02:45.374696 2537 sql/gcjob/gc_job_utils.go:273 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264993044758529] 227  updated progress status: waiting for MVCC GC, payload: ‹tables:<id:191 status:WAITING_FOR_MVCC_GC > tables:<id:192 status:WAITING_FOR_MVCC_GC > ranges_unsplit_done:true ›
+I250801 02:03:12.572376 1250 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 228  claimed 10 jobs
+I250801 02:03:12.577344 3275 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=101] 229  job 101: resuming execution
+I250801 02:03:12.577196 3280 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 231  job 1094262342695485441: resuming execution
+I250801 02:03:12.577367 3277 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=104] 230  job 104: resuming execution
+I250801 02:03:12.577426 3273 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 232  job 1094228905706487809: resuming execution
+I250801 02:03:12.577468 3276 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=105] 233  job 105: resuming execution
+I250801 02:03:12.577390 3272 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 234  job 1094228854832267265: resuming execution
+I250801 02:03:12.577702 3271 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=103] 235  job 103: resuming execution
+I250801 02:03:12.577842 3274 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 236  job 1094230257848025089: resuming execution
+I250801 02:03:12.578095 3278 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 237  job 1094228900384931841: resuming execution
+I250801 02:03:12.578182 3279 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 238  job 1094228903369867265: resuming execution
+I250801 02:03:12.586341 3402 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=101] 239  POLL JOBS STATS job 101: stepping through state running
+I250801 02:03:12.586122 3475 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 240  AUTO UPDATE SQL ACTIVITY job 103: stepping through state running
+I250801 02:03:12.586465 3491 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 241  CHANGEFEED job 1094228900384931841: stepping through state running
+I250801 02:03:12.586586 3506 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 242  CHANGEFEED job 1094262342695485441: stepping through state running
+I250801 02:03:12.586778 3462 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 243  CHANGEFEED job 1094228854832267265: stepping through state running
+I250801 02:03:12.586196 3461 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 244  CHANGEFEED job 1094228905706487809: stepping through state running
+I250801 02:03:12.587245 3414 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 246  CHANGEFEED job 1094230257848025089: stepping through state running
+I250801 02:03:12.586229 3329 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=104] 245  MVCC STATISTICS UPDATE job 104: stepping through state running
+I250801 02:03:12.587703 3444 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=105] 247  UPDATE TABLE METADATA CACHE job 105: stepping through state running
+I250801 02:03:12.588771 3355 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 248  CHANGEFEED job 1094228903369867265: stepping through state running
+I250801 02:03:12.589632 3329 sql/mvcc_statistics_update_job.go:63 ⋮ [T1,Vsystem,n1,job=MVCC STATISTICS UPDATE id=104] 249  starting mvcc statistics update job
+I250801 02:03:12.590299 3475 sql/sql_activity_update_job.go:88 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 250  starting sql stats activity flush job
+I250801 02:03:12.596463 3510 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228854832267265] 251  using bulk oracle for DistSQL planning
+I250801 02:03:12.596774 3359 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228903369867265] 252  using bulk oracle for DistSQL planning
+I250801 02:03:12.596515 3492 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094262342695485441] 253  using bulk oracle for DistSQL planning
+I250801 02:03:12.597116 3407 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228900384931841] 254  using bulk oracle for DistSQL planning
+I250801 02:03:12.597460 3469 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228905706487809] 255  using bulk oracle for DistSQL planning
+I250801 02:03:12.598032 2664 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094230257848025089] 256  using bulk oracle for DistSQL planning
+I250801 02:03:12.599952 3359 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228903369867265] 257  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkc-OmzAQh-99CjRnI7ChAXxK1VWlHNqt2pV6WKFqYk-IVYKpbbStEO9eAW13N1Ii5Th_-H4f4xH8zxYkqCN2DR2ItIx4WuVClFWaZZuq3BRi8xYYdFbTJzyRB_kIHGoGvbOKvLdubo3Lwk7_ApkyMF0_hLldM1DWEcgRggktgYT3S9S7pnHUYLAuSYGBpoCmXdjfMKgj-eiR1zJKHnDfUsKrPBl5LCaoJwZ2CM94H7AhkPyFz-4OZDqxW5U-ONsFQy7hr4XuhyCjrWDbjG3ziwLiTIDfIvCFfG87T6-CLyWlZ0kxn2oGpBtaH8LbwSn67KxadtfyfgEtDU0-rFO-Frvu38gHR3j6f7-XJH6VJK6RagaH1j59NxokiCrDHJWO80zzOMc9xiUWIlaqUEh6z4ushPkDbPx8oq9H-7RgH3738w8esPXE4CP-oDsK5E6mMz4Y9XcyTW_-BAAA__-afOpy›
+I250801 02:03:12.600037 3407 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228900384931841] 258  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcR0wyjmiupnQpzEW7pV3oxSLlNDk6oY6xSWRbxP9e1Lb7ATswl-fD5308mSD87ECBPmHfUkNkVCJ4lUtZVpzvyrzaiTIXwKB3hj7imQKoexBQMxi80xSC80trWheO5hcozsD2wxiXds1AO0-gJog2dgQK3q1Rb9vWU4vR-YwDA0MRbbeyv2LUJwrJvahVkt3h944yUeXZJFI5Qz0zcGN8xIeILYEST3yON6D4zK5Veu9dHy35TDwXuh2jSg6SHXbskL8qIF8IiGsEPlMYXB_oWfBrSfxFUirmmgGZlraHCG70mj55p9fdrbxdQWvDUIjbVGzFsf83CtETnv_f7ylJXCTJS6SaQdO5h2_WgII9YlEUukmNKco0J8xTNNykVHES0sh9s0dYPsA2LCf6cnIPK_bu97D8YINdIAYf8AfdUCR_tr0N0eq_k3l-8ycAAP__fMTqcA==›
+I250801 02:03:12.600529 3492 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094262342695485441] 259  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcRzQx6pqrKV0Kc9FuaRd6sUjJJkcn1DE2iWyL-N-L2o-dgRmYy_Ph8z6eTOB_dCBAHWTfYoOoRUTTirOCZZwVVc7vcs4pEOitxo_yiB7EE1CoCQzOKvTeuqU1rQt7_RNESsD0wxiWdk1AWYcgJggmdAgC3q1Rb9vWYSuDdUkKBDQGabqV_VUGdUAfPdFaRMmjfO4woRVPJhqzGeqZgB3Df7wPskUQ9JXP_h5EOpNbld472weDLqGnQg9jENGOkV1GdvyiADsToLcIfEY_2N7jSfClpPQsKaZzTQB1i9tDeDs6hZ-cVevuVj6soLWh0YdtSrdi3_8d-eBQHv_d7zWJXiWxa6SaQNPZl29GgwDkOW_KjMZFk7GYq-wufq5SGhdK5bJsdFnmHJYPZOuXE3052JcV-_hrWH6wkZ1HAh_kd7zHgO5oeuODUX8m8_zmdwAAAP__K3LpYw==›
+I250801 02:03:12.600953 3510 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228854832267265] 260  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkd-rmzAUx9_3V8h5jmjSXFvz1LHLoA_bHduFPRQZMTnaMGtcEumG-L8PdT_aQgt9PD_8fD-eDOB_NCBAHWRbY4WoRUTTnDO22TzxzYqxbM2yJyDQWo0f5RE9iD1QKAh0zir03rqpNcwLO_0TRErAtF0fpnZBQFmHIAYIJjQIAt7NUW_r2mEtg3VJCgQ0Bmmamf1VBnVAH-1pIaLkVZYNJjTnyUBjNkIxErB9-I_3QdYIgp757J5BpCN5VOm9s20w6BJ6KfTSBxFtGdmuyJbfFGBXAvQRgc_oO9t6vAi-lZReJcV0LAigrnF5CG97p_CTs2reXcqXGTQ3NPqwTOlS7Nq_Ix8cyuO_-52T6F0Su0cqCFSNPX0zGgTQnDNeleu40mkV86xUcV5WMqZlqdeyXGHGJUwfyNpPJ_pysKcZ-_qrm36wko1HAh_kd3zGgO5oWuODUX8m4_jmdwAAAP__l-Lqpg==›
+I250801 02:03:12.603801 2664 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094230257848025089] 261  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkU2L2zAQhu_9FWbOMpYUJbF1SulSyKHd0i70sJgiS2NH1LFcSWZbjP97sd2P3YUEcpwPP-_j0QjhRwsS9El1DdaIRiaMFoJvKN_uc5FTvqV5AQQ6Z_CjOmMA-QgMSgK9dxpDcH5ujcvC0fwESQnYrh_i3C4JaOcR5AjRxhZBwrsl6m3TeGxUdD6jQMBgVLZd2F9V1CcMySMrZZI9qKrFjBUiG1nKJygnAm6I__EhqgZBsmc-xzuQdCK3Kr33rosWfcZeCt0PUSYHTg4bchAXBfgrAXaLwGcMvesCvgi-lERfJaVsKgmgaXB9iOAGr_GTd3rZXcv7BbQ0DIa4TtlaHLu_oxA9qvO_-z0nsaskfo1UEqhb9_TNGpCgtrjb5_sqFXRHU1GLIq0M4-lOa0XFJq-ErmH-QDVhPtGXk3tasA-_-vkHa9UGJPBBfcc7jOjPtrMhWv1nMk1vfgcAAP__PNXpsw==›
+I250801 02:03:12.603905 3469 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228905706487809] 262  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcR0yyWjVXU7oU5qLd0i70YpGSSU6cUMfYJLIt4n8vatv9gBmYy_Ph8z6eTBB-diBAHWXfokHUImG0zjmvalqU9G1elRWtgUDvNH6SJwwgHoBBQ2DwTmEIzi-taV3Y618gKAHbD2Nc2g0B5TyCmCDa2CEIeL9GvWtbj62MzmcUCGiM0nYr-5uM6ogheWCNSLJ7eegwY3WeTSzlMzQzATfGJ3yIskUQ7JnP_hYEncm1Sh-866NFn7GXQndjFMmOk90N2eVnBfgrAXaNwBcMg-sDvgg-l0RfJaVsbgigbnF7iOBGr_Czd2rd3cq7FbQ2NIa4TdlW7Pt_oxA9ytP_-z0nsYskfonUEDCde_xuNQgwh7KQh9yklWJFmhtFU6lpnhptOJeyMCXewPKBbMNyoq9H97hi738Pyw8a2QUk8FH-wFuM6E-2tyFa9Xcyz2_-BAAA__-sq-qp›
+I250801 02:03:12.610123 3539 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 263  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.610113 3571 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 264  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.610346 3525 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 265  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.610113 3416 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 266  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.610190 3557 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 267  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.610380 2668 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 268  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.633322 3416 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 270  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.633346 3557 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 271  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.633268 3571 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 269  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.633584 3539 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 272  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.633585 3798 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1094228900384931841,change-aggregator] 273  kv feed run starting
+I250801 02:03:12.633574 3774 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1094228903369867265,change-aggregator] 274  kv feed run starting
+I250801 02:03:12.633671 3758 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1094262342695485441,change-aggregator] 275  kv feed run starting
+I250801 02:03:12.633699 2668 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 276  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.633846 3840 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1094230257848025089,change-aggregator] 277  kv feed run starting
+I250801 02:03:12.633984 3871 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1094228905706487809,change-aggregator] 278  kv feed run starting
+I250801 02:03:12.636450 3525 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 279  updating kafka metadata for topics: [‹users_changes›]
+I250801 02:03:12.636493 3928 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1094228854832267265,change-aggregator] 280  kv feed run starting
+E250801 02:03:12.641668 3455 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1094228854832267265,change-aggregator] 281  stopping kv feed due to error: descriptor is being dropped
+E250801 02:03:12.641857 3748 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1094262342695485441,change-aggregator] 282  stopping kv feed due to error: descriptor is being dropped
+E250801 02:03:12.641665 3500 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1094228900384931841,change-aggregator] 283  stopping kv feed due to error: descriptor is being dropped
+E250801 02:03:12.642547 3764 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1094228903369867265,change-aggregator] 284  stopping kv feed due to error: descriptor is being dropped
+E250801 02:03:12.642547 3787 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1094228905706487809,change-aggregator] 285  stopping kv feed due to error: descriptor is being dropped
+E250801 02:03:12.643464 3631 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1094230257848025089,change-aggregator] 286  stopping kv feed due to error: descriptor is being dropped
+I250801 02:03:12.648984 3506 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094262342695485441] 288  CHANGEFEED 1094262342695485441 shutting down (cause: descriptor is being dropped)
+I250801 02:03:12.649102 3462 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228854832267265] 289  CHANGEFEED 1094228854832267265 shutting down (cause: descriptor is being dropped)
+I250801 02:03:12.648913 3355 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228903369867265] 287  CHANGEFEED 1094228903369867265 shutting down (cause: descriptor is being dropped)
+I250801 02:03:12.651407 3414 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094230257848025089] 290  CHANGEFEED 1094230257848025089 shutting down (cause: descriptor is being dropped)
+I250801 02:03:12.654542 3461 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228905706487809] 291  CHANGEFEED 1094228905706487809 shutting down (cause: descriptor is being dropped)
+I250801 02:03:12.655484 3491 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228900384931841] 292  CHANGEFEED 1094228900384931841 shutting down (cause: descriptor is being dropped)
+W250801 02:03:12.672223 3462 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228854832267265] 293  job failed (descriptor is being dropped)
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294  CHANGEFEED job 1094228854832267265: stepping through state reverting with unexpected error: descriptor is being dropped
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +(1) forced error mark
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +Wraps: (2)
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +Wraps: (3) attached stack trace
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  -- stack trace:
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | runtime.doInit1
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | runtime.doInit
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | runtime.main
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | runtime.goexit
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.672930 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 294 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+W250801 02:03:12.675787 3355 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228903369867265] 295  job failed (descriptor is being dropped)
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296  CHANGEFEED job 1094228903369867265: stepping through state reverting with unexpected error: descriptor is being dropped
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +(1) forced error mark
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +Wraps: (2)
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +Wraps: (3) attached stack trace
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  -- stack trace:
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | runtime.doInit1
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | runtime.doInit
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | runtime.main
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | runtime.goexit
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.675949 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 296 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+W250801 02:03:12.677595 3414 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094230257848025089] 298  job failed (descriptor is being dropped)
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299  CHANGEFEED job 1094230257848025089: stepping through state reverting with unexpected error: descriptor is being dropped
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +(1) forced error mark
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +Wraps: (2)
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +Wraps: (3) attached stack trace
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  -- stack trace:
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | runtime.doInit1
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | runtime.doInit
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | runtime.main
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | runtime.goexit
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.677642 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 299 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+W250801 02:03:12.677917 3506 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094262342695485441] 300  job failed (descriptor is being dropped)
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301  CHANGEFEED job 1094262342695485441: stepping through state reverting with unexpected error: descriptor is being dropped
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +(1) forced error mark
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +Wraps: (2)
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +Wraps: (3) attached stack trace
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  -- stack trace:
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | runtime.doInit1
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | runtime.doInit
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | runtime.main
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | runtime.goexit
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.677967 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 301 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+W250801 02:03:12.677595 3461 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228905706487809] 297  job failed (descriptor is being dropped)
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302  CHANGEFEED job 1094228905706487809: stepping through state reverting with unexpected error: descriptor is being dropped
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +(1) forced error mark
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +Wraps: (2)
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +Wraps: (3) attached stack trace
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  -- stack trace:
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | runtime.doInit1
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | runtime.doInit
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | runtime.main
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | runtime.goexit
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.678452 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 302 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+W250801 02:03:12.680596 3491 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1094228900384931841] 303  job failed (descriptor is being dropped)
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304  CHANGEFEED job 1094228900384931841: stepping through state reverting with unexpected error: descriptor is being dropped
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +(1) forced error mark
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +Wraps: (2)
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +Wraps: (3) attached stack trace
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  -- stack trace:
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | runtime.doInit1
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | runtime.doInit
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | runtime.main
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | runtime.goexit
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.680660 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 304 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+I250801 02:03:12.692747 3462 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 305 ={"Timestamp":1754013792692742678,"EventType":"status_change","JobID":1094228854832267265,"JobType":"CHANGEFEED","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+I250801 02:03:12.692893 3506 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 306 ={"Timestamp":1754013792692892595,"EventType":"status_change","JobID":1094262342695485441,"JobType":"CHANGEFEED","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+I250801 02:03:12.693132 3491 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 307 ={"Timestamp":1754013792693132095,"EventType":"status_change","JobID":1094228900384931841,"JobType":"CHANGEFEED","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+I250801 02:03:12.693333 3414 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 308 ={"Timestamp":1754013792693333178,"EventType":"status_change","JobID":1094230257848025089,"JobType":"CHANGEFEED","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+I250801 02:03:12.693353 3355 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 309 ={"Timestamp":1754013792693352345,"EventType":"status_change","JobID":1094228903369867265,"JobType":"CHANGEFEED","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+I250801 02:03:12.693511 3461 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 310 ={"Timestamp":1754013792693510845,"EventType":"status_change","JobID":1094228905706487809,"JobType":"CHANGEFEED","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311  CHANGEFEED job 1094228905706487809: stepping through state failed with unexpected error: descriptor is being dropped
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +(1) forced error mark
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +Wraps: (2)
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +Wraps: (3) attached stack trace
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  -- stack trace:
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | runtime.doInit1
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | runtime.doInit
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | runtime.main
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | runtime.goexit
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.699690 3461 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 311 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312  CHANGEFEED job 1094228900384931841: stepping through state failed with unexpected error: descriptor is being dropped
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +(1) forced error mark
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +Wraps: (2)
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +Wraps: (3) attached stack trace
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  -- stack trace:
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | runtime.doInit1
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | runtime.doInit
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | runtime.main
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | runtime.goexit
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.699654 3491 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 312 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313  CHANGEFEED job 1094228854832267265: stepping through state failed with unexpected error: descriptor is being dropped
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +(1) forced error mark
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +Wraps: (2)
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +Wraps: (3) attached stack trace
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  -- stack trace:
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | runtime.doInit1
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | runtime.doInit
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | runtime.main
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | runtime.goexit
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.700026 3462 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 313 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314  CHANGEFEED job 1094228903369867265: stepping through state failed with unexpected error: descriptor is being dropped
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +(1) forced error mark
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +Wraps: (2)
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +Wraps: (3) attached stack trace
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  -- stack trace:
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | runtime.doInit1
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | runtime.doInit
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | runtime.main
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | runtime.goexit
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.700047 3355 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 314 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315  CHANGEFEED job 1094230257848025089: stepping through state failed with unexpected error: descriptor is being dropped
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +(1) forced error mark
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +Wraps: (2)
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +Wraps: (3) attached stack trace
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  -- stack trace:
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | runtime.doInit1
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | runtime.doInit
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | runtime.main
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | runtime.goexit
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.700472 3414 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 315 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316  CHANGEFEED job 1094262342695485441: stepping through state failed with unexpected error: descriptor is being dropped
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +(1) forced error mark
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | ‹"terminal changefeed error"›
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | github.com/cockroachdb/cockroach/pkg/ccl/changefeedccl/changefeedbase/*changefeedbase.terminalError::
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +Wraps: (2)
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +Wraps: (3) attached stack trace
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  -- stack trace:
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | github.com/cockroachdb/cockroach/pkg/sql/catalog.init
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | 	pkg/sql/catalog/errors.go:62
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | runtime.doInit1
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | 	GOROOT/src/runtime/proc.go:7321
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | runtime.doInit
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | 	GOROOT/src/runtime/proc.go:7288
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | runtime.main
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | 	GOROOT/src/runtime/proc.go:254
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | runtime.goexit
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +  | 	src/runtime/asm_arm64.s:1223
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +Wraps: (4) descriptor is being dropped
+E250801 02:03:12.701374 3506 jobs/registry.go:1675 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 316 +Error types: (1) *markers.withMark (2) *catalog.inactiveDescriptorError (3) *withstack.withStack (4) *errutil.leafError
+I250801 02:03:12.710549 3491 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 317 ={"Timestamp":1754013792710544553,"EventType":"status_change","JobID":1094228900384931841,"JobType":"CHANGEFEED","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.710598 3491 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1,job=1094228900384931841] 320  job 1094228900384931841: adoption completed with error descriptor is being dropped
+I250801 02:03:12.710644 3462 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 319 ={"Timestamp":1754013792710643345,"EventType":"status_change","JobID":1094228854832267265,"JobType":"CHANGEFEED","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.710679 3462 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1,job=1094228854832267265] 321  job 1094228854832267265: adoption completed with error descriptor is being dropped
+I250801 02:03:12.710549 3461 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 318 ={"Timestamp":1754013792710544387,"EventType":"status_change","JobID":1094228905706487809,"JobType":"CHANGEFEED","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.710806 3461 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1,job=1094228905706487809] 322  job 1094228905706487809: adoption completed with error descriptor is being dropped
+I250801 02:03:12.712786 3355 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 323 ={"Timestamp":1754013792712776470,"EventType":"status_change","JobID":1094228903369867265,"JobType":"CHANGEFEED","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.712951 3355 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1,job=1094228903369867265] 324  job 1094228903369867265: adoption completed with error descriptor is being dropped
+I250801 02:03:12.715071 3506 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 325 ={"Timestamp":1754013792715066803,"EventType":"status_change","JobID":1094262342695485441,"JobType":"CHANGEFEED","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.715118 3506 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1,job=1094262342695485441] 326  job 1094262342695485441: adoption completed with error descriptor is being dropped
+I250801 02:03:12.715142 3414 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 327 ={"Timestamp":1754013792715137387,"EventType":"status_change","JobID":1094230257848025089,"JobType":"CHANGEFEED","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹descriptor is being dropped›","FinalResumeErr":"‹descriptor is being dropped›"}
+E250801 02:03:12.715220 3414 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1,job=1094230257848025089] 328  job 1094230257848025089: adoption completed with error descriptor is being dropped
+E250801 02:03:13.370080 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 329  failed to get table descriptor for automatic stats on table id: 181: descriptor is being dropped
+E250801 02:03:13.376590 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 330  failed to get table descriptor for automatic stats on table id: 191: descriptor is being dropped
+I250801 02:03:13.400592 4320 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 331 ={"Timestamp":1754013793400585512,"EventType":"status_change","JobID":1094265711427584001,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.404906 4320 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265711427584001,create-stats-distsql] 332  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.448803 4320 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 333 ={"Timestamp":1754013793448798679,"EventType":"status_change","JobID":1094265711427584001,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+E250801 02:03:13.454064 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 334  failed to get table descriptor for automatic stats on table id: 184: descriptor is being dropped
+E250801 02:03:13.455010 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 335  failed to get table descriptor for automatic stats on table id: 185: descriptor is being dropped
+E250801 02:03:13.461144 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 336  failed to get table descriptor for automatic stats on table id: 183: descriptor is being dropped
+E250801 02:03:13.462333 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 337  failed to get table descriptor for automatic stats on table id: 188: descriptor is being dropped
+E250801 02:03:13.463190 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 338  failed to get table descriptor for automatic stats on table id: 194: descriptor is being dropped
+E250801 02:03:13.464767 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 339  failed to get table descriptor for automatic stats on table id: 196: descriptor is being dropped
+I250801 02:03:13.486081 4620 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 340 ={"Timestamp":1754013793486077387,"EventType":"status_change","JobID":1094265711732883457,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.487715 4620 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265711732883457,create-stats-distsql] 341  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.519393 4620 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 342 ={"Timestamp":1754013793519390220,"EventType":"status_change","JobID":1094265711732883457,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+E250801 02:03:13.524225 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 343  failed to get table descriptor for automatic stats on table id: 180: descriptor is being dropped
+E250801 02:03:13.525270 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 344  failed to get table descriptor for automatic stats on table id: 190: descriptor is being dropped
+E250801 02:03:13.535640 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 345  failed to get table descriptor for automatic stats on table id: 195: descriptor is being dropped
+I250801 02:03:13.550503 4710 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 346 ={"Timestamp":1754013793550501054,"EventType":"status_change","JobID":1094265711944925185,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.551743 4710 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265711944925185,create-stats-distsql] 347  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.577397 4710 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 348 ={"Timestamp":1754013793577394470,"EventType":"status_change","JobID":1094265711944925185,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+E250801 02:03:13.586272 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 349  failed to get table descriptor for automatic stats on table id: 193: descriptor is being dropped
+E250801 02:03:13.593433 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 350  failed to get table descriptor for automatic stats on table id: 186: descriptor is being dropped
+E250801 02:03:13.595562 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 351  failed to get table descriptor for automatic stats on table id: 182: descriptor is being dropped
+E250801 02:03:13.597928 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 352  failed to get table descriptor for automatic stats on table id: 189: descriptor is being dropped
+E250801 02:03:13.602456 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 353  failed to get table descriptor for automatic stats on table id: 187: descriptor is being dropped
+I250801 02:03:13.616627 5024 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 354 ={"Timestamp":1754013793616624845,"EventType":"status_change","JobID":1094265712163487745,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.617870 5024 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265712163487745,create-stats-distsql] 355  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.642694 5024 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 356 ={"Timestamp":1754013793642691179,"EventType":"status_change","JobID":1094265712163487745,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:03:13.663713 5147 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 357 ={"Timestamp":1754013793663711095,"EventType":"status_change","JobID":1094265712314023937,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.664857 5147 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265712314023937,create-stats-distsql] 358  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.693453 5147 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 359 ={"Timestamp":1754013793693450929,"EventType":"status_change","JobID":1094265712314023937,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:03:13.706118 5103 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 360 ={"Timestamp":1754013793706115720,"EventType":"status_change","JobID":1094265712459153409,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.707021 5103 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265712459153409,create-stats-distsql] 361  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.731716 5103 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 362 ={"Timestamp":1754013793731713970,"EventType":"status_change","JobID":1094265712459153409,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:03:13.743979 5315 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 363 ={"Timestamp":1754013793743976720,"EventType":"status_change","JobID":1094265712586522625,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:03:13.745126 5315 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265712586522625,create-stats-distsql] 364  using computed sample size of 10000 for histogram construction
+I250801 02:03:13.772516 5315 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 365 ={"Timestamp":1754013793772514179,"EventType":"status_change","JobID":1094265712586522625,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+E250801 02:03:13.774711 2460 sql/stats/automatic_stats.go:509 ⋮ [T1,Vsystem,n1] 366  failed to get table descriptor for automatic stats on table id: 192: descriptor is being dropped
+I250801 02:03:40.275222 1250 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 367  claimed 2 jobs
+I250801 02:03:40.280891 5795 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=100] 368  job 100: resuming execution
+I250801 02:03:40.281289 5794 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1093557394742509569] 369  job 1093557394742509569: resuming execution
+I250801 02:03:40.285619 5799 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 370  KEY VISUALIZER job 100: stepping through state running
+I250801 02:03:40.286093 5773 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1093557394742509569] 371  AUTO SPAN CONFIG RECONCILIATION job 1093557394742509569: stepping through state running
+I250801 02:03:40.359635 5773 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:241 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569] 372  established range feed over system.descriptors starting at time 1754013820.299335677,0
+I250801 02:03:40.359736 5773 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:300 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569] 373  established range feed over system.zones starting at time 1754013820.299335677,0
+I250801 02:03:40.359793 5773 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:401 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569] 374  established range feed over system.protected_ts_records starting at time 1754013820.299335677,0
+I250801 02:04:13.801334 6470 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 375 ={"Timestamp":1754013853801328137,"EventType":"status_change","JobID":1094265909348892673,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:04:13.805479 6470 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1094265909348892673,create-stats-distsql] 376  using computed sample size of 10000 for histogram construction
+I250801 02:04:13.832911 6470 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 377 ={"Timestamp":1754013853832906054,"EventType":"status_change","JobID":1094265909348892673,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:04:13.850936 6563 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 378 ={"Timestamp":1754013853850928387,"EventType":"status_change","JobID":1094265909525774337,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:04:13.852544 6563 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265909525774337,create-stats-distsql] 379  using computed sample size of 10000 for histogram construction
+I250801 02:04:13.883565 6563 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 380 ={"Timestamp":1754013853883561346,"EventType":"status_change","JobID":1094265909525774337,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:04:13.897237 6607 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 381 ={"Timestamp":1754013853897233846,"EventType":"status_change","JobID":1094265909690236929,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:04:13.899497 6607 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094265909690236929,create-stats-distsql] 382  using computed sample size of 10000 for histogram construction
+I250801 02:04:13.947934 6607 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 383 ={"Timestamp":1754013853947930679,"EventType":"status_change","JobID":1094265909690236929,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:05:13.977184 7749 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 384 ={"Timestamp":1754013913977178429,"EventType":"status_change","JobID":1094266106540359681,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:05:13.979201 7749 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094266106540359681,create-stats-distsql] 385  using computed sample size of 10000 for histogram construction
+I250801 02:05:14.026687 7749 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 386 ={"Timestamp":1754013914026680721,"EventType":"status_change","JobID":1094266106540359681,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:07:16.592560 9851 kv/kvserver/replica_command.go:843 ⋮ [T1,Vsystem,n1,merge,s1,r105/1:‹/Table/1{80-94}›] 387  initiating a merge of r115:‹/Table/19{4-5}› [(n1,s1):1, next=2, gen=7] into this range (lhs+rhs size (71 KiB+27 KiB=97 KiB) below threshold (128 MiB) lhs+rhs cpu (81µs+120µs=201µs) below threshold (250ms))
+I250801 02:07:16.597309 729 kv/kvserver/store_remove_replica.go:152 ⋮ [T1,Vsystem,n1,s1,r105/1:‹/Table/1{80-94}›,raft] 388  removing replica r115/1
+I250801 02:07:16.599088 9858 kv/kvserver/replica_command.go:843 ⋮ [T1,Vsystem,n1,merge,s1,r105/1:‹/Table/1{80-95}›] 389  initiating a merge of r116:‹/{Table/195-Max}› [(n1,s1):1, next=2, gen=7] into this range (lhs+rhs size (97 KiB+11 KiB=108 KiB) below threshold (128 MiB) lhs+rhs cpu (201µs+3ms=4ms) below threshold (250ms))
+I250801 02:07:16.606757 732 kv/kvserver/store_remove_replica.go:152 ⋮ [T1,Vsystem,n1,s1,r105/1:‹/Table/1{80-95}›,raft] 390  removing replica r116/1
+I250801 02:07:45.369650 2463 sql/schema_changer.go:3186 ⋮ [T1,Vsystem,n1,job=SCHEMA CHANGE GC id=1094264991676497921] 391  removing table descriptor and zone config for table 196 (has active dsc=false)
+I250801 02:07:45.378460 2463 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1094264991676497921] 392  SCHEMA CHANGE GC job 1094264991676497921: stepping through state succeeded
+I250801 02:07:45.395751 2463 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1094264991676497921] 393 ={"Timestamp":1754014065395747680,"EventType":"status_change","JobID":1094264991676497921,"JobType":"SCHEMA CHANGE GC","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:07:53.253044 789 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 394  jemalloc arenas purged (took 432.833µs)
+I250801 02:09:53.269627 789 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 395  jemalloc arenas purged (took 589.667µs)
+I250801 02:10:44.517548 3475 sql/sql_activity_update_job.go:250 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 396  sql stats activity found no rows at 2025-08-01 02:00:00 +0000 UTC
+I250801 02:11:53.286578 789 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 397  jemalloc arenas purged (took 433.375µs)
+I250801 02:12:14.091485 14903 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 398 ={"Timestamp":1754014334091482846,"EventType":"status_change","JobID":1094267483140325377,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250801 02:12:14.093452 14903 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1094267483140325377,create-stats-distsql] 399  using computed sample size of 10000 for histogram construction
+I250801 02:12:14.190071 14903 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 400 ={"Timestamp":1754014334190068804,"EventType":"status_change","JobID":1094267483140325377,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250801 02:12:18.581472 1 1@cli/start.go:993 ⋮ [T1,Vsystem,n1] 401  received signal 'terminated'
+I250801 02:12:18.582298 1 1@cli/start.go:1034 ⋮ [T1,Vsystem,n1] 402  initiating graceful shutdown of server
+I250801 02:12:18.583554 15122 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 403  all tenant servers stopped
+I250801 02:12:18.583671 15122 1@server/drain.go:399 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 404  waiting for health probes to notice that the node is not ready for new sql connections
+W250801 02:12:18.583956 1248 jobs/registry.go:1069 ⋮ [T1,Vsystem,n1] 405  canceling all adopted jobs due to graceful drain request
+I250801 02:12:18.584071 924 sql/stats/automatic_stats.go:694 ⋮ [T1,Vsystem,n1] 406  draining auto stats refresher
+I250801 02:12:18.584118 925 sql/stats/automatic_stats.go:745 ⋮ [T1,Vsystem,n1] 407  draining stats garbage collector
+W250801 02:12:18.587412 5815 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-descriptor-rangefeed›,mux_n=1,gen=2] 408  error closing mux rangefeed client: context canceled
+W250801 02:12:18.587924 5888 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-zones-rangefeed›,mux_n=1,gen=2] 409  error closing mux rangefeed client: context canceled
+W250801 02:12:18.588387 5885 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1093557394742509569,rangefeed=‹sql-watcher-protected-ts-records-rangefeed›,mux_n=1,gen=2] 410  error closing mux rangefeed client: context canceled
+I250801 02:12:18.588952 3475 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 411  AUTO UPDATE SQL ACTIVITY job 103: stepping through state succeeded
+I250801 02:12:18.589050 5799 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 412  KEY VISUALIZER job 100: stepping through state succeeded
+I250801 02:12:18.624961 15122 sql/sqlstats/persistedsqlstats/provider.go:122 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 413  stopping persisted SQL stats tasks
+I250801 02:12:18.625796 15122 sql/sqlstats/persistedsqlstats/provider.go:128 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 414  persisted SQL stats tasks successfully shut down
+I250801 02:12:18.626029 15122 sql/stats/automatic_stats.go:516 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 415  starting to wait for auto-stats tasks to shut down
+I250801 02:12:18.626128 15122 sql/stats/automatic_stats.go:519 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 416  auto-stats tasks successfully shut down
+I250801 02:12:18.626231 15122 jobs/registry.go:2060 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 417  starting to wait for job registry to shut down
+I250801 02:12:18.626348 15122 jobs/registry.go:2063 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 418  job registry tasks successfully shut down
+W250801 02:12:18.717008 971 sql/sqlliveness/slinstance/slinstance.go:331 ⋮ [T1,Vsystem,n1] 419  exiting heartbeat loop
+I250801 02:12:18.718022 971 sql/sqlliveness/slinstance/slinstance.go:316 ⋮ [T1,Vsystem,n1] 420  draining heartbeat loop
+I250801 02:12:18.721654 15122 server/drain.go:482 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 421  SQL server drained successfully; SQL queries cannot execute any more
+I250801 02:12:18.722069 15122 server/drain.go:361 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 422  done draining clients
+I250801 02:12:18.726077 15122 1@server/drain.go:312 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 423  drain remaining: 83
+I250801 02:12:18.726568 15122 1@server/drain.go:314 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 424  drain details: descriptor leases: 82, liveness record: 1
+I250801 02:12:18.931642 15122 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 425  all tenant servers stopped
+W250801 02:12:18.933087 15142 sql/sqlstats/persistedsqlstats/flush.go:235 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 426  failed to flush transaction statistics: upsert-txn-stats: cannot acquire lease when draining
+W250801 02:12:18.933588 15141 sql/sqlstats/persistedsqlstats/flush.go:254 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 427  failed to flush statement statistics: upsert-stmt-stats: cannot acquire lease when draining
+I250801 02:12:18.933687 15122 sql/sqlstats/persistedsqlstats/provider.go:122 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 428  stopping persisted SQL stats tasks
+I250801 02:12:18.933752 15122 sql/sqlstats/persistedsqlstats/provider.go:128 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 429  persisted SQL stats tasks successfully shut down
+I250801 02:12:18.933814 15122 sql/stats/automatic_stats.go:516 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 430  starting to wait for auto-stats tasks to shut down
+I250801 02:12:18.933881 15122 sql/stats/automatic_stats.go:519 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 431  auto-stats tasks successfully shut down
+I250801 02:12:18.933948 15122 jobs/registry.go:2060 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 432  starting to wait for job registry to shut down
+I250801 02:12:18.934017 15122 jobs/registry.go:2063 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 433  job registry tasks successfully shut down
+I250801 02:12:18.935112 15122 server/drain.go:482 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 434  SQL server drained successfully; SQL queries cannot execute any more
+I250801 02:12:18.935184 15122 server/drain.go:361 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 435  done draining clients
+I250801 02:12:18.937209 15122 1@server/drain.go:312 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 436  drain remaining: 0
+I250801 02:12:18.937266 15122 1@server/drain.go:564 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 437  graceful drain complete
+I250801 02:12:18.937942 592 server/start_listen.go:112 ⋮ [T1,Vsystem,n1] 438  server shutting down: instructing cmux to stop accepting
+W250801 02:12:18.938039 193 server/structlogging/hot_ranges_log.go:92 ⋮ [T1,Vsystem,n1] 439  hot ranges stats logging scheduler stopped: %!s(<nil>)
+W250801 02:12:18.938581 1231 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹sql_instances›,mux_n=1,gen=2] 446  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938182 1767 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-entry-watcher›,mux_n=1,gen=2] 440  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938367 1490 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹table-stats-cache›,mux_n=1,gen=2] 441  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938445 1195 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹spanconfig-subscriber›,mux_n=1,gen=2] 442  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938502 1412 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹settings-watcher›,mux_n=1,gen=2] 443  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938566 1270 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹lease›,mux_n=1,gen=2] 444  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938503 124 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-settings-watcher›,mux_n=1,gen=2] 445  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938598 1641 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹tenant-boundaries-watcher›,mux_n=1,gen=2] 447  error closing mux rangefeed client: context canceled
+W250801 02:12:18.938590 975 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,rangefeed=‹system-config-cache›,mux_n=1,gen=2] 448  error closing mux rangefeed client: context canceled
+I250801 02:12:18.954302 15122 server/server_controller.go:409 ⋮ [T1,Vsystem,n1] 449  server controller shutting down
+I250801 02:12:18.954395 15122 server/server_controller.go:418 ⋮ [T1,Vsystem,n1] 450  waiting for tenant servers to report stopped
+I250801 02:12:18.954481 1 1@cli/start.go:1105 ⋮ [T1,Vsystem,n1] 451  server drained and shutdown completed

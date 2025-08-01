@@ -5,13 +5,13 @@ USER root
 WORKDIR /app
 
 # Installa le librerie Python
-RUN pip install --no-cache-dir pyspark==3.5.5 delta-spark==3.3.1
+RUN pip install --no-cache-dir pyspark==3.5.5 delta-spark==3.3.1 redis boto3 pyarrow
 
 # Torna all'utente non-root
 USER 1001
 
 # Copia gli script nello container
-COPY src/delta/silver/sensors_silver/ .
+COPY src/delta/silver/sensor_silver/ .
 
 # Avvio dello script con i pacchetti necessari: Delta + Kafka
 CMD spark-submit \

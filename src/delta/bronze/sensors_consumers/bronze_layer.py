@@ -48,7 +48,7 @@ def create_stream(topic):
         df_kafka = spark.readStream.format("kafka") \
             .option("kafka.bootstrap.servers", "broker_kafka:9092") \
             .option("subscribe", topic) \
-            .option("startingOffsets", "latest") \
+            .option("startingOffsets", "earliest") \
             .option("failOnDataLoss", "false") \
             .load()
 
@@ -67,7 +67,7 @@ def create_stream(topic):
             df_parsed.writeStream
             .format("delta")
             .outputMode("append")
-            .trigger(processingTime="5 second")  # TIME_FOR_BATCH
+            .trigger(processingTime="3 second")  # TIME_FOR_BATCH
             .option("checkpointLocation", f"s3a://bronze/checkpoints/{topic}/")
             .option("mergeSchema", "true")
             .start(f"s3a://bronze/{topic}/")

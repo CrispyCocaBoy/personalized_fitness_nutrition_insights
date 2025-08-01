@@ -375,7 +375,7 @@ def publish_loop(client):
             logging.info(f"Published {published_count} sensor readings")
 
             # Wait before next iteration
-            time.sleep(1)
+            time.sleep(0.1)
 
         except KeyboardInterrupt:
             logging.info("Received keyboard interrupt. Shutting down...")
