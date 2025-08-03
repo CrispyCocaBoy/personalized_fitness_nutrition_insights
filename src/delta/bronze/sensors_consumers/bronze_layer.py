@@ -2,6 +2,9 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, from_json, current_timestamp, expr
 from pyspark.sql.types import StructType, StringType, DoubleType, LongType
 
+# ========================
+# 1️⃣ Spark + MinIO
+# ========================
 try:
     spark = SparkSession.builder \
         .appName("BronzeLayerOptimized") \
@@ -43,6 +46,9 @@ sensor_schema = StructType() \
     .add("metric", StringType()) \
     .add("value", DoubleType())
 
+# ========================
+# 3️⃣ Funzione per creare stream con logging batch
+# ========================
 def create_stream(topic):
     try:
         df_kafka = spark.readStream.format("kafka") \
@@ -63,24 +69,38 @@ def create_stream(topic):
                 expr("(unix_timestamp() * 1000 - timestamp) / 1000.0").cast(DoubleType())
             )
 
+        # Funzione foreachBatch con logging
+        def write_and_log(batch_df, batch_id):
+            if batch_df.isEmpty():
+                print(f"⚠️ Batch {batch_id} vuoto per topic {topic}")
+                return
+
+            batch_df.write.format("delta") \
+                .mode("append") \
+                .option("mergeSchema", "true") \
+                .save(f"s3a://bronze/{topic}/")
+
+            print(f"✅ Batch {batch_id} topic {topic}: scritti {batch_df.count()} record su Delta")
+
         query = (
             df_parsed.writeStream
-            .format("delta")
+            .foreachBatch(write_and_log)
             .outputMode("append")
-            .trigger(processingTime="3 second")  # TIME_FOR_BATCH
+            .trigger(processingTime="5 second")  # intervallo microbatch
             .option("checkpointLocation", f"s3a://bronze/checkpoints/{topic}/")
-            .option("mergeSchema", "true")
-            .start(f"s3a://bronze/{topic}/")
+            .start()
         )
 
         print(f"✅ Streaming query avviata per topic: {topic}")
-
         return query
 
     except Exception as e:
         print(f"❌ ERRORE nello stream del topic {topic}:", e)
         raise
 
+# ========================
+# 4️⃣ Avvio streaming multipli
+# ========================
 queries = [create_stream(topic) for topic in sensor_topics]
 
 try:
@@ -88,3 +108,8 @@ try:
         q.awaitTermination()
 except KeyboardInterrupt:
     print("🛑 Interruzione manuale delle query streaming.")
+finally:
+    print("⏹ Arresto job Bronze Layer richiesto dall'utente")
+    for q in queries:
+        q.stop()
+    spark.stop()

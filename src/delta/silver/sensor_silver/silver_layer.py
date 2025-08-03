@@ -117,6 +117,8 @@ def enrich_with_redis(batch_df, batch_id):
         return [(*row, user_id) for row, user_id in zip(rows_list, user_ids)]
 
     schema_with_user = StructType(batch_df.schema.fields + [StructField("user_id", StringType(), True)])
+
+    # CONTROLLARE
     enriched_df = spark.createDataFrame(batch_df.rdd.mapPartitions(redis_lookup_partition), schema=schema_with_user)
 
     valid_data = enriched_df.filter(col("user_id").isNotNull())

@@ -5,5 +5,5 @@ WORKDIR /app
 COPY src/data_generator/sensors/people_simulator/ .
 COPY utility ./utility
 
-RUN pip install paho-mqtt psycopg[binary] bcrypt boto3 pytz
+RUN pip install paho-mqtt psycopg[binary] bcrypt boto3 pytz redis
 CMD ["python", "people_simulator.py"]

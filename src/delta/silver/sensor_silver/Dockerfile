@@ -1,4 +1,4 @@
-FROM bitnami/spark:3.5.5
+FROM bitnamilegacy/spark:3.5.5
 
 # Usa root per installazioni
 USER root

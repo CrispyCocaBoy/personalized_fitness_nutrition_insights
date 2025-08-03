@@ -214,6 +214,18 @@ services:
       - spark-master
       - emqx1
 
+  ## gold layer job
+  gold_layer:
+    build:
+      context: .
+      dockerfile: src/delta/gold/sensor_gold/Dockerfile
+    container_name: gold_layer
+    depends_on:
+      - broker_kafka
+      - silver_layer
+      - spark-master
+      - emqx1
+
   ## Latency monitor
 #  latency-monitor:
 #   build:

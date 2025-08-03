@@ -7,6 +7,9 @@ import socket
 from datetime import datetime
 import pytz
 from utility import database_connection as db
+import redis
+
+r = redis.Redis(host='redis', port=6379, decode_responses=True, db = 1)
 
 # MQTT configuration
 broker = 'emqx1'  # Docker container name of EMQX in the same network
@@ -198,6 +201,9 @@ def connect_mqtt_with_retry():
 # ---------------------------
 # Database helpers
 # ---------------------------
+def wait_user():
+    pass
+
 def get_user_data():
     """Retrieve user data including timezone information and sensor metrics"""
     try:
@@ -317,6 +323,7 @@ def publish_sensor_data(client, user_info):
     published_count = 0
 
     for user_id, info in user_info.items():
+
         country = info['country']
         name = info.get('name', 'Unknown')
         sensors = info['sensors']
@@ -326,6 +333,9 @@ def publish_sensor_data(client, user_info):
             continue
 
         for sensor_id, sensor_type_id, unit, sensor_name in sensors:
+            if not r.exists(f"sensor:{sensor_id}"):
+                logging.debug(f"Sensor {sensor_id} for user {user_id} not in Redis, skipping")
+                continue
             try:
                 payload = generate_payload(sensor_id, sensor_type_id, unit, country)
 
