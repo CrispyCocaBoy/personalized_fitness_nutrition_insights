@@ -1,0 +1,505 @@
+I250818 15:02:00.149808 1 util/log/file_sync_buffer.go:237 ⋮ [config]   file created at: 2025/08/18 15:02:00
+I250818 15:02:00.149841 1 util/log/file_sync_buffer.go:237 ⋮ [config]   running on machine: ‹04ea38c144ac›
+I250818 15:02:00.149857 1 util/log/file_sync_buffer.go:237 ⋮ [config]   binary: CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250818 15:02:00.149865 1 util/log/file_sync_buffer.go:237 ⋮ [config]   arguments: [‹/cockroach/cockroach› ‹start-single-node› ‹--certs-dir=certs› ‹--advertise-addr=127.0.0.1:26257› ‹--insecure› ‹--http-addr=0.0.0.0:8080›]
+I250818 15:02:00.149880 1 util/log/file_sync_buffer.go:237 ⋮ [config]   log format (utf8=✓): crdb-v2
+I250818 15:02:00.149885 1 util/log/file_sync_buffer.go:237 ⋮ [config]   line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid [chan@]file:line redactionmark \[tags\] [counter] msg
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1  ALL SECURITY CONTROLS HAVE BEEN DISABLED!
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +This mode is intended for non-production testing only.
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +In this mode:
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Your cluster is open to any client that can access ‹any of your IP addresses›.
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders with access to your machine or network can observe client-server traffic.
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can log in without password and read or write any data in the cluster.
+W250818 15:02:00.125400 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can consume all your server's resources and cause unavailability.
+I250818 15:02:00.266439 1 1@cli/start.go:1448 ⋮ [n?] 2  To start a secure server without mandating TLS for clients,
+I250818 15:02:00.266439 1 1@cli/start.go:1448 ⋮ [n?] 2 +consider --accept-sql-without-tls instead. For other options, see:
+I250818 15:02:00.266439 1 1@cli/start.go:1448 ⋮ [n?] 2 +
+I250818 15:02:00.266439 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://go.crdb.dev/issue-v/53404/v25.2
+I250818 15:02:00.266439 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://www.cockroachlabs.com/docs/v25.2/secure-a-cluster.html
+I250818 15:02:00.266682 1 server/status/recorder.go:856 ⋮ [n?] 3  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+W250818 15:02:00.266696 1 1@cli/start.go:1360 ⋮ [n?] 4  Using the default setting for --cache (128 MiB).
+W250818 15:02:00.266696 1 1@cli/start.go:1360 ⋮ [n?] 4 +  A significantly larger value is usually needed for good performance.
+W250818 15:02:00.266696 1 1@cli/start.go:1360 ⋮ [n?] 4 +  If you have a dedicated server a reasonable setting is --cache=.25 (2.2 GiB).
+I250818 15:02:00.266769 1 server/status/recorder.go:856 ⋮ [n?] 5  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250818 15:02:00.266775 1 1@cli/start.go:1477 ⋮ [n?] 6  CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250818 15:02:00.267082 1 server/status/recorder.go:856 ⋮ [n?] 7  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250818 15:02:00.267088 1 1@cli/start.go:554 ⋮ [n?] 8  soft memory limit of Go runtime is set to 4.9 GiB
+I250818 15:02:00.267097 1 1@cli/start.go:591 ⋮ [n?] 9  GC target percentage of Go runtime is set to 300%
+I250818 15:02:00.370914 1 server/status/recorder.go:856 ⋮ [T1,Vsystem,n?] 10  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 8.7 GiB instead: ›
+I250818 15:02:00.370975 1 server/config.go:674 ⋮ [T1,Vsystem,n?] 11  system total memory: 8.7 GiB
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12  server configuration:
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +max offset             500000000
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +cache size             128 MiB
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +SQL memory pool size   2.2 GiB
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan interval          10m0s
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan min idle time     10ms
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan max idle time     1s
+I250818 15:02:00.370994 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +event log enabled      true
+I250818 15:02:00.371035 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13  using local environment variables:
+I250818 15:02:00.371035 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13 +COCKROACH_CHANNEL=official-docker
+I250818 15:02:00.371049 1 1@cli/start.go:1345 ⋮ [T1,Vsystem,n?] 14  process identity: uid 0 euid 0 gid 0 egid 0
+I250818 15:02:00.397374 1 1@cli/start.go:1500 ⋮ [T1,Vsystem,n?] 15  GEOS loaded from directory ‹/usr/local/lib/cockroach›
+I250818 15:02:00.397458 1 1@cli/start.go:777 ⋮ [T1,Vsystem,n?] 16  starting cockroach node
+I250818 15:02:04.827626 53 server/config.go:880 ⋮ [T1,Vsystem,n?] 17  1 storage engine initialized
+I250818 15:02:04.827700 53 server/config.go:883 ⋮ [T1,Vsystem,n?] 18  Pebble cache size: 128 MiB
+I250818 15:02:04.827723 53 server/config.go:883 ⋮ [T1,Vsystem,n?] 19  store 0: max size 0 B, max open file limit 1043576
+I250818 15:02:04.827727 53 server/config.go:883 ⋮ [T1,Vsystem,n?] 20  store 0: /cockroach/cockroach-data: rw encrypted=false fs:{bdev=/run/host_mark/Users fstype=fakeowner mountpoint=/cockroach/cockroach-data mountopts=rw,nosuid,nodev,relatime,fakeowner}
+I250818 15:02:04.845984 121 util/cidr/cidr.go:299 ⋮ [T1,Vsystem,n?] 21  CIDR lookup updated with 0 destinations
+I250818 15:02:05.422953 53 1@server/clock_monotonicity.go:61 ⋮ [T1,Vsystem,n?] 22  monitoring forward clock jumps based on server.clock.forward_jump_check.enabled
+I250818 15:02:05.549607 53 1@server/clock_monotonicity.go:136 ⋮ [T1,Vsystem,n1] 23  Sleeping till wall time 1755529325549599134 to catches up to 1755529325921438593 to ensure monotonicity. Sub: 371.839459ms
+I250818 15:02:05.549835 594 1@server/server.go:1802 ⋮ [T1,Vsystem,n1] 24  connecting to gossip network to verify cluster ID "7c4e678d-486f-4806-8e59-dd3b5b489461"
+W250818 15:02:05.923090 53 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25  Running a server without --sql-addr, with a combined RPC/SQL listener, is deprecated.
+W250818 15:02:05.923090 53 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25 +This feature will be removed in a later version of CockroachDB.
+W250818 15:02:05.923153 53 1@gossip/gossip.go:1460 ⋮ [T1,Vsystem,n1] 26  no addresses found; use --join to specify a connected node
+I250818 15:02:05.937007 586 kv/kvserver/kvstorage/init.go:250 ⋮ [T1,Vsystem,n1,s1] 27  beginning range descriptor iteration
+I250818 15:02:05.937209 586 kv/kvserver/kvstorage/init.go:374 ⋮ [T1,Vsystem,n1,s1] 28  range descriptor iteration done: 57 range descriptors, 0 intents, 0 tombstones; stats: ‹seeked 118 times (60 internal); stepped 0 times (0 internal); blocks: 61KB cached; points: 58 (1.2KB keys, 1.7KB values); separated: 2 (58B, 0B fetched)›
+I250818 15:02:05.949564 586 kv/kvserver/kvstorage/init.go:501 ⋮ [T1,Vsystem,n1,s1] 29  loaded replica ID for 57/57 replicas
+I250818 15:02:05.952013 586 kv/kvserver/kvstorage/init.go:518 ⋮ [T1,Vsystem,n1,s1] 30  loaded Raft state for 57/57 replicas
+I250818 15:02:05.952086 586 kv/kvserver/kvstorage/init.go:545 ⋮ [T1,Vsystem,n1,s1] 31  loaded 57 replicas
+I250818 15:02:05.952123 586 kv/kvserver/kvstorage/init.go:576 ⋮ [T1,Vsystem,n1,s1] 32  verified 57/57 replicas
+I250818 15:02:05.972765 586 kv/kvserver/store.go:2369 ⋮ [T1,Vsystem,n1,s1] 33  initialized 57/57 replicas
+I250818 15:02:05.979314 586 server/node.go:690 ⋮ [T1,Vsystem,n1] 34  initialized store s1 in 55ms (57 replicas)
+I250818 15:02:05.979432 53 kv/kvserver/stores.go:261 ⋮ [T1,Vsystem,n1] 35  read 0 node addresses from persistent storage
+I250818 15:02:05.980150 53 server/node.go:801 ⋮ [T1,Vsystem,n1] 36  started with attributes []
+I250818 15:02:05.980400 53 server/goroutinedumper/goroutinedumper.go:117 ⋮ [T1,Vsystem,n1] 37  writing goroutine dumps to ‹/cockroach/cockroach-data/logs/goroutine_dump›
+I250818 15:02:05.980585 53 server/profiler/heapprofiler.go:72 ⋮ [T1,Vsystem,n1] 38  writing go heap profiles to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250818 15:02:05.980632 53 server/profiler/memory_monitoring_profiler.go:66 ⋮ [T1,Vsystem,n1] 39  writing memory monitoring dumps to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250818 15:02:05.980655 53 server/profiler/cgoprofiler.go:66 ⋮ [T1,Vsystem,n1] 40  to enable jmalloc profiling: "export MALLOC_CONF=prof:true" or "ln -s prof:true /etc/malloc.conf"
+I250818 15:02:05.980728 53 server/profiler/statsprofiler.go:68 ⋮ [T1,Vsystem,n1] 41  writing memory stats to ‹/cockroach/cockroach-data/logs/heap_profiler› at last every 1h0m0s
+I250818 15:02:05.981176 594 1@server/server.go:1805 ⋮ [T1,Vsystem,n1] 42  node connected via gossip
+I250818 15:02:05.983132 747 kv/kvserver/queue.go:612 ⋮ [T1,Vsystem,n1,s1,r16/1:‹/Table/1{3-4}›,raft] 43  rate limited in MaybeAdd (replicate): throttled on async limiting semaphore
+I250818 15:02:05.983347 657 kv/kvserver/storeliveness/support_manager.go:285 ⋮ [T1,Vsystem,n1,s1] 44  starting to heartbeat store {NodeID:1 StoreID:1}
+I250818 15:02:05.984023 53 server/profiler/activequeryprofiler.go:88 ⋮ [T1,Vsystem,n1] 45  writing go query profiles to ‹/cockroach/cockroach-data/logs/heap_profiler›
+I250818 15:02:05.984096 53 server/profiler/cpuprofiler.go:87 ⋮ [T1,Vsystem,n1] 46  writing cpu profile dumps to ‹/cockroach/cockroach-data/logs/pprof_dump›
+I250818 15:02:05.985746 53 1@server/server.go:1999 ⋮ [T1,Vsystem,n1] 47  starting http server at ‹[::]:8080› (use: ‹127.0.0.1:8080›)
+I250818 15:02:05.985780 53 1@server/server.go:2007 ⋮ [T1,Vsystem,n1] 48  starting grpc/postgres server at ‹[::]:26257›
+I250818 15:02:05.985790 53 1@server/server.go:2008 ⋮ [T1,Vsystem,n1] 49  advertising CockroachDB node at ‹127.0.0.1:26257›
+I250818 15:02:05.990251 657 kv/kvserver/storeliveness/supporter_state.go:298 ⋮ [T1,Vsystem,n1,s1] 50  provided support for store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:8 Expiration:1755529276.141405804,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:9 Expiration:1755529328.983388342,0}
+I250818 15:02:06.003843 657 kv/kvserver/storeliveness/requester_state.go:425 ⋮ [T1,Vsystem,n1,s1] 51  received support from store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:9 Expiration:0,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:9 Expiration:1755529328.983388342,0}
+I250818 15:02:06.026209 53 1@util/log/event_log.go:39 ⋮ [T1,Vsystem,n1] 52 ={"Timestamp":1755529326026186509,"EventType":"node_restart","NodeID":1,"StartedAt":1755529325923265259,"LastUp":1755529272983248179}
+I250818 15:02:06.028167 920 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 53  settings-watcher: established range feed cache
+I250818 15:02:06.028187 918 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 54  spanconfig-subscriber: established range feed cache
+I250818 15:02:06.103775 53 sql/sqlliveness/slinstance/slinstance.go:435 ⋮ [T1,Vsystem,n1] 55  starting SQL liveness instance
+I250818 15:02:06.111635 1204 kv/kvserver/replica_rangefeed.go:882 ⋮ [T1,Vsystem,n1,rangefeed=‹spanconfig-subscriber›,mux_n=1,gen=2,r50/1:‹/Table/4{7-8}›,sm=1,sid=1,s1] 56  RangeFeed closed timestamp 1755528753.873494385,0 is behind by 9m32.238133833s (behind=9m32.238133833s target=3s nudge=true cancel=false)
+I250818 15:02:06.114136 1188 sql/sqlliveness/slstorage/slstorage.go:540 ⋮ [T1,Vsystem,n1] 57  inserted sqlliveness session 010180c9decd23bf2a40bd8d0d103a6fbd027b with expiry 1755529366.103878926,0
+I250818 15:02:06.114222 1188 sql/sqlliveness/slinstance/slinstance.go:247 ⋮ [T1,Vsystem,n1] 58  created new SQL liveness session 010180c9decd23bf2a40bd8d0d103a6fbd027b
+I250818 15:02:06.114258 53 sql/sqlinstance/instancestorage/instancestorage.go:338 ⋮ [T1,Vsystem,n1] 59  assigning instance id to rpc addr ‹127.0.0.1:26257› and sql addr ‹127.0.0.1:26257›
+I250818 15:02:06.119711 53 server/server_sql.go:1618 ⋮ [T1,Vsystem,n1] 60  bound sqlinstance: Instance{RegionPrefix: gA==, InstanceID: 1, SQLAddr: ‹127.0.0.1:26257›, RPCAddr: ‹127.0.0.1:26257›, SessionID: 010180c9decd23bf2a40bd8d0d103a6fbd027b, Locality: , BinaryVersion: 25.2}
+I250818 15:02:06.120575 53 upgrade/upgrademanager/manager.go:171 ⋮ [T1,Vsystem,n1] 61  running permanent upgrades up to version: 25.2
+I250818 15:02:06.121729 1219 sql/sqlstats/persistedsqlstats/provider.go:159 ⋮ [T1,Vsystem,n1] 62  starting sql-stats-worker with initial delay: 11m25.125631056s
+I250818 15:02:06.122551 1232 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 63  system-config-cache: established range feed cache
+I250818 15:02:06.123196 1200 sql/temporary_schema.go:506 ⋮ [T1,Vsystem,n1] 64  running temporary object cleanup background job
+I250818 15:02:06.153061 1200 sql/temporary_schema.go:556 ⋮ [T1,Vsystem,n1] 65  found 0 temporary schemas
+I250818 15:02:06.153088 1200 sql/temporary_schema.go:559 ⋮ [T1,Vsystem,n1] 66  early exiting temporary schema cleaner as no temporary schemas were found
+I250818 15:02:06.153095 1200 sql/temporary_schema.go:560 ⋮ [T1,Vsystem,n1] 67  completed temporary object cleanup job
+I250818 15:02:06.153124 1200 sql/temporary_schema.go:641 ⋮ [T1,Vsystem,n1] 68  temporary object cleaner next scheduled to run at 2025-08-18 15:32:06.121704009 +0000 UTC m=+1806.652909838
+I250818 15:02:06.172103 53 upgrade/upgrademanager/manager.go:233 ⋮ [T1,Vsystem,n1] 69  detected the last permanent upgrade (v0.0-upgrading-step-004) to have already completed; no permanent upgrades will run
+I250818 15:02:06.172156 53 server/server_sql.go:1720 ⋮ [T1,Vsystem,n1] 70  done ensuring all necessary startup migrations have run
+I250818 15:02:06.172593 53 server/license/enforcer.go:262 ⋮ [T1,Vsystem,n1] 71  trial license expiry initialized to 1970-01-01 00:00:00 +0000 UTC
+I250818 15:02:06.172645 53 server/license/enforcer.go:298 ⋮ [T1,Vsystem,n1] 72  fetched existing cluster init grace period end time: 2025-08-24 14:50:24 +0000 UTC
+I250818 15:02:06.172712 53 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 73  enforcer license updated: type is none, grace period ends at "2025-08-24 14:50:24 +0000 UTC", telemetry required: false
+I250818 15:02:06.172727 53 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 74  enforcer license updated: type is none, grace period ends at "2025-08-24 14:50:24 +0000 UTC", telemetry required: false
+I250818 15:02:06.185256 1276 sql/sqlliveness/slstorage/slstorage.go:391 ⋮ [n1,intExec=expire-sessions] 75  deleted session 010180569a6f72efea40f081774cc19b50d88a which expired at 1755529310.258509095,0
+I250818 15:02:06.197972 158 sql/syntheticprivilegecache/cache.go:202 ⋮ [T1,Vsystem,n1] 76  warmed privileges for virtual tables in 15.623875ms
+I250818 15:02:06.215810 1608 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 77  tenant-settings-watcher: established range feed cache
+I250818 15:02:06.215829 160 jobs/job_scheduler.go:407 ⋮ [T1,Vsystem,n1] 78  waiting 2m0s before scheduled jobs daemon start
+I250818 15:02:06.215974 1610 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 79  tenant-entry-watcher: established range feed cache
+I250818 15:02:06.221302 1610 multitenant/tenantcapabilities/tenantcapabilitieswatcher/watcher.go:285 ⋮ [T1,Vsystem,n1] 80  received results of a full table scan for tenant capabilities
+I250818 15:02:06.242416 53 server/license/enforcer.go:582 ⋮ [T1,Vsystem,n1] 81  disable all license enforcement
+I250818 15:02:06.242437 53 1@server/server_sql.go:1971 ⋮ [T1,Vsystem,n1] 82  serving sql connections
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83  node startup completed:
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +CockroachDB node starting at 2025-08-18 15:02:06.242448843 +0000 UTC m=+6.773654671 (took 6.2s)
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +build:               CCL v25.2.0 @ 2025/05/15 21:07:42 (go1.23.7 X:nocoverageredesign)
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +malloc_conf:         prof:false,prof_active:true,background_thread:true,thp:never,metadata_thp:disabled,narenas:48,dirty_decay_ms:2000,muzzy_decay_ms:0
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +webui:               ‹http://127.0.0.1:8080›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +sql:                 ‹postgresql://root@127.0.0.1:26257/defaultdb?sslmode=disable›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +sql (JDBC):          ‹jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable&user=root›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +RPC client flags:    ‹/cockroach/cockroach <client cmd> --host=127.0.0.1:26257 --insecure›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +logs:                ‹/cockroach/cockroach-data/logs›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +temp dir:            ‹/cockroach/cockroach-data/cockroach-temp3474924033›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +external I/O path:   ‹/cockroach/cockroach-data/extern›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +store[0]:            ‹path=/cockroach/cockroach-data›
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +clusterID:           7c4e678d-486f-4806-8e59-dd3b5b489461
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +status:              restarted pre-existing node
+I250818 15:02:06.242568 53 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 83 +nodeID:              1
+I250818 15:02:06.246720 1606 server/auto_upgrade.go:81 ⋮ [T1,Vsystem,n1] 84  no need to upgrade, cluster already at the newest version
+I250818 15:02:06.274215 1698 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 85  released orphaned lease: ID=5 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.274717 1699 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 86  released orphaned lease: ID=6 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.275066 1679 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 87  released orphaned lease: ID=1 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.275141 1681 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 88  released orphaned lease: ID=4 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.275534 1680 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 89  released orphaned lease: ID=3 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.276730 1702 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 90  released orphaned lease: ID=9 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.277967 1700 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 91  released orphaned lease: ID=7 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.278084 1701 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 92  released orphaned lease: ID=8 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.278334 1718 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 93  released orphaned lease: ID=12 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.278943 1717 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 94  released orphaned lease: ID=11 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.280851 1694 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 95  released orphaned lease: ID=20 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.281632 1661 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 96  released orphaned lease: ID=14 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.282141 1660 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 97  released orphaned lease: ID=13 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.282494 1704 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 98  released orphaned lease: ID=19 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.282856 1703 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 99  released orphaned lease: ID=15 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.289984 1696 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 101  released orphaned lease: ID=23 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.288056 1695 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 100  released orphaned lease: ID=21 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.290614 1697 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 102  released orphaned lease: ID=24 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.290759 1730 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 103  released orphaned lease: ID=25 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.290817 1731 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 104  released orphaned lease: ID=26 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.293436 1734 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 105  released orphaned lease: ID=32 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.293960 1450 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 106  released orphaned lease: ID=28 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.294147 1732 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 107  released orphaned lease: ID=30 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.294238 1733 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 108  released orphaned lease: ID=31 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.294277 1705 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 109  released orphaned lease: ID=27 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.299396 1662 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 110  released orphaned lease: ID=34 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.299823 1735 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 111  released orphaned lease: ID=33 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.300393 1665 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 112  released orphaned lease: ID=37 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.300688 1663 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 113  released orphaned lease: ID=35 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.300775 1664 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 114  released orphaned lease: ID=36 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.303992 1736 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 115  released orphaned lease: ID=39 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.304214 1708 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 116  released orphaned lease: ID=43 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.304415 1707 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 117  released orphaned lease: ID=42 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.304422 1706 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 118  released orphaned lease: ID=41 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.304812 1737 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 119  released orphaned lease: ID=40 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.310844 1747 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 120  released orphaned lease: ID=46 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.310820 1738 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 122  released orphaned lease: ID=44 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.310820 1746 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 121  released orphaned lease: ID=45 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.322998 1742 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 123  released orphaned lease: ID=51 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.323287 1739 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 124  released orphaned lease: ID=47 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.323370 1740 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 125  released orphaned lease: ID=48 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.323448 1743 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 126  released orphaned lease: ID=52 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.334630 1741 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 127  released orphaned lease: ID=50 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.334961 1591 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 128  released orphaned lease: ID=53 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.335039 1592 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 129  released orphaned lease: ID=54 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.335094 1593 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 130  released orphaned lease: ID=55 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.335146 1594 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 131  released orphaned lease: ID=56 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336186 1599 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 132  released orphaned lease: ID=61 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336269 1595 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 133  released orphaned lease: ID=57 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336313 1596 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 134  released orphaned lease: ID=58 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336354 1597 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 135  released orphaned lease: ID=59 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336402 1598 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 136  released orphaned lease: ID=60 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336712 1764 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 137  released orphaned lease: ID=66 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336786 1600 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 138  released orphaned lease: ID=62 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.336850 1601 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 139  released orphaned lease: ID=63 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.337453 1763 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 140  released orphaned lease: ID=65 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.337503 1762 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 141  released orphaned lease: ID=64 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.343052 1766 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 142  released orphaned lease: ID=68 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.343491 1765 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 143  released orphaned lease: ID=67 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.345826 1767 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 144  released orphaned lease: ID=69 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.346241 1769 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 145  released orphaned lease: ID=71 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.346364 1768 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 146  released orphaned lease: ID=70 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.346422 1748 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 147  released orphaned lease: ID=72 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.346467 1770 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 148  released orphaned lease: ID=104 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.347225 1451 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 149  released orphaned lease: ID=106 ver=15 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.348415 1774 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 150  released orphaned lease: ID=110 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.349017 1771 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 151  released orphaned lease: ID=107 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.349551 1772 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 152  released orphaned lease: ID=108 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.349890 1773 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 153  released orphaned lease: ID=109 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.350491 1452 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 154  released orphaned lease: ID=111 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.351857 1453 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 155  released orphaned lease: ID=116 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.351967 1777 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 156  released orphaned lease: ID=114 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.352007 1775 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 157  released orphaned lease: ID=112 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.352004 1778 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 158  released orphaned lease: ID=115 ver=7 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.352035 1776 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 159  released orphaned lease: ID=113 ver=7 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.353715 1779 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 160  released orphaned lease: ID=119 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.354058 1709 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 161  released orphaned lease: ID=117 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.354293 1710 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 162  released orphaned lease: ID=118 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.354537 1781 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 163  released orphaned lease: ID=123 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.354798 1780 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 164  released orphaned lease: ID=122 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.355658 1795 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 165  released orphaned lease: ID=128 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.356352 1711 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 166  released orphaned lease: ID=124 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.356753 1712 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 167  released orphaned lease: ID=125 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.357094 1713 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 168  released orphaned lease: ID=126 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.357365 1794 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 169  released orphaned lease: ID=127 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.358283 1800 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 170  released orphaned lease: ID=133 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.358683 1796 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 171  released orphaned lease: ID=129 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.358731 1797 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 172  released orphaned lease: ID=130 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.358754 1798 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 173  released orphaned lease: ID=131 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.358773 1799 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 174  released orphaned lease: ID=132 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:06.359209 1801 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 175  released orphaned lease: ID=134 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250818 15:02:07.153339 585 1@gossip/gossip.go:1476 ⋮ [T1,Vsystem,n1] 176  node has connected to cluster via gossip
+I250818 15:02:07.157065 585 kv/kvserver/stores.go:280 ⋮ [T1,Vsystem,n1] 177  wrote 0 node addresses to persistent storage
+I250818 15:02:07.732460 161 server/diagnostics/update_checker.go:144 ⋮ [T1,Vsystem,n1] 178  a new version is available: ‹25.2.4›, details: ‹https://www.cockroachlabs.com/docs/releases/v25.2#v25-2-4›
+I250818 15:02:31.592419 1230 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 179  claimed 8 jobs
+I250818 15:02:31.595519 2278 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=101] 180  job 101: resuming execution
+I250818 15:02:31.595517 2276 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1098946398292541441] 181  job 1098946398292541441: resuming execution
+I250818 15:02:31.595517 2282 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1098958321112612865] 182  job 1098958321112612865: resuming execution
+I250818 15:02:31.595534 2275 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1099231626172334081] 183  job 1099231626172334081: resuming execution
+I250818 15:02:31.595535 2279 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=103] 184  job 103: resuming execution
+I250818 15:02:31.595538 2281 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=105] 185  job 105: resuming execution
+I250818 15:02:31.595541 2277 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=100] 186  job 100: resuming execution
+I250818 15:02:31.595537 2280 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=104] 187  job 104: resuming execution
+I250818 15:02:31.601236 2286 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1098946398292541441] 188  AUTO SPAN CONFIG RECONCILIATION job 1098946398292541441: stepping through state running
+I250818 15:02:31.601287 1993 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 189  KEY VISUALIZER job 100: stepping through state running
+I250818 15:02:31.601573 2030 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 190  AUTO UPDATE SQL ACTIVITY job 103: stepping through state running
+I250818 15:02:31.601907 2156 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=104] 191  MVCC STATISTICS UPDATE job 104: stepping through state running
+I250818 15:02:31.601905 2233 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=105] 192  UPDATE TABLE METADATA CACHE job 105: stepping through state running
+I250818 15:02:31.601259 2305 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=101] 193  POLL JOBS STATS job 101: stepping through state running
+I250818 15:02:31.602774 2307 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1098958321112612865] 194  CHANGEFEED job 1098958321112612865: stepping through state running
+I250818 15:02:31.607870 2030 sql/sql_activity_update_job.go:88 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 195  starting sql stats activity flush job
+I250818 15:02:31.608278 2156 sql/mvcc_statistics_update_job.go:63 ⋮ [T1,Vsystem,n1,job=MVCC STATISTICS UPDATE id=104] 196  starting mvcc statistics update job
+I250818 15:02:31.610917 2311 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 197  using bulk oracle for DistSQL planning
+I250818 15:02:31.611969 2311 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 198  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcR_REd9RcTelSmIt2S7vQi0VKJjk6oY6xSWRbxP9e1H7sLuzAXJ4Pn_fxZAL_owMB6iT7lhoiLSJMq7K6KTOOiHyHvNzdAIPeavooz-RBPABCzWBwVpH31i2taV046J8gUgamH8awtGsGyjoCMUEwoSMQ8G6Netu2jloZrEtSYKApSNOt7K8yqBP56AFrESX38thRglmWTBjzGeqZgR3Df7wPsiUQ-MTncAsindm1Su-d7YMhl-BzobsxiGjP2T5j-_xVAf5CAK8R-Ex-sL2nZ8GvJaUvkmKcawakW9oewtvRKfrkrFp3t_JuBa0NTT5sU9yKQ_935IMjef53v6ckvEjil0g1g6azj9-MBgF0bHRRFFWsimMW5zrP4zIvdjFiTornha4qDcsHsvXLib6c7OOKvf81LD_YyM4Tgw_yO91SIHc2vfHBqD-TeX7zOwAA__82Kumb›
+I250818 15:02:31.613134 2317 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 199  updating kafka metadata for topics: [‹users_changes›]
+I250818 15:02:31.617510 2317 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 200  updating kafka metadata for topics: [‹users_changes›]
+I250818 15:02:31.617714 2445 ccl/changefeedccl/kvfeed/kv_feed.go:332 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 201  kv feed run starting
+I250818 15:02:31.630647 2266 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1099231626172334081] 202 ={"Timestamp":1755529351630645340,"EventType":"status_change","JobID":1099231626172334081,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:02:31.633821 2266 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1099231626172334081,create-stats-distsql] 203  using computed sample size of 10000 for histogram construction
+I250818 15:02:31.638403 2286 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:241 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441] 204  established range feed over system.descriptors starting at time 1755529351.613025257,0
+I250818 15:02:31.638444 2286 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:300 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441] 205  established range feed over system.zones starting at time 1755529351.613025257,0
+I250818 15:02:31.638482 2286 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:401 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441] 206  established range feed over system.protected_ts_records starting at time 1755529351.613025257,0
+I250818 15:02:31.665228 2266 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1099231626172334081] 207 ={"Timestamp":1755529351665225257,"EventType":"status_change","JobID":1099231626172334081,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:02:48.027811 2889 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 208  GC still needed following GC, recomputing MVCC stats
+I250818 15:02:48.027888 2889 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 209  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:02:48.027888 2889 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 209 +‹likely last GC: 2m25.590349541s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:02:48.027888 2889 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 209 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:02:48.027969 2889 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 210  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:02:48.027969 2889 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 210 +‹likely last GC: 2m28.739684999s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:02:48.027969 2889 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 210 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:03:58.148382 4607 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 211  GC still needed following GC, recomputing MVCC stats
+I250818 15:03:58.148892 4607 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 212  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:03:58.148892 4607 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 212 +‹likely last GC: 1m5.829488254s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:03:58.148892 4607 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 212 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:03:58.148960 4607 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 213  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:03:58.148960 4607 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 213 +‹likely last GC: 1m10.123309546s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:03:58.148960 4607 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 213 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:04:18.174480 4979 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 214  GC still needed following GC, recomputing MVCC stats
+I250818 15:04:18.174616 4979 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 215  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:04:18.174616 4979 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 215 +‹likely last GC: 16.85602862s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:04:18.174616 4979 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 215 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:04:18.174705 4979 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 216  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:04:18.174705 4979 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 216 +‹likely last GC: 20.027840579s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:04:18.174705 4979 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 216 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:05:05.233429 5724 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 217  GC still needed following GC, recomputing MVCC stats
+I250818 15:05:05.233696 5724 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 218  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:05:05.233696 5724 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 218 +‹likely last GC: 41.727791424s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:05:05.233696 5724 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 218 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:05:05.233837 5724 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 219  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:05:05.233837 5724 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 219 +‹likely last GC: 47.061918175s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:05:05.233837 5724 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 219 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:06:30.337006 7331 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 220  GC still needed following GC, recomputing MVCC stats
+I250818 15:06:30.337164 7331 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 221  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:06:30.337164 7331 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 221 +‹likely last GC: 1m21.819996664s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:06:30.337164 7331 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 221 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:06:30.337343 7331 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 222  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:06:30.337343 7331 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 222 +‹likely last GC: 1m25.108210123s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:06:30.337343 7331 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 222 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:07:05.392487 7766 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 223  GC still needed following GC, recomputing MVCC stats
+I250818 15:07:05.392655 7766 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 224  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:07:05.392655 7766 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 224 +‹likely last GC: 29.724575168s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:07:05.392655 7766 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 224 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:07:05.392806 7766 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 225  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:07:05.392806 7766 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 225 +‹likely last GC: 35.060308628s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:07:05.392806 7766 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 225 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:08:06.532565 9079 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 226 ={"Timestamp":1755529686532562009,"EventType":"status_change","JobID":1099232990064771073,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:08:06.534073 9079 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1099232990064771073,create-stats-distsql] 227  using computed sample size of 10000 for histogram construction
+I250818 15:08:06.562873 9079 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 228 ={"Timestamp":1755529686562860676,"EventType":"status_change","JobID":1099232990064771073,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:08:45.514529 9769 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 229  GC still needed following GC, recomputing MVCC stats
+I250818 15:08:45.514597 9769 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 230  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:08:45.514597 9769 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 230 +‹likely last GC: 1m36.737291921s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:08:45.514597 9769 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 230 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:08:45.514654 9769 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 231  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:08:45.514654 9769 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 231 +‹likely last GC: 1m40.124753921s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:08:45.514654 9769 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 231 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:09:06.587407 10207 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 232 ={"Timestamp":1755529746587400634,"EventType":"status_change","JobID":1099233186836283393,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:09:06.589269 10207 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1099233186836283393,create-stats-distsql] 233  using computed sample size of 10000 for histogram construction
+I250818 15:09:06.640763 10207 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 234 ={"Timestamp":1755529746640758051,"EventType":"status_change","JobID":1099233186836283393,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:09:25.562420 10610 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 235  GC still needed following GC, recomputing MVCC stats
+I250818 15:09:25.562692 10610 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 236  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:09:25.562692 10610 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 236 +‹likely last GC: 35.456107406s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:09:25.562692 10610 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 236 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:09:25.562827 10610 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 237  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:09:25.562827 10610 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 237 +‹likely last GC: 40.04971449s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:09:25.562827 10610 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 237 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:10:04.605749 11311 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 238  GC still needed following GC, recomputing MVCC stats
+I250818 15:10:04.606013 11311 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 239  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:10:04.606013 11311 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 239 +‹likely last GC: 34.467512171s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:10:04.606013 11311 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 239 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:10:04.606266 11311 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 240  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:10:04.606266 11311 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 240 +‹likely last GC: 39.048424171s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:10:04.606266 11311 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 240 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:11:06.038279 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 241  jemalloc arenas purged (took 106µs)
+I250818 15:11:18.698747 12664 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 242  GC still needed following GC, recomputing MVCC stats
+I250818 15:11:18.698792 12664 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 243  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:11:18.698792 12664 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 243 +‹likely last GC: 1m10.497809575s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:11:18.698792 12664 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 243 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:11:18.698826 12664 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 244  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:11:18.698826 12664 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 244 +‹likely last GC: 1m14.096571951s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:11:18.698826 12664 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 244 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:11:35.718827 12811 kv/kvserver/replica_consistency.go:210 ⋮ [T1,Vsystem,n1,consistencyChecker,s1,r75/1:‹/Table/1{06-33}›] 245  triggering stats recomputation to resolve delta of {ContainsEstimates:2 LastUpdateNanos:1755445875003510295 LockAge:0 GCBytesAge:0 LiveBytes:0 LiveCount:0 KeyBytes:0 KeyCount:0 ValBytes:0 ValCount:0 IntentBytes:0 IntentCount:0 LockBytes:0 LockCount:0 RangeKeyCount:0 RangeKeyBytes:0 RangeValCount:0 RangeValBytes:0 SysBytes:0 SysCount:0 AbortSpanBytes:0}
+I250818 15:12:10.156091 2030 sql/sql_activity_update_job.go:250 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 246  sql stats activity found no rows at 2025-08-18 15:00:00 +0000 UTC
+I250818 15:12:10.158670 2030 sql/sql_activity_update_job.go:250 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 247  sql stats activity found no rows at 2025-08-18 14:00:00 +0000 UTC
+I250818 15:12:16.799485 13717 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 248  GC still needed following GC, recomputing MVCC stats
+I250818 15:12:16.799559 13717 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 249  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:12:16.799559 13717 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 249 +‹likely last GC: 53.344840596s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:12:16.799559 13717 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 249 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:12:16.799605 13717 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 250  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:12:16.799605 13717 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 250 +‹likely last GC: 58.103185541s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:12:16.799605 13717 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 250 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:12:42.832003 14012 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 251  GC still needed following GC, recomputing MVCC stats
+I250818 15:12:42.832224 14012 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 252  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:12:42.832224 14012 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 252 +‹likely last GC: 22.410939762s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:12:42.832224 14012 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 252 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:12:42.832391 14012 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 253  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:12:42.832391 14012 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 253 +‹likely last GC: 26.034167221s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:12:42.832391 14012 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 253 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:13:06.048667 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 254  jemalloc arenas purged (took 139.625µs)
+I250818 15:13:06.684902 14572 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 255 ={"Timestamp":1755529986684898676,"EventType":"status_change","JobID":1099233973558935553,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:13:06.688455 14572 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1099233973558935553,create-stats-distsql] 256  using computed sample size of 10000 for histogram construction
+I250818 15:13:06.721167 14572 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 257 ={"Timestamp":1755529986721163343,"EventType":"status_change","JobID":1099233973558935553,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:13:06.738448 14725 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 258 ={"Timestamp":1755529986738445843,"EventType":"status_change","JobID":1099233973777563649,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:13:06.749486 14725 jobs/registry.go:1673 ⋮ [T1,Vsystem,n1] 259  AUTO CREATE PARTIAL STATS job 1099233973777563649: stepping through state reverting with error: the latest full statistic for column ‹fingerprint_id› has no histogram
+I250818 15:13:06.759308 14725 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 260 ={"Timestamp":1755529986759306051,"EventType":"status_change","JobID":1099233973777563649,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: reverting","PreviousStatus":"running","NewStatus":"reverting","RunNum":0,"Error":"‹the latest full statistic for column fingerprint_id has no histogram›","FinalResumeErr":"‹the latest full statistic for column fingerprint_id has no histogram›"}
+I250818 15:13:06.759339 14725 jobs/registry.go:1673 ⋮ [T1,Vsystem,n1] 261  AUTO CREATE PARTIAL STATS job 1099233973777563649: stepping through state failed with error: the latest full statistic for column ‹fingerprint_id› has no histogram
+I250818 15:13:06.771951 14725 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 262 ={"Timestamp":1755529986771949676,"EventType":"status_change","JobID":1099233973777563649,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: failed","PreviousStatus":"reverting","NewStatus":"failed","RunNum":0,"Error":"‹the latest full statistic for column fingerprint_id has no histogram›","FinalResumeErr":"‹the latest full statistic for column fingerprint_id has no histogram›"}
+E250818 15:13:06.771980 14725 jobs/adopt.go:415 ⋮ [T1,Vsystem,n1] 263  job 1099233973777563649: adoption completed with error the latest full statistic for column ‹fingerprint_id› has no histogram
+W250818 15:13:06.773474 14000 sql/stats/automatic_stats.go:1016 ⋮ [T1,Vsystem,n1] 264  failed to create statistics on table 43: create-stats: the latest full statistic for column ‹fingerprint_id› has no histogram
+I250818 15:14:09.934539 15959 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 265  GC still needed following GC, recomputing MVCC stats
+I250818 15:14:09.934671 15959 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 266  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:14:09.934671 15959 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 266 +‹likely last GC: 1m23.346989457s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:14:09.934671 15959 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 266 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:14:09.934760 15959 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 267  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:14:09.934760 15959 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 267 +‹likely last GC: 1m27.107306415s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:14:09.934760 15959 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 267 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:14:47.983447 16597 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 268  GC still needed following GC, recomputing MVCC stats
+I250818 15:14:47.983506 16597 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 269  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:14:47.983506 16597 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 269 +‹likely last GC: 32.263987127s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:14:47.983506 16597 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 269 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:14:47.983573 16597 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 270  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:14:47.983573 16597 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 270 +‹likely last GC: 38.052177698s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:14:47.983573 16597 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 270 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:15:06.059482 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 271  jemalloc arenas purged (took 308.208µs)
+I250818 15:15:06.804104 16964 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 272 ={"Timestamp":1755530106804099634,"EventType":"status_change","JobID":1099234367181225985,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:15:06.806233 16964 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1099234367181225985,create-stats-distsql] 273  using computed sample size of 10000 for histogram construction
+I250818 15:15:06.852118 16964 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 274 ={"Timestamp":1755530106852113343,"EventType":"status_change","JobID":1099234367181225985,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:15:06.868305 16957 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 275 ={"Timestamp":1755530106868302760,"EventType":"status_change","JobID":1099234367420661761,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:15:06.869762 16957 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1099234367420661761,create-stats-distsql] 276  using computed sample size of 10000 for histogram construction
+I250818 15:15:06.902917 16957 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 277 ={"Timestamp":1755530106902913093,"EventType":"status_change","JobID":1099234367420661761,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:15:06.918743 17165 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 278 ={"Timestamp":1755530106918739260,"EventType":"status_change","JobID":1099234367583911937,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:15:06.919952 17165 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1099234367583911937,create-stats-distsql] 279  using computed sample size of 10000 for histogram construction
+I250818 15:15:06.955278 17165 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 280 ={"Timestamp":1755530106955272760,"EventType":"status_change","JobID":1099234367583911937,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:15:42.047280 17694 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 281  GC still needed following GC, recomputing MVCC stats
+I250818 15:15:42.047415 17694 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 282  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:15:42.047415 17694 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 282 +‹likely last GC: 48.161743385s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:15:42.047415 17694 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 282 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:15:42.047542 17694 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 283  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:15:42.047542 17694 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 283 +‹likely last GC: 54.067690428s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:15:42.047542 17694 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 283 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:16:37.113505 18801 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 284  GC still needed following GC, recomputing MVCC stats
+I250818 15:16:37.113635 18801 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 285  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:16:37.113635 18801 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 285 +‹likely last GC: 51.275645414s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:16:37.113635 18801 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 285 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:16:37.113853 18801 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 286  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:16:37.113853 18801 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 286 +‹likely last GC: 55.06951879s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:16:37.113853 18801 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 286 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:17:16.076055 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 287  jemalloc arenas purged (took 142.166µs)
+I250818 15:18:05.230524 20350 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 288  GC still needed following GC, recomputing MVCC stats
+I250818 15:18:05.230688 20350 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 289  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:18:05.230688 20350 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 289 +‹likely last GC: 1m23.190679456s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:18:05.230688 20350 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 289 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:18:05.230753 20350 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 290  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:18:05.230753 20350 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 290 +‹likely last GC: 1m28.120627499s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:18:05.230753 20350 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 290 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:19:04.307369 21448 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 291  GC still needed following GC, recomputing MVCC stats
+I250818 15:19:04.307493 21448 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 292  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:19:04.307493 21448 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 292 +‹likely last GC: 55.047148749s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:19:04.307493 21448 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 292 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:19:04.307579 21448 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 293  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:19:04.307579 21448 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 293 +‹likely last GC: 59.080425708s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:19:04.307579 21448 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 293 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:19:16.092258 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 294  jemalloc arenas purged (took 420.5µs)
+I250818 15:20:08.378186 22615 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 295  GC still needed following GC, recomputing MVCC stats
+I250818 15:20:08.378294 22615 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 296  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:20:08.378294 22615 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 296 +‹likely last GC: 58.980155167s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:20:08.378294 22615 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 296 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:20:08.378460 22615 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 297  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:20:08.378460 22615 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 297 +‹likely last GC: 1m4.074359502s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:20:08.378460 22615 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 297 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:20:30.423563 22919 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 298  GC still needed following GC, recomputing MVCC stats
+I250818 15:20:30.423812 22919 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 299  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:20:30.423812 22919 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 299 +‹likely last GC: 15.85005212s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:20:30.423812 22919 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 299 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:20:30.423995 22919 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 300  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:20:30.423995 22919 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 300 +‹likely last GC: 22.047897996s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:20:30.423995 22919 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 300 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:21:10.156718 2030 sql/sql_activity_update_job.go:250 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 301  sql stats activity found no rows at 2025-08-18 14:00:00 +0000 UTC
+I250818 15:21:16.117055 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 302  jemalloc arenas purged (took 416.958µs)
+I250818 15:21:21.483401 23963 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 303  GC still needed following GC, recomputing MVCC stats
+I250818 15:21:21.483494 23963 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 304  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:21:21.483494 23963 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 304 +‹likely last GC: 47.977462621s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:21:21.483494 23963 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 304 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:21:21.483622 23963 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 305  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:21:21.483622 23963 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 305 +‹likely last GC: 51.070390829s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:21:21.483622 23963 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 305 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:22:07.002142 24782 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 306 ={"Timestamp":1755530527002139343,"EventType":"status_change","JobID":1099235744094846977,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:22:07.004190 24782 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1099235744094846977,create-stats-distsql] 307  using computed sample size of 10000 for histogram construction
+I250818 15:22:07.071504 24782 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 308 ={"Timestamp":1755530527071501218,"EventType":"status_change","JobID":1099235744094846977,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:22:43.583637 25548 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 309  GC still needed following GC, recomputing MVCC stats
+I250818 15:22:43.583770 25548 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 310  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:22:43.583770 25548 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 310 +‹likely last GC: 1m17.864835718s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:22:43.583770 25548 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 310 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:22:43.583916 25548 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 311  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:22:43.583916 25548 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 311 +‹likely last GC: 1m22.104062927s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:22:43.583916 25548 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 311 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:23:03.600896 25886 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 312  GC still needed following GC, recomputing MVCC stats
+I250818 15:23:03.600998 25886 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 313  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:23:03.600998 25886 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 313 +‹likely last GC: 16.692074703s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:23:03.600998 25886 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 313 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:23:03.601084 25886 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 314  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:23:03.601084 25886 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 314 +‹likely last GC: 20.022153453s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:23:03.601084 25886 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 314 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:23:26.111180 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 315  jemalloc arenas purged (took 328.667µs)
+I250818 15:24:37.744823 27621 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 316  GC still needed following GC, recomputing MVCC stats
+I250818 15:24:37.744937 27621 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 317  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:24:37.744937 27621 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 317 +‹likely last GC: 1m29.913582126s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:24:37.744937 27621 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 317 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:24:37.745020 27621 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 318  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:24:37.745020 27621 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 318 +‹likely last GC: 1m34.14819646s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:24:37.745020 27621 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 318 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:25:07.120057 28173 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 319 ={"Timestamp":1755530707120054385,"EventType":"status_change","JobID":1099236334321696769,"JobType":"AUTO CREATE STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:25:07.121400 28173 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE STATS id=1099236334321696769,create-stats-distsql] 320  using computed sample size of 10000 for histogram construction
+I250818 15:25:07.158335 28173 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 321 ={"Timestamp":1755530707158332635,"EventType":"status_change","JobID":1099236334321696769,"JobType":"AUTO CREATE STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:25:26.151908 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 322  jemalloc arenas purged (took 184.416µs)
+I250818 15:25:48.839535 29027 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 323  GC still needed following GC, recomputing MVCC stats
+I250818 15:25:48.839583 29027 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 324  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:25:48.839583 29027 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 324 +‹likely last GC: 1m7.641541657s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:25:48.839583 29027 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 324 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:25:48.839682 29027 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 325  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:25:48.839682 29027 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 325 +‹likely last GC: 1m11.099956074s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:25:48.839682 29027 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 325 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:26:07.180888 29348 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 326 ={"Timestamp":1755530767180884718,"EventType":"status_change","JobID":1099236531126272001,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250818 15:26:07.183597 29348 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1099236531126272001,create-stats-distsql] 327  using computed sample size of 10000 for histogram construction
+I250818 15:26:07.210933 29348 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 328 ={"Timestamp":1755530767210930426,"EventType":"status_change","JobID":1099236531126272001,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250818 15:26:17.873189 29638 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 329  GC still needed following GC, recomputing MVCC stats
+I250818 15:26:17.873223 29638 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 330  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:26:17.873223 29638 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 330 +‹likely last GC: 23.528172346s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:26:17.873223 29638 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 330 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:26:17.873265 29638 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 331  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:26:17.873265 29638 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 331 +‹likely last GC: 29.036904499s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:26:17.873265 29638 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 331 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:27:22.945692 30779 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 332  GC still needed following GC, recomputing MVCC stats
+I250818 15:27:22.945754 30779 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 333  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:27:22.945754 30779 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 333 +‹likely last GC: 1m0.537537835s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:27:22.945754 30779 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 333 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:27:22.945817 30779 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 334  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.04)+intentScore(0.00)›
+I250818 15:27:22.945817 30779 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 334 +‹likely last GC: 1m5.075915502s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250818 15:27:22.945817 30779 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 334 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250818 15:27:26.164739 779 server/status/runtime_jemalloc.go:226 ⋮ [T1,Vsystem,n1] 335  jemalloc arenas purged (took 113.875µs)
+I250818 15:28:01.471424 1 1@cli/start.go:993 ⋮ [T1,Vsystem,n1] 336  received signal 'terminated'
+I250818 15:28:01.472618 1 1@cli/start.go:1034 ⋮ [T1,Vsystem,n1] 337  initiating graceful shutdown of server
+I250818 15:28:01.474129 31460 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 338  all tenant servers stopped
+I250818 15:28:01.474224 31460 1@server/drain.go:399 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 339  waiting for health probes to notice that the node is not ready for new sql connections
+I250818 15:28:04.474534 31400 1@server/drain.go:513 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 340  number of open connections: 0
+I250818 15:28:06.474524 31376 1@cli/start.go:1046 ⋮ [T1,Vsystem,n1] 341  370 running tasks
+W250818 15:28:11.475857 1228 jobs/registry.go:1069 ⋮ [T1,Vsystem,n1] 342  canceling all adopted jobs due to graceful drain request
+I250818 15:28:11.475900 31376 1@cli/start.go:1046 ⋮ [T1,Vsystem,n1] 345  368 running tasks
+I250818 15:28:11.475937 153 sql/stats/automatic_stats.go:694 ⋮ [T1,Vsystem,n1] 343  draining auto stats refresher
+I250818 15:28:11.476051 154 sql/stats/automatic_stats.go:745 ⋮ [T1,Vsystem,n1] 344  draining stats garbage collector
+W250818 15:28:11.480064 2350 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator,mux_n=1,gen=2] 346  error closing mux rangefeed client: context canceled
+W250818 15:28:11.480535 2475 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441,rangefeed=‹sql-watcher-zones-rangefeed›,mux_n=1,gen=2] 347  error closing mux rangefeed client: context canceled
+W250818 15:28:11.480685 2433 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441,rangefeed=‹sql-watcher-protected-ts-records-rangefeed›,mux_n=1,gen=2] 348  error closing mux rangefeed client: context canceled
+E250818 15:28:11.486394 2368 ccl/changefeedccl/kvfeed/kv_feed.go:158 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 352  stopping kv feed due to error: context canceled
+I250818 15:28:11.480940 1993 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 349  KEY VISUALIZER job 100: stepping through state succeeded
+I250818 15:28:11.481014 2030 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 350  AUTO UPDATE SQL ACTIVITY job 103: stepping through state succeeded
+W250818 15:28:11.481191 2536 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441,rangefeed=‹sql-watcher-descriptor-rangefeed›,mux_n=1,gen=2] 351  error closing mux rangefeed client: context canceled
+I250818 15:28:11.492495 2307 ccl/changefeedccl/changefeed_stmt.go:1466 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 353  CHANGEFEED 1098958321112612865 shutting down (cause: context canceled)
+W250818 15:28:11.492731 2307 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 354  job failed (context canceled)
