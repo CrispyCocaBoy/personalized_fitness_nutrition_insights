@@ -8,6 +8,8 @@ services:
     volumes:
       - ./src/frontend:/app
       - ./utility:/app/utility
+    depends_on:
+      - cockroachdb
 
 # Ingestion phase
 ## MQTT protocol
