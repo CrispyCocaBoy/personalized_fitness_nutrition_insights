@@ -3,6 +3,7 @@ import bcrypt
 import random
 import string
 
+# Connessioni
 def connection():
     return psycopg.connect(
         host="cockroachdb",
@@ -97,6 +98,60 @@ def set_weight(user_id, weight):
     finally:
         conn.close()
 
+# Access
+def check_credentials(login_input, password, method):
+    try:
+        conn = connection()
+        cur = conn.cursor()
+
+        # Selezione in base al metodo scelto
+        if method == "Username":
+            cur.execute("SELECT user_id, password FROM users WHERE username = %s", (login_input,))
+        else:  # Email
+            cur.execute("SELECT user_id, password FROM users WHERE email = %s", (login_input,))
+
+        result = cur.fetchone()
+        conn.close()
+
+        if not result:
+            return "not_found", None  # L'utente non esiste
+
+        user_id, hashed_pw = result[0], result[1].encode('utf-8')
+
+        # Verifica della password
+        if bcrypt.checkpw(password.encode('utf-8'), hashed_pw):
+            return "success", user_id
+        else:
+            return "wrong_password", None
+
+    except Exception as e:
+        return "error", None
+
+
+def retrive_name(user_id):
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+                    SELECT name, surname
+                    FROM users_profile
+                    WHERE user_id = %s
+                    """, (user_id,))
+        row = cur.fetchone()
+
+        if row:
+            name, surname = row
+            return name, surname
+        else:
+            return None, None  # utente non trovato
+    except Exception as e:
+        conn.rollback()
+        return False, f"Errore nome: {e}"
+    finally:
+        cur.close()
+        conn.close()
+
+
 # The device selection can be done
 # - Via randomization
 def random_selection():
@@ -170,3 +225,127 @@ def bind_device(user_id, device_type_id, device_type_name):
 
     finally:
         conn.close()
+
+# Retrive default_meal
+def default_food():
+    conn = connection()  # tua funzione che apre la connessione
+    cur = conn.cursor()
+
+    cur.execute("SELECT name FROM default_foods ORDER BY name;")
+    rows = cur.fetchall()
+
+    # chiudi connessione
+    cur.close()
+    conn.close()
+
+    # estrai i soli nomi
+    return [r[0] for r in rows]
+
+def personalized_food(user_id: str):
+    conn = connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT name FROM user_foods WHERE user_id = %s ORDER BY name;",
+        (user_id,)   # tupla!
+    )
+    rows = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return [r[0] for r in rows]
+
+
+import uuid
+
+def insert_personalized_food(user_id: str, food: dict):
+    """
+    Inserisce una riga in users_food.
+    Colonne richieste presenti in 'food':
+      name, quantity, unit, calories, carbohydrates, protein, fat, fiber, sugars,
+      saturated_fat, trans_fat, cholesterol, potassium, iron, vitamin_c, vitamin_a, category
+    I campi mancanti vengono inseriti come NULL/0 dove ha senso.
+    Ritorna lo user_food_id (UUID) inserito.
+    """
+    from utility.database_connection import connection
+
+    new_id = str(uuid.uuid4())
+
+    sql = """
+        INSERT INTO user_foods (
+            user_food_id,
+            user_id,
+            name,
+            quantity,
+            unit,
+            calories,
+            carbohydrates,
+            protein,
+            fat,
+            fiber,
+            sugars,
+            saturated_fat,
+            trans_fat,
+            cholesterol,
+            potassium,
+            iron,
+            vitamin_c,
+            vitamin_a,
+            category
+        ) VALUES (
+            %s,  -- user_food_id
+            %s,  -- user_id
+            %s,  -- name
+            %s,  -- quantity
+            %s,  -- unit
+            %s,  -- calories
+            %s,  -- carbohydrates
+            %s,  -- protein
+            %s,  -- fat
+            %s,  -- fiber
+            %s,  -- sugars
+            %s,  -- saturated_fat
+            %s,  -- trans_fat
+            %s,  -- cholesterol
+            %s,  -- potassium
+            %s,  -- iron
+            %s,  -- vitamin_c
+            %s,  -- vitamin_a
+            %s   -- category
+        )
+        RETURNING user_food_id;
+    """
+
+    params = (
+        new_id,
+        user_id,
+        (food.get("name") or "").strip(),
+        food.get("quantity"),
+        (food.get("unit") or None),
+        int(food.get("calories") or 0),
+        int(food.get("carbohydrates") or 0),
+        int(food.get("protein") or 0),
+        int(food.get("fat") or 0),
+        int(food.get("fiber") or 0),
+        int(food.get("sugars") or 0),
+        int(food.get("saturated_fat") or 0),
+        int(food.get("trans_fat") or 0),
+        int(food.get("cholesterol") or 0),
+        int(food.get("potassium") or 0),
+        int(food.get("iron") or 0),
+        int(food.get("vitamin_c") or 0),
+        int(food.get("vitamin_a") or 0),
+        (food.get("category") or None),
+    )
+
+    conn = connection()
+    cur = conn.cursor()
+    cur.execute(sql, params)
+    inserted_id = cur.fetchone()[0]
+    conn.commit()
+    cur.close()
+    conn.close()
+    return str(inserted_id)
+
+
