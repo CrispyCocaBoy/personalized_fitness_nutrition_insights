@@ -11,6 +11,7 @@ topics=(
   users_changes # CDC
   silver_layer
   gold_layer
+  meals
 )
 
 # Setting kafka

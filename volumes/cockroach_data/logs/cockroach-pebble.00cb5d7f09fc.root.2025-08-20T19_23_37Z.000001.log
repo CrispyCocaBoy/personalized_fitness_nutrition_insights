@@ -1,0 +1,193 @@
+I250820 19:23:37.961967 86 util/log/file_sync_buffer.go:237 ⋮ [config]   file created at: 2025/08/20 19:23:37
+I250820 19:23:37.961994 86 util/log/file_sync_buffer.go:237 ⋮ [config]   running on machine: ‹00cb5d7f09fc›
+I250820 19:23:37.962013 86 util/log/file_sync_buffer.go:237 ⋮ [config]   binary: CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250820 19:23:37.962021 86 util/log/file_sync_buffer.go:237 ⋮ [config]   arguments: [‹/cockroach/cockroach› ‹start-single-node› ‹--certs-dir=certs› ‹--advertise-addr=127.0.0.1:26257› ‹--insecure› ‹--http-addr=0.0.0.0:8080›]
+I250820 19:23:37.962042 86 util/log/file_sync_buffer.go:237 ⋮ [config]   log format (utf8=✓): crdb-v2
+I250820 19:23:37.962048 86 util/log/file_sync_buffer.go:237 ⋮ [config]   line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid [chan@]file:line redactionmark \[tags\] [counter] msg
+I250820 19:23:37.946160 86 3@pebble/objstorage/objstorageprovider/remote.go:102 ⋮ [n?,s?,pebble] 1  remote storage configured; creatorID = 1
+I250820 19:23:38.323232 86 3@pebble/open.go:1054 ⋮ [n?,s?,pebble] 2  [JOB ‹1›] WAL ‹002876: {(/cockroach/cockroach-data,000)}› stopped reading at offset: (‹/cockroach/cockroach-data/002876.log›: 14656429); replayed 43884 keys in 2217 batches
+I250820 19:23:38.393058 86 3@pebble/open.go:1054 ⋮ [n?,s?,pebble] 3  [JOB ‹1›] WAL ‹002896: {(/cockroach/cockroach-data,000)}› stopped reading at offset: (‹/cockroach/cockroach-data/002896.log›: 6541157); replayed 20305 keys in 560 batches
+I250820 19:23:38.396564 125 3@pebble/event.go:1011 ⋮ [n?,s?,pebble] 4  [JOB 2] flushing 8 memtables (22MB) to L0
+I250820 19:23:38.399917 125 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 5  [JOB 2] flushing: sstable created 002898
+I250820 19:23:38.542474 125 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 6  [JOB 2] flushing: sstable created 002899
+I250820 19:23:38.567078 125 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 7  [JOB 2] flushing: sstable created 002900
+I250820 19:23:38.623539 125 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 8  [JOB 2] flushing: sstable created 002901
+I250820 19:23:38.761330 125 3@pebble/event.go:1031 ⋮ [n?,s?,pebble] 9  [JOB 2] MANIFEST created 002902
+I250820 19:23:38.761517 125 3@pebble/event.go:1015 ⋮ [n?,s?,pebble] 10  [JOB 2] flushed 8 memtables (22MB) to L0 [002898 002899 002900 002901] (268KB), in 0.3s (0.4s total), output rate 1.0MB/s
+I250820 19:23:38.762811 40 3@pebble/event.go:999 ⋮ [n?,s?,pebble] 11  [JOB 3] compacting(default) L0 [002899] (46KB) Score=1.08 + L6 [002884 002886 002888 002890 002892] (16MB) Score=0.92; OverlappingRatio: Single 361.90, Multi 0.00
+I250820 19:23:38.763876 123 3@pebble/event.go:1063 ⋮ [n?,s?,pebble] 12  [JOB 2] WAL deleted 002876
+I250820 19:23:38.766339 39 3@pebble/event.go:999 ⋮ [n?,s?,pebble] 13  [JOB 4] compacting(default) L0 [002898] (158KB) Score=1.09 + L6 [002878 002879 002880 002881 002882] (17MB) Score=0.92; OverlappingRatio: Single 107.85, Multi 0.00
+I250820 19:23:38.769243 86 3@pebble/event.go:1059 ⋮ [n?,s?,pebble] 14  [JOB 1] WAL created 002903
+I250820 19:23:38.769754 123 3@pebble/event.go:1063 ⋮ [n?,s?,pebble] 15  [JOB 2] WAL deleted 002896
+I250820 19:23:38.806477 40 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 16  [JOB 3] compacting: sstable created 002905
+I250820 19:23:38.808650 39 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 17  [JOB 4] compacting: sstable created 002906
+I250820 19:23:38.812691 41 3@pebble/event.go:1051 ⋮ [n?,s?,pebble] 18  [JOB 6] all initial table stats loaded
+I250820 19:23:39.547885 39 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 19  [JOB 4] compacting: sstable created 002907
+I250820 19:23:39.659899 40 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 20  [JOB 3] compacting: sstable created 002908
+I250820 19:23:40.239966 40 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 21  [JOB 3] compacting: sstable created 002909
+I250820 19:23:40.317541 39 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 22  [JOB 4] compacting: sstable created 002910
+I250820 19:23:41.101445 40 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 23  [JOB 3] compacting: sstable created 002911
+I250820 19:23:41.106331 39 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 24  [JOB 4] compacting: sstable created 002912
+I250820 19:23:41.944716 40 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 25  [JOB 3] compacting: sstable created 002913
+I250820 19:23:42.015095 40 3@pebble/event.go:1003 ⋮ [n?,s?,pebble] 26  [JOB 3] compacted(default) L0 [002899] (46KB) Score=1.08 + L6 [002884 002886 002888 002890 002892] (16MB) Score=0.92 -> L6 [002905 002908 002909 002911 002913] (16MB), in 3.3s (3.3s total), output rate 5.1MB/s
+I250820 19:23:42.275785 39 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 27  [JOB 4] compacting: sstable created 002914
+I250820 19:23:42.369125 39 3@pebble/event.go:1003 ⋮ [n?,s?,pebble] 28  [JOB 4] compacted(default) L0 [002898] (158KB) Score=1.09 + L6 [002878 002879 002880 002881 002882] (17MB) Score=0.92 -> L6 [002906 002907 002910 002912 002914] (17MB), in 3.6s (3.6s total), output rate 4.6MB/s
+I250820 19:23:42.399299 71 3@pebble/event.go:999 ⋮ [n?,s?,pebble] 29  [JOB 7] compacting(default) L0 [002900] (42KB) Score=1.09 + L6 [002883 002885 002887 002889 002891] (16MB) Score=0.92; OverlappingRatio: Single 398.12, Multi 0.00
+I250820 19:23:42.402230 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 30  [JOB 4] sstable deleted 002878
+I250820 19:23:42.404784 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 31  [JOB 4] sstable deleted 002879
+I250820 19:23:42.410764 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 32  [JOB 4] sstable deleted 002880
+I250820 19:23:42.416425 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 33  [JOB 4] sstable deleted 002881
+I250820 19:23:42.418311 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 34  [JOB 4] sstable deleted 002882
+I250820 19:23:42.422187 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 35  [JOB 4] sstable deleted 002884
+I250820 19:23:42.423773 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 36  [JOB 4] sstable deleted 002886
+I250820 19:23:42.424705 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 37  [JOB 4] sstable deleted 002888
+I250820 19:23:42.427249 71 3@pebble/event.go:1039 ⋮ [n?,s?,pebble] 38  [JOB 7] compacting: sstable created 002915
+I250820 19:23:42.440787 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 39  [JOB 4] sstable deleted 002890
+I250820 19:23:42.442826 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 40  [JOB 4] sstable deleted 002892
+I250820 19:23:42.451933 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 41  [JOB 4] sstable deleted 002898
+I250820 19:23:42.453411 123 3@pebble/event.go:1043 ⋮ [n?,s?,pebble] 42  [JOB 4] sstable deleted 002899
+I250820 19:23:42.456389 123 3@pebble/event.go:1035 ⋮ [n?,s?,pebble] 43  [JOB 1] MANIFEST deleted 002722
+I250820 19:23:42.576554 86 3@pebble/event.go:1031 ⋮ [n?,s?,pebble] 44  [JOB 1] MANIFEST created 000001
+I250820 19:23:42.603808 86 3@pebble/event.go:1059 ⋮ [n?,s?,pebble] 45  [JOB 1] WAL created 000002
+I250820 19:23:42.615744 86 3@pebble/event.go:1027 ⋮ [n?,s?,pebble] 46  upgraded to format version: 014
+I250820 19:23:42.631295 86 3@pebble/event.go:1027 ⋮ [n?,s?,pebble] 47  upgraded to format version: 015
+I250820 19:23:42.668513 86 3@pebble/event.go:1027 ⋮ [n?,s?,pebble] 48  upgraded to format version: 016
+I250820 19:23:42.672086 86 3@pebble/event.go:1027 ⋮ [n?,s?,pebble] 49  upgraded to format version: 017
+I250820 19:23:42.687539 86 3@pebble/event.go:1027 ⋮ [n?,s?,pebble] 50  upgraded to format version: 018
+I250820 19:23:42.691701 86 3@pebble/event.go:1027 ⋮ [n?,s?,pebble] 51  upgraded to format version: 019
+I250820 19:23:42.706587 183 3@pebble/event.go:1051 ⋮ [n?,s?,pebble] 52  [JOB 2] all initial table stats loaded
+I250820 19:23:43.386454 71 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 53  [JOB 7] compacting: sstable created 002916
+I250820 19:23:43.965362 71 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 54  [JOB 7] compacting: sstable created 002917
+I250820 19:23:44.692022 71 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 55  [JOB 7] compacting: sstable created 002918
+I250820 19:23:45.147528 71 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 56  [JOB 7] compacting: sstable created 002919
+I250820 19:23:45.189236 71 3@pebble/event.go:1003 ⋮ [n1,s1,pebble] 57  [JOB 7] compacted(default) L0 [002900] (42KB) Score=1.09 + L6 [002883 002885 002887 002889 002891] (16MB) Score=0.92 -> L6 [002915 002916 002917 002918 002919] (16MB), in 2.8s (2.8s total), output rate 5.9MB/s
+I250820 19:23:45.191758 1868 3@pebble/event.go:999 ⋮ [n1,s1,pebble] 58  [JOB 8] compacting(default) L0 [002901] (22KB) Score=1.08 + L6 [002893 002894 002895] (9.5MB) Score=0.92; OverlappingRatio: Single 436.98, Multi 0.00
+I250820 19:23:45.193679 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 59  [JOB 7] sstable deleted 002883
+I250820 19:23:45.197808 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 60  [JOB 7] sstable deleted 002885
+I250820 19:23:45.200548 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 61  [JOB 7] sstable deleted 002887
+I250820 19:23:45.198930 1868 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 62  [JOB 8] compacting: sstable created 002920
+I250820 19:23:45.206365 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 63  [JOB 7] sstable deleted 002889
+I250820 19:23:45.211107 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 64  [JOB 7] sstable deleted 002891
+I250820 19:23:45.214855 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 65  [JOB 7] sstable deleted 002900
+I250820 19:23:45.699515 1868 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 66  [JOB 8] compacting: sstable created 002921
+I250820 19:23:46.369286 1868 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 67  [JOB 8] compacting: sstable created 002922
+I250820 19:23:46.556817 1868 3@pebble/event.go:1003 ⋮ [n1,s1,pebble] 68  [JOB 8] compacted(default) L0 [002901] (22KB) Score=1.08 + L6 [002893 002894 002895] (9.5MB) Score=0.92 -> L6 [002920 002921 002922] (9.5MB), in 1.4s (1.4s total), output rate 7.0MB/s
+I250820 19:23:46.557812 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 69  [JOB 8] sstable deleted 002893
+I250820 19:23:46.558658 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 70  [JOB 8] sstable deleted 002894
+I250820 19:23:46.559048 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 71  [JOB 8] sstable deleted 002895
+I250820 19:23:46.559489 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 72  [JOB 8] sstable deleted 002901
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73  Pebble metrics:
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +      |                             |       |       |   ingested   |     moved    |    written   |       |    amp
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +level | tables  size val-bl vtables | score |   in  | tables  size | tables  size | tables  size |  read |   r   w
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +------+-----------------------------+-------+-------+--------------+--------------+--------------+-------+---------
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    0 |     0     0B     0B       0 |  0.00 |  20MB |     0     0B |     0     0B |     4  268KB |    0B |   0  0.0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    1 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    2 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    3 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    4 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    5 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +    6 |    18   59MB  945KB       0 |     - | 268KB |     0     0B |     0     0B |    18   59MB |  59MB |   1  225
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +total |    18   59MB  945KB       0 |     - |  22MB |     0     0B |     0     0B |    22   82MB |  59MB |   1  3.6
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +-------------------------------------------------------------------------------------------------------------------
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +WAL: 1 files (2.3MB)  in: 2.3MB  written: 22MB (879% overhead)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Flushes: 1
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Compactions: 4  estimated debt: 0B  in progress: 0 (0B)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +             default: 4  delete: 0  elision: 0  move: 0  read: 0  tombstone-density: 0  rewrite: 0  copy: 0  multi-level: 0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +MemTables: 1 (64MB)  zombie: 1 (32MB)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Zombie tables: 0 (0B, local: 0B)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Backing tables: 0 (0B)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Virtual tables: 0 (0B)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Local tables size: 59MB
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Compression types: snappy: 18
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Block cache: 44 entries (1.5MB)  hit rate: 30.0%
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Table cache: 3 entries (2.4KB)  hit rate: 99.1%
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Snapshots: 0  earliest seq num: 0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Table iters: 0
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Filter utility: 36.0%
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Ingestions: 0  as flushable: 0 (0B in 0 tables)
+I250820 19:24:03.398413 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 73 +Cgo memory usage: 98MB  block cache: 1.5MB (data: 1.5MB, maps: 16KB, entries: 5.7KB)  memtables: 96MB
+I250820 19:32:13.484129 773 3@pebble/event.go:1059 ⋮ [n1,s1,pebble] 74  [JOB 9] WAL created 002923
+I250820 19:32:13.489942 11998 3@pebble/event.go:1011 ⋮ [n1,s1,pebble] 75  [JOB 10] flushing 1 memtable (64MB) to L0
+I250820 19:32:13.491160 11998 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 76  [JOB 10] flushing: sstable created 002924
+I250820 19:32:13.529170 11998 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 77  [JOB 10] flushing: sstable created 002925
+I250820 19:32:13.545038 11998 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 78  [JOB 10] flushing: sstable created 002926
+I250820 19:32:13.557628 11998 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 79  [JOB 10] flushing: sstable created 002927
+I250820 19:32:13.563309 11998 3@pebble/event.go:1015 ⋮ [n1,s1,pebble] 80  [JOB 10] flushed 1 memtable (64MB) to L0 [002924 002925 002926 002927] (509KB), in 0.1s (0.1s total), output rate 6.9MB/s
+I250820 19:32:13.564164 12104 3@pebble/event.go:999 ⋮ [n1,s1,pebble] 81  [JOB 12] compacting(default) L0 [002924] (286KB) Score=1.08 + L6 [002906 002907 002910 002912 002914] (17MB) Score=0.92; OverlappingRatio: Single 59.69, Multi 0.00
+I250820 19:32:13.568859 12104 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 82  [JOB 12] compacting: sstable created 002928
+I250820 19:32:13.697819 12104 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 83  [JOB 12] compacting: sstable created 002929
+I250820 19:32:13.863890 12104 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 84  [JOB 12] compacting: sstable created 002930
+I250820 19:32:13.984671 12104 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 85  [JOB 12] compacting: sstable created 002931
+I250820 19:32:14.169331 12104 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 86  [JOB 12] compacting: sstable created 002932
+I250820 19:32:14.193255 12104 3@pebble/event.go:1003 ⋮ [n1,s1,pebble] 87  [JOB 12] compacted(default) L0 [002924] (286KB) Score=1.08 + L6 [002906 002907 002910 002912 002914] (17MB) Score=0.92 -> L6 [002928 002929 002930 002931 002932] (17MB), in 0.6s (0.6s total), output rate 27MB/s
+I250820 19:32:14.194372 12116 3@pebble/event.go:999 ⋮ [n1,s1,pebble] 88  [JOB 13] compacting(default) L0 [002925] (88KB) Score=1.08 + L6 [002905 002908 002909 002911 002913] (16MB) Score=0.93; OverlappingRatio: Single 191.48, Multi 0.00
+I250820 19:32:14.195130 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 89  [JOB 12] sstable deleted 002906
+I250820 19:32:14.197681 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 90  [JOB 12] sstable deleted 002907
+I250820 19:32:14.198079 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 91  [JOB 12] sstable deleted 002910
+I250820 19:32:14.198816 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 92  [JOB 12] sstable deleted 002912
+I250820 19:32:14.198989 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 93  [JOB 12] sstable deleted 002914
+I250820 19:32:14.199217 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 94  [JOB 12] sstable deleted 002924
+I250820 19:32:14.201341 12116 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 95  [JOB 13] compacting: sstable created 002933
+I250820 19:32:14.336737 12116 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 96  [JOB 13] compacting: sstable created 002934
+I250820 19:32:14.461702 12116 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 97  [JOB 13] compacting: sstable created 002935
+I250820 19:32:14.579270 12116 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 98  [JOB 13] compacting: sstable created 002936
+I250820 19:32:14.667395 12116 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 99  [JOB 13] compacting: sstable created 002937
+I250820 19:32:14.677733 12116 3@pebble/event.go:1003 ⋮ [n1,s1,pebble] 100  [JOB 13] compacted(default) L0 [002925] (88KB) Score=1.08 + L6 [002905 002908 002909 002911 002913] (16MB) Score=0.93 -> L6 [002933 002934 002935 002936 002937] (17MB), in 0.5s (0.5s total), output rate 34MB/s
+I250820 19:32:14.678020 11999 3@pebble/event.go:999 ⋮ [n1,s1,pebble] 101  [JOB 14] compacting(default) L0 [002926] (86KB) Score=1.08 + L6 [002915 002916 002917 002918 002919] (16MB) Score=0.93; OverlappingRatio: Single 194.99, Multi 0.00
+I250820 19:32:14.678573 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 102  [JOB 13] sstable deleted 002905
+I250820 19:32:14.678881 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 103  [JOB 13] sstable deleted 002908
+I250820 19:32:14.679295 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 104  [JOB 13] sstable deleted 002909
+I250820 19:32:14.679781 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 105  [JOB 13] sstable deleted 002911
+I250820 19:32:14.680052 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 106  [JOB 13] sstable deleted 002913
+I250820 19:32:14.680344 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 107  [JOB 13] sstable deleted 002925
+I250820 19:32:14.682505 11999 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 108  [JOB 14] compacting: sstable created 002938
+I250820 19:32:14.791149 11999 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 109  [JOB 14] compacting: sstable created 002939
+I250820 19:32:14.879824 11999 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 110  [JOB 14] compacting: sstable created 002940
+I250820 19:32:14.987532 11999 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 111  [JOB 14] compacting: sstable created 002941
+I250820 19:32:15.051972 11999 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 112  [JOB 14] compacting: sstable created 002942
+I250820 19:32:15.060457 11999 3@pebble/event.go:1003 ⋮ [n1,s1,pebble] 113  [JOB 14] compacted(default) L0 [002926] (86KB) Score=1.08 + L6 [002915 002916 002917 002918 002919] (16MB) Score=0.93 -> L6 [002938 002939 002940 002941 002942] (16MB), in 0.4s (0.4s total), output rate 43MB/s
+I250820 19:32:15.060707 12190 3@pebble/event.go:999 ⋮ [n1,s1,pebble] 114  [JOB 15] compacting(default) L0 [002927] (49KB) Score=1.08 + L6 [002920 002921 002922] (9.5MB) Score=0.93; OverlappingRatio: Single 197.61, Multi 0.00
+I250820 19:32:15.061902 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 115  [JOB 14] sstable deleted 002915
+I250820 19:32:15.062083 12190 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 116  [JOB 15] compacting: sstable created 002943
+I250820 19:32:15.062215 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 117  [JOB 14] sstable deleted 002916
+I250820 19:32:15.062657 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 118  [JOB 14] sstable deleted 002917
+I250820 19:32:15.063088 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 119  [JOB 14] sstable deleted 002918
+I250820 19:32:15.063306 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 120  [JOB 14] sstable deleted 002919
+I250820 19:32:15.063492 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 121  [JOB 14] sstable deleted 002926
+I250820 19:32:15.148258 12190 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 122  [JOB 15] compacting: sstable created 002944
+I250820 19:32:15.221592 12190 3@pebble/event.go:1039 ⋮ [n1,s1,pebble] 123  [JOB 15] compacting: sstable created 002945
+I250820 19:32:15.251078 12190 3@pebble/event.go:1003 ⋮ [n1,s1,pebble] 124  [JOB 15] compacted(default) L0 [002927] (49KB) Score=1.08 + L6 [002920 002921 002922] (9.5MB) Score=0.93 -> L6 [002943 002944 002945] (9.5MB), in 0.2s (0.2s total), output rate 50MB/s
+I250820 19:32:15.251700 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 125  [JOB 15] sstable deleted 002920
+I250820 19:32:15.251988 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 126  [JOB 15] sstable deleted 002921
+I250820 19:32:15.252170 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 127  [JOB 15] sstable deleted 002922
+I250820 19:32:15.252321 123 3@pebble/event.go:1043 ⋮ [n1,s1,pebble] 128  [JOB 15] sstable deleted 002927
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129  Pebble metrics:
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +      |                             |       |       |   ingested   |     moved    |    written   |       |    amp
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +level | tables  size val-bl vtables | score |   in  | tables  size | tables  size | tables  size |  read |   r   w
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +------+-----------------------------+-------+-------+--------------+--------------+--------------+-------+---------
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    0 |     0     0B     0B       0 |  0.00 |  78MB |     0     0B |     0     0B |     8  778KB |    0B |   0  0.0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    1 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    2 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    3 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    4 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    5 |     0     0B     0B       0 |  0.00 |    0B |     0     0B |     0     0B |     0     0B |    0B |   0  0.0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +    6 |    18   60MB  952KB       0 |     - | 778KB |     0     0B |     0     0B |    36  118MB | 119MB |   1  156
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +total |    18   60MB  952KB       0 |     - |  90MB |     0     0B |     0     0B |    44  209MB | 119MB |   1  2.3
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +-------------------------------------------------------------------------------------------------------------------
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +WAL: 1 files (12MB)  in: 69MB  written: 90MB (29% overhead)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Flushes: 2
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Compactions: 8  estimated debt: 0B  in progress: 0 (0B)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +             default: 8  delete: 0  elision: 0  move: 0  read: 0  tombstone-density: 0  rewrite: 0  copy: 0  multi-level: 0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +MemTables: 1 (64MB)  zombie: 1 (64MB)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Zombie tables: 0 (0B, local: 0B)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Backing tables: 0 (0B)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Virtual tables: 0 (0B)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Local tables size: 60MB
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Compression types: snappy: 18
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Block cache: 0 entries (0B)  hit rate: 47.9%
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Table cache: 4 entries (3.3KB)  hit rate: 99.7%
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Snapshots: 0  earliest seq num: 0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Table iters: 0
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Filter utility: 37.0%
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Ingestions: 0  as flushable: 0 (0B in 0 tables)
+I250820 19:34:03.375313 800 3@kv/kvserver/store.go:3801 ⋮ [T1,Vsystem,n1,s1] 129 +Cgo memory usage: 128MB  block cache: 26KB (data: 0B, maps: 18KB, entries: 8.4KB)  memtables: 128MB

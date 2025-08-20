@@ -493,5 +493,6 @@ if __name__ == '__main__':
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[logging.StreamHandler()]
     )
+    time.sleep(30)
     print("CSV RAW Publisher starting… (Ctrl+C per uscire)")
     run()

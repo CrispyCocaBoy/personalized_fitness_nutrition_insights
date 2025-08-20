@@ -40,6 +40,8 @@ def render_sidebar(name: str, surname: str, user_id: str):
     st.markdown("## 🧭 ")
     # usa sempre questi link: saranno uguali ovunque
     st.page_link("pages/dashboard.py", label="Home", icon="🏠")
+    st.page_link("pages/health.py", label="Heart", icon="❤️")
+    st.page_link("pages/sleep.py", label="sleep", icon="🛌")
     st.page_link("pages/meals.py", label="Meals", icon="🍽️")
     st.page_link("pages/settings.py", label="setting", icon="⚙️")
 

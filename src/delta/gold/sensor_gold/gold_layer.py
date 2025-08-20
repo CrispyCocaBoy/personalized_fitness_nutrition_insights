@@ -217,7 +217,7 @@ def process_batch(batch_df, batch_id):
                 .write.format("delta")
                 .mode("append")
                 .option("mergeSchema", "true")
-                .save(f"s3a://gold/users/{uid}/final_metrics/")
+                .save(f"s3a://gold/users/{uid}/metrics/")
             )
     print(f"✅ Batch {batch_id}: scritte tabelle per {len(users)} utenti")
 
@@ -228,12 +228,12 @@ query = (
     df_silver.writeStream
     .foreachBatch(process_batch)
     .outputMode("append")
-    .trigger(processingTime="1 minute")
+    .trigger(processingTime="5 seconds")
     .option("checkpointLocation", "s3a://gold/checkpoints/final_metrics_per_user/")
     .start()
 )
 
-print("🚀 Gold Layer minimale avviato — output per utente in s3a://gold/users/<user_id>/final_metrics/")
+print("🚀 Gold Layer minimale avviato — output per utente in s3a://gold/users/<user_id>/metrics/")
 
 try:
     query.awaitTermination()

@@ -1,4 +1,6 @@
 services:
+
+  # Frontend
   streamlit_app:
     build:
       context: .
@@ -238,6 +240,17 @@ services:
       - spark-master
       - emqx1
 
+  gold_meal:
+    build:
+      context: .
+      dockerfile: src/delta/gold/meal_gold/Dockerfile
+    container_name: gold_meal
+    depends_on:
+      - broker_kafka
+      - silver_layer
+      - spark-master
+      - emqx1
+
   ## Latency monitor
 #  latency-monitor:
 #   build:
@@ -249,6 +262,31 @@ services:
 #      - minio
 #      - bronze_layer
 
-# Cache
-volumes:
-  fake_generator_output:
+# Gateway
+  gateway:
+    build:
+      context: .
+      dockerfile: src/gateway/Dockerfile
+    container_name: gateway
+    environment:
+      # MinIO per DuckDB (httpfs)
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+
+      # 👇 Forza il kernel Delta a NON usare IMDS e a puntare MinIO
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      AWS_REGION: us-east-1
+      AWS_EC2_METADATA_DISABLED: "true"
+      AWS_S3_FORCE_PATH_STYLE: "true"
+      AWS_ENDPOINT_URL_S3: http://minio:9000
+      AWS_ENDPOINT_URL: http://minio:9000
+    ports:
+      - "8237:8000"
+    depends_on:
+      - broker_kafka
+      - minio
+      - spark-master
+
+

@@ -1,10 +1,29 @@
 import time
+import os
+import uuid
+from datetime import datetime
+
 import streamlit as st
-from utility import database_connection as db
 import bcrypt
 
-# Migliore le impostazioni del dispositivo
-# Dare la possibilità di poterlo non vedere
+from utility import database_connection as db
+from frontend_utility import ui
+
+# =========================
+# Config pagina + stile
+# =========================
+st.set_page_config(page_title="Settings", layout="wide", initial_sidebar_state="collapsed")
+ui.load_css()
+
+# =========================
+# Auth gate
+# =========================
+if "logged_in" not in st.session_state or not st.session_state["logged_in"]:
+    st.warning("Effettua il login per accedere.")
+    st.stop()
+
+user_id = st.session_state["user_id"]
+name, surname = db.retrive_name(user_id)
 
 # === Info utente ===
 def get_user_info(user_id):
@@ -76,56 +95,57 @@ def fetch_device_names():
         st.error(f"Errore nella connessione al database: {e}")
         return []
 
-# === UI ===
-if st.button("🏠"):
-    st.switch_page("pages/dashboard.py")
+# =========================
+# Layout colonne (convenzione di progetto)
+# =========================
+sidebar_col, main_col = st.columns([0.8, 6.2], gap="large")
 
-st.title("Settings")
+with sidebar_col:
+    ui.render_sidebar(name, surname, user_id)
 
-if "user_id" not in st.session_state:
-    st.warning("Devi effettuare il login prima di accedere alle impostazioni.")
-    st.stop()
+with main_col:
+    # Header comune
+    ui.render_header("Settings", "Gestisci profilo, password e dispositivo")
 
-user_id = st.session_state["user_id"]
+    # --- Sezione Profilo ---
+    st.subheader("Profilo Utente")
 
-# --- Sezione Profilo ---
-st.subheader("Profilo Utente")
+    username, email, name, surname = get_user_info(user_id)
 
-username, email, name, surname = get_user_info(user_id)
+    new_username = st.text_input("Username", value=username)
+    new_name = st.text_input("Nome", value=name)
+    new_surname = st.text_input("Cognome", value=surname)
 
-new_username = st.text_input("Username", value=username)
-new_name = st.text_input("Nome", value=name)
-new_surname = st.text_input("Cognome", value=surname)
+    st.markdown("#### Cambio password")
+    old_password = st.text_input("Vecchia Password", type="password")
+    new_password = st.text_input("Nuova Password", type="password")
 
-st.markdown("#### Cambio password")
-old_password = st.text_input("Vecchia Password", type="password")
-new_password = st.text_input("Nuova Password", type="password")
-
-if st.button("Salva modifiche"):
-    if not all([new_username, old_password, new_password]):
-        st.warning("Tutti i campi sono obbligatori per aggiornare la password.")
-    else:
-        current_hash = get_password_hash(user_id)
-        if not current_hash or not bcrypt.checkpw(old_password.encode('utf-8'), current_hash.encode('utf-8')):
-            st.error("La vecchia password non è corretta.")
+    if st.button("Salva modifiche"):
+        if not all([new_username, old_password, new_password]):
+            st.warning("Tutti i campi sono obbligatori per aggiornare la password.")
         else:
-            new_hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-            update_user_info(user_id, new_username, new_hashed, new_name, new_surname)
+            current_hash = get_password_hash(user_id)
+            if not current_hash or not bcrypt.checkpw(old_password.encode('utf-8'), current_hash.encode('utf-8')):
+                st.error("La vecchia password non è corretta.")
+            else:
+                new_hashed = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                update_user_info(user_id, new_username, new_hashed, new_name, new_surname)
 
-if st.button("Log out"):
-    del st.session_state["user_id"]
-    st.success("Logout effettuato.")
-    time.sleep(1)
-    st.switch_page("app.py")
-    st.rerun()
+    # Logout
+    if st.button("Log out"):
+        del st.session_state["user_id"]
+        st.success("Logout effettuato.")
+        time.sleep(1)
+        st.switch_page("app.py")
+        st.rerun()
 
-# --- Sezione Dispositivo ---
-st.subheader("Dispositivo")
+    st.divider()
 
-watch_list = fetch_device_names()
-selected_watch = st.selectbox("Seleziona il tuo orologio:", watch_list)
+    # --- Sezione Dispositivo ---
+    st.subheader("Dispositivo")
 
-if st.button("Conferma orologio"):
-    st.success(f"Hai selezionato: {selected_watch}")
+    watch_list = fetch_device_names()
+    selected_watch = st.selectbox("Seleziona il tuo orologio:", watch_list)
 
-
+    if st.button("Conferma orologio"):
+        st.success(f"Hai selezionato: {selected_watch}")

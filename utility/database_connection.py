@@ -228,18 +228,53 @@ def bind_device(user_id, device_type_id, device_type_name):
 
 # Retrive default_meal
 def default_food():
-    conn = connection()  # tua funzione che apre la connessione
+    conn = connection()
     cur = conn.cursor()
 
-    cur.execute("SELECT name FROM default_foods ORDER BY name;")
+    cur.execute("""
+        SELECT food_id, name, calories, carbohydrates, protein, fat, quantity, unit, category
+        FROM default_foods
+        ORDER BY name;
+    """)
     rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
 
-    # chiudi connessione
     cur.close()
     conn.close()
 
-    # estrai i soli nomi
-    return [r[0] for r in rows]
+    return [dict(zip(colnames, row)) for row in rows]
+
+def get_food_by_name(food_name: str) -> dict:
+    conn = connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM default_foods WHERE name = %s;", (food_name,))
+    row = cur.fetchone()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return dict(zip(colnames, row)) if row else None
+
+
+def get_personalized_food_by_name(user_id: str, food_name: str) -> dict:
+    conn = connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+                SELECT *
+                FROM user_food
+                WHERE name = %s
+                  AND user_id = %s
+                LIMIT 1;
+                """, (food_name, user_id))
+
+    row = cur.fetchone()
+    colnames = [desc[0] for desc in cur.description]
+
+    cur.close()
+    conn.close()
+
+    return dict(zip(colnames, row)) if row else None
+
 
 def personalized_food(user_id: int):
     conn = connection()

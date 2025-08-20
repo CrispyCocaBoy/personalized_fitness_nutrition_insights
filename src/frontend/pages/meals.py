@@ -5,6 +5,7 @@ from datetime import datetime
 import streamlit as st
 from utility import database_connection as db
 from frontend_utility import ui  # sidebar + header + css comuni
+import time
 
 # =========================
 # Config pagina + stile
@@ -25,49 +26,63 @@ name, surname = db.retrive_name(user_id)
 # =========================
 # Backend adapter (HTTP o DB)
 # =========================
-BACKEND_URL = os.getenv("BACKEND_URL")
+BACKEND_URL = "http://gateway:8000"
+
+def _backend() -> str | None:
+    if not BACKEND_URL:
+        return None
+    return BACKEND_URL.rstrip("/")
+
+def _iso_utc_now() -> str:
+    # ISO8601 con suffisso Z (UTC)
+    return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
 def send_meal(payload: dict) -> tuple[bool, str]:
-    if BACKEND_URL:
-        try:
-            import requests
-            r = requests.post(f"{BACKEND_URL}/api/meals", json=payload, timeout=6)
-            if r.ok:
-                return True, "Pasto inviato al backend."
-            return False, f"Errore backend: {r.status_code} {r.text}"
-        except Exception as e:
-            return False, f"Errore di rete: {e}"
+    """
+    Payload atteso dal gateway:
+    {
+      "meal_id": str, "user_id": str, "meal_name": str,
+      "kcal": int, "carbs_g": int, "protein_g": int, "fat_g": int,
+      "timestamp": ISO8601 string (UTC, Z), "notes": str
+    }
+    """
+    be = _backend()
     try:
-        db.insert_meal(
-            user_id=payload["user_id"],
-            meal_id=payload["meal_id"],
-            ts=payload["timestamp"],
-            name=payload["meal_name"],
-            kcal=payload["kcal"],
-            carbs=payload["carbs_g"],
-            protein=payload["protein_g"],
-            fat=payload["fat_g"],
-            notes=payload.get("notes", "")
-        )
-        return True, "Pasto salvato."
+        import requests
+        url = f"{be}/api/meals"
+        # Normalizza timestamp in UTC Z se manca
+        if "timestamp" not in payload or not payload["timestamp"]:
+            payload["timestamp"] = _iso_utc_now()
+        payload["user_id"] = str(payload["user_id"])
+        r = requests.post(url, json=payload, timeout=6)
+        if r.ok:
+            ack = r.json()
+            mid = ack.get("meal_id") or payload.get("meal_id")
+            return True, f"Pasto inviato al backend. id={mid}"
+        return False, f"Errore backend: {r.status_code} {r.text}"
     except Exception as e:
-        return False, f"Errore DB: {e}"
+        return False, f"Errore di rete: {e}"
 
-def load_meals(limit: int = 20):
-    if BACKEND_URL:
-        try:
-            import requests
-            r = requests.get(f"{BACKEND_URL}/api/meals", params={"user_id": user_id, "limit": limit}, timeout=6)
-            if r.ok:
-                return r.json()
-            else:
-                st.warning(f"Impossibile leggere dal backend: {r.status_code}")
-        except Exception as e:
-            st.warning(f"Errore di rete: {e}")
+
+
+def load_meals(user_id: str, limit: int = 25) -> list[dict]:
+    """
+    Recupera gli ultimi pasti dal backend gateway via API REST.
+    """
+    be = _backend()
+    if not be:
+        return []
     try:
-        return db.get_meals(user_id=user_id, limit=limit)
+        import requests
+        url = f"{be}/api/meals"
+        r = requests.get(url, params={"user_id": str(user_id), "limit": int(limit)}, timeout=20)
+        if r.ok:
+            return r.json()
+        else:
+            st.warning(f"Errore backend: {r.status_code} {r.text}")
+            return []
     except Exception as e:
-        st.warning(f"Errore DB: {e}")
+        st.warning(f"Errore di rete: {e}")
         return []
 
 # =========================
@@ -84,7 +99,6 @@ with main_col:
 
     # ---------- Quick add ----------
     st.markdown("#### Aggiunta rapida")
-
 
     def _normalize_items(items):
         norm = []
@@ -117,37 +131,61 @@ with main_col:
             return
         for i in range(0, len(items), cols):
             row = st.columns(cols)
-            for col, item in zip(row, items[i:i+cols]):
+            for col, item in zip(row, items[i:i + cols]):
                 qty_label = f"{item['quantity']} {item['unit']}" if item["quantity"] and item["unit"] else ""
                 title = f"{item['name']}" + (f" ({qty_label})" if qty_label else "")
-                sub = f"{item['kcal']} kcal"
-                macro = ""
-                if any([item["carbs_g"], item["protein_g"], item["fat_g"]]):
-                    macro = f" · {item['carbs_g']}C/{item['protein_g']}P/{item['fat_g']}F"
+
+                kcal = item.get("kcal", 0)
+                carbs = item.get("carbs_g", 0)
+                prot = item.get("protein_g", 0)
+                fat = item.get("fat_g", 0)
+
+                # Riga informativa: kcal + macro
+                sub = f"🔥 {kcal} kcal · 🥖 {carbs}C / 🥚 {prot}P / 🫒 {fat}F"
+
                 with col:
                     st.markdown(
-                        f'<div class="card" style="text-align:center; font-weight:500;">{title}'
-                        f'<div class="small" style="margin-top:6px;">{sub}{macro}</div></div>',
+                        f'''
+                        <div class="card" style="text-align:center; font-weight:500;">
+                            {title}
+                            <div class="small" style="margin-top:6px;">{sub}</div>
+                        </div>
+                        ''',
                         unsafe_allow_html=True
                     )
                     if st.button("➕ Aggiungi", use_container_width=True, key=f"qa_{source_label}_{i}_{title}"):
-                        payload = {
-                            "meal_id": str(uuid.uuid4()),
-                            "user_id": user_id,
-                            "meal_name": title,
-                            "kcal": item["kcal"],
-                            "carbs_g": item["carbs_g"],
-                            "protein_g": item["protein_g"],
-                            "fat_g": item["fat_g"],
-                            "timestamp": datetime.utcnow().isoformat(),
-                            "notes": f"quick add ({source_label})"
-                        }
-                        ok, msg = send_meal(payload)
-                        if ok:
-                            st.success("Pasto aggiunto ✅")
-                            st.rerun()
+                        # 🔎 prendo dal DB in base alla fonte
+                        if source_label in ("default", "search"):
+                            food = db.get_food_by_name(item["name"])
+                        elif source_label == "personalized":
+                            food = db.get_personalized_food_by_name(user_id, item["name"])
                         else:
-                            st.error(msg)
+                            food = None
+
+                        if not food:
+                            st.error("Errore: alimento non trovato nel DB")
+                        else:
+                            payload = {
+                                "meal_id": str(uuid.uuid4()),
+                                "user_id": user_id,
+                                "meal_name": food["name"],
+                                "kcal": int(float(food.get("calories") or 0)),
+                                "carbs_g": int(float(food.get("carbohydrates") or 0)),
+                                "protein_g": int(float(food.get("protein") or 0)),
+                                "fat_g": int(float(food.get("fat") or 0)),
+                                "timestamp": _iso_utc_now(),
+                                "notes": f"quick add ({source_label})",
+                                "quantity": float(food.get("quantity") or 0),
+                                "unit": food.get("unit") or None,
+                                "category": food.get("category") or None,
+                            }
+                            ok, msg = send_meal(payload)
+                            if ok:
+                                st.success("Pasto aggiunto ✅")
+                                time.sleep(2)
+                                st.rerun()
+                            else:
+                                st.error(msg)
 
 
     def _grid_personalized(items, cols=3):
@@ -176,23 +214,34 @@ with main_col:
                         if st.button("➕ Aggiungi",
                                      use_container_width=True,
                                      key=f"p_add_{item.get('user_food_id')}_{i}"):
-                            payload = {
-                                "meal_id": str(uuid.uuid4()),
-                                "user_id": user_id,
-                                "meal_name": title,
-                                "kcal": item["kcal"],
-                                "carbs_g": item["carbs_g"],
-                                "protein_g": item["protein_g"],
-                                "fat_g": item["fat_g"],
-                                "timestamp": datetime.utcnow().isoformat(),
-                                "notes": "quick add (personalized)"
-                            }
-                            ok, msg = send_meal(payload)
-                            if ok:
-                                st.success("Pasto aggiunto ✅")
-                                st.rerun()
+                            # 🔎 prendo TUTTI i campi dal DB (personalizzati)
+                            food = db.get_personalized_food_by_name(user_id, item["name"])
+                            if not food:
+                                st.error("Errore: alimento personalizzato non trovato")
                             else:
-                                st.error(msg)
+                                payload = {
+                                    "meal_id": str(uuid.uuid4()),
+                                    "user_id": user_id,
+                                    "meal_name": food["name"],
+                                    "kcal": int(float(food.get("calories") or 0)),
+                                    "carbs_g": int(float(food.get("carbohydrates") or 0)),
+                                    "protein_g": int(float(food.get("protein") or 0)),
+                                    "fat_g": int(float(food.get("fat") or 0)),
+                                    "timestamp": _iso_utc_now(),
+                                    "notes": "quick add (personalized)",
+                                    # extra informativi (non usati da Spark ma utili da tenere)
+                                    "quantity": float(food.get("quantity") or 0),
+                                    "unit": food.get("unit") or None,
+                                    "category": food.get("category") or None,
+                                }
+                                ok, msg = send_meal(payload)
+                                if ok:
+                                    st.success("Pasto aggiunto ✅")
+                                    time.sleep(2)
+                                    st.rerun()
+                                else:
+                                    st.error(msg)
+
                     with cdel:
                         disabled = item.get("user_food_id") is None
                         if st.button("🗑️ Elimina",
@@ -214,10 +263,10 @@ with main_col:
                                         st.success("Alimento eliminato ✅")
                                     else:
                                         st.info("Nessun elemento trovato (può essere già eliminato).")
+                                    time.sleep(2)
                                     st.rerun()
                                 except Exception as e:
                                     st.error(f"Errore eliminazione: {e}")
-
 
     # dati dal DB
     try:
@@ -264,20 +313,17 @@ with main_col:
     with t4:
         st.write("Aggiungi rapidamente un alimento ai **tuoi Personalizzati** (comparirà nella tab ⭐).")
 
-
         def _nfloat(x):
             try:
                 return float(x) if x is not None else None
             except Exception:
                 return None
 
-
         def _nint(x):
             try:
                 return int(x) if x is not None else 0
             except Exception:
                 return 0
-
 
         with st.form("form_personal_food_quick", clear_on_submit=True, border=True):
             c1, c2 = st.columns([2, 1])
@@ -353,6 +399,7 @@ with main_col:
                     try:
                         new_id = db.insert_personalized_food(user_id=user_id, food=food)
                         st.success(f"Alimento aggiunto ai Personalizzati ✅ (id: {new_id})")
+                        time.sleep(2)
                         st.rerun()  # lo rende subito visibile nella tab ⭐
                     except Exception as e:
                         st.error(f"Errore salvataggio: {e}")
@@ -361,7 +408,7 @@ with main_col:
 
     # ---------- Ultimi pasti ----------
     st.markdown("#### Ultimi pasti")
-    meals = load_meals(limit=25)
+    meals = load_meals(user_id, limit=25)
 
     if not meals:
         st.info("Nessun pasto registrato di recente.")
