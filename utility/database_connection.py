@@ -241,84 +241,65 @@ def default_food():
     # estrai i soli nomi
     return [r[0] for r in rows]
 
-def personalized_food(user_id: str):
+def personalized_food(user_id: int):
     conn = connection()
     cur = conn.cursor()
 
-    cur.execute(
-        "SELECT name FROM user_foods WHERE user_id = %s ORDER BY name;",
-        (user_id,)   # tupla!
-    )
+    cur.execute("""
+        SELECT user_food_id, name, quantity, unit,
+               calories, carbohydrates, protein, fat, fiber, sugars,
+               saturated_fat, trans_fat, cholesterol, potassium, iron,
+               vitamin_c, vitamin_a, category
+        FROM user_foods
+        WHERE user_id = %s
+        ORDER BY user_food_id DESC;
+    """, (user_id,))
     rows = cur.fetchall()
-
     cur.close()
     conn.close()
 
-    return [r[0] for r in rows]
+    foods = []
+    for r in rows:
+        foods.append({
+            "user_food_id": r[0],
+            "name": r[1],
+            "quantity": r[2],
+            "unit": r[3],
+            "calories": r[4],
+            "carbohydrates": r[5],
+            "protein": r[6],
+            "fat": r[7],
+            "fiber": r[8],
+            "sugars": r[9],
+            "saturated_fat": r[10],
+            "trans_fat": r[11],
+            "cholesterol": r[12],
+            "potassium": r[13],
+            "iron": r[14],
+            "vitamin_c": r[15],
+            "vitamin_a": r[16],
+            "category": r[17],
+        })
+    return foods
 
 
-import uuid
+
 
 def insert_personalized_food(user_id: str, food: dict):
-    """
-    Inserisce una riga in users_food.
-    Colonne richieste presenti in 'food':
-      name, quantity, unit, calories, carbohydrates, protein, fat, fiber, sugars,
-      saturated_fat, trans_fat, cholesterol, potassium, iron, vitamin_c, vitamin_a, category
-    I campi mancanti vengono inseriti come NULL/0 dove ha senso.
-    Ritorna lo user_food_id (UUID) inserito.
-    """
-    from utility.database_connection import connection
-
-    new_id = str(uuid.uuid4())
 
     sql = """
-        INSERT INTO user_foods (
-            user_food_id,
-            user_id,
-            name,
-            quantity,
-            unit,
-            calories,
-            carbohydrates,
-            protein,
-            fat,
-            fiber,
-            sugars,
-            saturated_fat,
-            trans_fat,
-            cholesterol,
-            potassium,
-            iron,
-            vitamin_c,
-            vitamin_a,
-            category
-        ) VALUES (
-            %s,  -- user_food_id
-            %s,  -- user_id
-            %s,  -- name
-            %s,  -- quantity
-            %s,  -- unit
-            %s,  -- calories
-            %s,  -- carbohydrates
-            %s,  -- protein
-            %s,  -- fat
-            %s,  -- fiber
-            %s,  -- sugars
-            %s,  -- saturated_fat
-            %s,  -- trans_fat
-            %s,  -- cholesterol
-            %s,  -- potassium
-            %s,  -- iron
-            %s,  -- vitamin_c
-            %s,  -- vitamin_a
-            %s   -- category
-        )
-        RETURNING user_food_id;
-    """
+          INSERT INTO user_foods (user_id, name, quantity, unit, \
+                                  calories, carbohydrates, protein, fat, fiber, sugars, \
+                                  saturated_fat, trans_fat, cholesterol, potassium, iron, \
+                                  vitamin_c, vitamin_a, category) \
+          VALUES (%s, %s, %s, %s, \
+                  %s, %s, %s, %s, %s, %s, \
+                  %s, %s, %s, %s, %s, \
+                  %s, %s, %s)
+          RETURNING name; \
+          """
 
     params = (
-        new_id,
         user_id,
         (food.get("name") or "").strip(),
         food.get("quantity"),
@@ -348,4 +329,26 @@ def insert_personalized_food(user_id: str, food: dict):
     conn.close()
     return str(inserted_id)
 
+def delete_personalized_food(user_food_id: int, user_id: int) -> bool:
+    """
+    Cancella una riga da user_foods in modo sicuro (verifica user_id).
+    Ritorna True se ha cancellato qualcosa, False se non ha trovato nulla.
+    """
+    sql = """
+        DELETE FROM user_foods
+        WHERE user_food_id = %s AND user_id = %s
+        RETURNING user_food_id;
+    """
 
+    conn = connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, (user_food_id, user_id))
+            deleted = cur.fetchone()
+        conn.commit()
+        return deleted is not None
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
