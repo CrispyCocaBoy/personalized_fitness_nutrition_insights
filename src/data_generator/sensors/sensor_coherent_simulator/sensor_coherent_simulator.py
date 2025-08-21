@@ -33,16 +33,16 @@ RAW_TOPIC = {
 RAW_UNIT = {"ppg": "adc", "accelerometer": "g", "ceda": "uS", "skin_temp": "C"}
 
 # =========================
-# Frequenze (Hz) FORTEMENTE RIDOTTE
+# Frequenze (Hz)
 # =========================
-PPG_FS = 25          # era 100
+PPG_FS = 5          # era 100
 ACC_FS = 5          # era 50
 CEDA_FS = 1         # era 4
 SKIN_FS = 1         # generiamo a 1 Hz ma pubblichiamo 1/5 s (vedi sotto)
 SKIN_EVERY_N_SECONDS = 5  # → 0.2 Hz effettivi
 
 # --- Playhead & gating ---
-PLAYBACK_SPEED = 1.0
+PLAYBACK_SPEED = 0.5
 LOOP_DATASET = True
 
 # Parti da un istante sicuramente "attivo"
@@ -78,6 +78,9 @@ WALLCLOCK_T0 = None
 # =========================
 # LOAD CSVs
 # =========================
+# Lista utenti che vuoi simulare
+ALLOWED_USERS = [1, 2, 5]
+
 def load_data():
     events = pd.read_csv(events_path, dtype={"user_id":"int64","activity":"string"})
     events["start"] = pd.to_datetime(events["start"])
@@ -88,10 +91,19 @@ def load_data():
         raise ValueError("device.csv deve includere la colonna 'registered_at'.")
     devices["registered_at"] = pd.to_datetime(devices["registered_at"])
 
-    s2u = pd.read_csv(sensor_to_user_path, dtype={"sensor_id":"int64","user_id":"int64","device_id":"int64","sensor_type_id":"int64"})
+    s2u = pd.read_csv(sensor_to_user_path, dtype={
+        "sensor_id":"int64",
+        "user_id":"int64",
+        "device_id":"int64",
+        "sensor_type_id":"int64"
+    })
     s2u["created_at"] = pd.to_datetime(s2u["created_at"])
 
     _ = pd.read_csv(feature_path)  # non utilizzato direttamente
+
+    # --- FILTRO UTENTI QUI ---
+    s2u = s2u[s2u["user_id"].isin(ALLOWED_USERS)]
+    events = events[events["user_id"].isin(ALLOWED_USERS)]
 
     sensors = s2u.merge(
         devices[["device_id","device_type_id","registered_at"]],
@@ -424,7 +436,7 @@ def publish_tick(client):
     return published
 
 def publish_loop(client):
-    LOOP_MS = 50  # loop più lento (meno syscalls), i rate sono già bassi
+    LOOP_MS = 50
     logging.info(f"CSV playback: {CSV_START} → {CSV_END} (start={PLAYHEAD_BASE}, speed {PLAYBACK_SPEED}x, loop={LOOP_DATASET})")
 
     last_log = time.time()
@@ -443,6 +455,7 @@ def publish_loop(client):
                 last_log = now
 
             time.sleep(LOOP_MS/1000.0)
+            time.sleep(1)
         except KeyboardInterrupt:
             break
         except Exception as e:

@@ -54,6 +54,7 @@ def create_stream(topic):
         df_kafka = spark.readStream.format("kafka") \
             .option("kafka.bootstrap.servers", "broker_kafka:9092") \
             .option("subscribe", topic) \
+            .option("minPartitions", "6") \
             .option("startingOffsets", "earliest") \
             .option("failOnDataLoss", "false") \
             .load()

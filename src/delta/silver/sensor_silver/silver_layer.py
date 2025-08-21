@@ -4,13 +4,14 @@ from pyspark.sql.functions import (
 )
 from pyspark.sql.types import StructType, StringType, DoubleType, LongType, StructField
 import redis
+import time
 
 # ============================
 # Spark Session
 # ============================
 spark = (
     SparkSession.builder
-    .appName("SilverLayerPerUserWithRedisLookup")
+    .appName("SilverLayerPerUserOptimizedDualOutput")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     .config("spark.sql.adaptive.enabled", "true")
@@ -83,64 +84,71 @@ df_parsed = (
 # ============================
 # Redis Helper
 # ============================
-def get_redis_connection():
+def load_sensor_mapping_from_redis():
+    """Scarica tutta la mappa sensor_id→user_id da Redis e la ritorna come dict."""
     try:
-        r = redis.StrictRedis(
-            host="redis", port=6379, db=1,
-            decode_responses=True,
-            socket_timeout=2, socket_connect_timeout=2,
-            retry_on_timeout=True
-        )
-        r.ping()
-        return r
-    except:
-        return None
+        r = redis.StrictRedis(host="redis", port=6379, db=1, decode_responses=True)
+        keys = r.keys("*")
+        if not keys:
+            return {}
+        pipe = r.pipeline()
+        for k in keys:
+            pipe.get(k)
+        values = pipe.execute()
+        mapping = dict(zip(keys, values))
+        print(f"✅ Redis mapping loaded: {len(mapping)} entries")
+        return mapping
+    except Exception as e:
+        print(f"⚠️ Redis not reachable: {e}")
+        return {}
+
+# broadcast iniziale
+sensor_mapping = load_sensor_mapping_from_redis()
+broadcast_mapping = spark.sparkContext.broadcast(sensor_mapping)
+last_refresh = time.time()
+
+def refresh_mapping():
+    """Aggiorna broadcast mapping ogni 5 minuti"""
+    global broadcast_mapping, last_refresh
+    now = time.time()
+    if now - last_refresh > 300:
+        new_map = load_sensor_mapping_from_redis()
+        if new_map:
+            broadcast_mapping.unpersist()
+            broadcast_mapping = spark.sparkContext.broadcast(new_map)
+            last_refresh = now
 
 # ============================
 # ForeachBatch function
 # ============================
-def enrich_with_redis(batch_df, batch_id):
+def process_batch(batch_df, batch_id):
     if batch_df.isEmpty():
-        print(f"⚠️ Batch {batch_id} vuoto")
         return
 
-    def redis_lookup_partition(rows):
-        client = get_redis_connection()
-        rows_list = list(rows)
-        if not client:
-            return [(*row, None) for row in rows_list]
+    refresh_mapping()
+    mapping = broadcast_mapping.value
 
-        keys = [str(row.sensor_id) for row in rows_list]
-        pipe = client.pipeline()
-        for k in keys:
-            pipe.get(k)
-        user_ids = pipe.execute()
-
-        try:
-            client.close()
-        except:
-            pass
-
-        return [(*row, user_id) for row, user_id in zip(rows_list, user_ids)]
+    def add_user_id(rows):
+        for row in rows:
+            uid = mapping.get(str(row.sensor_id))
+            if uid is not None:
+                yield (*row, uid)
 
     schema_with_user = StructType(batch_df.schema.fields + [StructField("user_id", StringType(), True)])
 
     enriched_df = spark.createDataFrame(
-        batch_df.rdd.mapPartitions(redis_lookup_partition),
-        schema=schema_with_user
+        batch_df.rdd.mapPartitions(add_user_id), schema=schema_with_user
     )
 
-    valid_data = enriched_df.filter(col("user_id").isNotNull())
-    if valid_data.isEmpty():
-        print(f"⚠️ Batch {batch_id}: nessun sensore mappato in Redis")
+    if enriched_df.isEmpty():
+        print(f"⚠️ Batch {batch_id}: nessun sensore mappato")
         return
 
-    valid_data.cache()
-    record_count = valid_data.count()
+    enriched_df.cache()
 
-    # 1️⃣ Scrittura Delta (senza coalesce per non serializzare)
+    # 1️⃣ Scrittura su Delta
     (
-        valid_data
+        enriched_df
         .write
         .format("delta")
         .mode("append")
@@ -149,8 +157,8 @@ def enrich_with_redis(batch_df, batch_id):
         .save("s3a://silver/sensor_data/")
     )
 
-    # 2️⃣ Scrittura su Kafka (silver_layer)
-    kafka_df = valid_data.selectExpr(
+    # 2️⃣ Scrittura su Kafka
+    kafka_df = enriched_df.selectExpr(
         "CAST(user_id AS STRING) as key",
         "to_json(struct(*)) as value"
     )
@@ -164,27 +172,27 @@ def enrich_with_redis(batch_df, batch_id):
         .save()
     )
 
-    print(f"✅ Batch {batch_id}: scritti {record_count} record su Delta + Kafka")
+    print(f"✅ Batch {batch_id}: scritti {enriched_df.count()} record → Delta + Kafka")
+
+    enriched_df.unpersist()
 
 # ============================
 # Start Streaming Query
 # ============================
 query = (
     df_parsed.writeStream
-    .foreachBatch(enrich_with_redis)
+    .foreachBatch(process_batch)
     .outputMode("append")
     .trigger(processingTime="10 seconds")
-    .option("checkpointLocation", "s3a://silver/checkpoints/silver_per_user_redis_lookup/")
+    .option("checkpointLocation", "s3a://silver/checkpoints/silver_per_user_dual/")
     .start()
 )
 
-print("✅ Streaming Silver Layer con lookup Redis + Kafka avviato")
-print("📁 Output in s3a://silver/sensor_data/ e Kafka topic silver_layer")
+print("✅ Streaming Silver Layer (Delta + Kafka) avviato")
 
 try:
     query.awaitTermination()
 except KeyboardInterrupt:
-    print("Arresto job richiesto dall'utente")
     query.stop()
 finally:
     spark.stop()

@@ -18,15 +18,59 @@ services:
   emqx1:
     image: emqx/emqx-enterprise:5.10.0
     container_name: emqx1
+
     environment:
-      - "EMQX_NODE_NAME=emqx@node1.emqx.com"
-      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.com,emqx@node2.emqx.com]"
+      # --- SINGLE NODE (disabilita il cluster "fantasma") ---
+      EMQX_NODE__NAME: emqx@node1.emqx.local
+      EMQX_CLUSTER__DISCOVERY_STRATEGY: manual
+      # oppure elimina proprio tutte le variabili di cluster
+
+      # --- DASHBOARD credenziali di default (cambiale!) ---
+      EMQX_DASHBOARD__DEFAULT_USERNAME: admin
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: public
+
+      # --- KAFKA CONNECTOR (nome: kafka_producer) ---
+      # endpoint del broker Kafka dal punto di vista DI EMQX (stesso network Docker)
+      EMQX_CONNECTORS__KAFKA__kafka_producer__SERVERS: broker_kafka:9092
+      # opzionali: auth/sasl se servono
+      # EMQX_CONNECTORS__KAFKA__kafka_producer__SASL__MECHANISM: plain
+      # EMQX_CONNECTORS__KAFKA__kafka_producer__SASL__USERNAME: xxx
+      # EMQX_CONNECTORS__KAFKA__kafka_producer__SASL__PASSWORD: xxx
+
+      # --- THROUGHPUT & BACKPRESSURE (alzano la capacità del replay queue) ---
+      # NOTA: a seconda della versione, alcuni key possono essere sotto BRIDGES anziché CONNECTORS.
+      # Li dichiaro in entrambi i posti per compatibilità.
+      EMQX_CONNECTORS__KAFKA__kafka_producer__WORKER_POOL_SIZE: 8
+      EMQX_CONNECTORS__KAFKA__kafka_producer__MAX_INFLIGHT: 2000
+      EMQX_CONNECTORS__KAFKA__kafka_producer__BATCH_SIZE: 500
+      EMQX_CONNECTORS__KAFKA__kafka_producer__LINGER_MS: 50
+      EMQX_CONNECTORS__KAFKA__kafka_producer__RETRIES: 10
+      EMQX_CONNECTORS__KAFKA__kafka_producer__REPLAYQ__CAPACITY: 100000
+      EMQX_CONNECTORS__KAFKA__kafka_producer__REPLAYQ__SEGMENT_BYTES: 10485760
+
+      # (duplicati su BRIDGES per alcune build)
+      EMQX_BRIDGES__KAFKA__kafka_producer__SERVERS: broker_kafka:9092
+      EMQX_BRIDGES__KAFKA__kafka_producer__WORKER_POOL_SIZE: 8
+      EMQX_BRIDGES__KAFKA__kafka_producer__MAX_INFLIGHT: 2000
+      EMQX_BRIDGES__KAFKA__kafka_producer__BATCH_SIZE: 500
+      EMQX_BRIDGES__KAFKA__kafka_producer__LINGER_MS: 50
+      EMQX_BRIDGES__KAFKA__kafka_producer__RETRIES: 10
+      EMQX_BRIDGES__KAFKA__kafka_producer__REPLAYQ__CAPACITY: 100000
+      EMQX_BRIDGES__KAFKA__kafka_producer__REPLAYQ__SEGMENT_BYTES: 10485760
+
+      # --- (OPZIONALE) crea direttamente un bridge statico verso un topic ---
+      # Se usi Rules Engine per decidere i topic dinamicamente, lascia vuoto;
+      # se vuoi un bridge "semplice" di test:
+      # EMQX_BRIDGES__KAFKA__bridge_test__CONNECTOR: kafka_producer
+      # EMQX_BRIDGES__KAFKA__bridge_test__TOPIC: wearables.ppg.raw
+
     healthcheck:
-      test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
-      interval: 5s
-      timeout: 25s
-      retries: 5
+      # controlla la dashboard; più tollerante (evita "unhealthy" fasulli)
+      test: [ "CMD", "sh", "-lc", "curl -fsS http://127.0.0.1:18083/status | grep -q 'running'" ]
+      interval: 30s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
 
     ports:
       - 1883:1883     # MQTT
