@@ -6,6 +6,7 @@ actions {
     bridge_kafka_Altimeter {
       connector = Kafka_connectors
       created_at = 1753829046237
+      description = ""
       enable = true
       fallback_actions = []
       last_modified_at = 1753829046237
@@ -44,6 +45,7 @@ actions {
     bridge_kafka_Barometer {
       connector = Kafka_connectors
       created_at = 1753829112364
+      description = ""
       enable = true
       fallback_actions = []
       last_modified_at = 1753829112364
@@ -82,6 +84,7 @@ actions {
     bridge_kafka_Gyroscope {
       connector = Kafka_connectors
       created_at = 1753828916798
+      description = ""
       enable = true
       fallback_actions = []
       last_modified_at = 1753828916798
@@ -120,14 +123,13 @@ actions {
     bridge_kafka_PPG {
       connector = Kafka_connectors
       created_at = 1753828327973
-      description = ""
       enable = true
       fallback_actions = []
-      last_modified_at = 1753828327973
+      last_modified_at = 1755790838921
       parameters {
         buffer {
           memory_overload_protection = true
-          mode = memory
+          mode = disk
           per_partition_limit = "256MB"
           segment_bytes = "10MB"
         }
@@ -159,14 +161,13 @@ actions {
     bridge_kafka_SkinTemp {
       connector = Kafka_connectors
       created_at = 1753828552715
-      description = ""
       enable = true
       fallback_actions = []
-      last_modified_at = 1753828552715
+      last_modified_at = 1755791016117
       parameters {
         buffer {
           memory_overload_protection = true
-          mode = memory
+          mode = disk
           per_partition_limit = "256MB"
           segment_bytes = "10MB"
         }
@@ -200,11 +201,11 @@ actions {
       created_at = 1753828831583
       enable = true
       fallback_actions = []
-      last_modified_at = 1753828831583
+      last_modified_at = 1755791080313
       parameters {
         buffer {
           memory_overload_protection = true
-          mode = memory
+          mode = disk
           per_partition_limit = "256MB"
           segment_bytes = "10MB"
         }
@@ -238,11 +239,11 @@ actions {
       created_at = 1753829185941
       enable = true
       fallback_actions = []
-      last_modified_at = 1753829185941
+      last_modified_at = 1755790974038
       parameters {
         buffer {
           memory_overload_protection = true
-          mode = memory
+          mode = disk
           per_partition_limit = "256MB"
           segment_bytes = "10MB"
         }
@@ -317,6 +318,60 @@ log {
   console {}
   file {}
 }
+mqtt {
+  await_rel_timeout = "300s"
+  client_attrs_init = []
+  clientid_override = disabled
+  exclusive_subscription = false
+  idle_timeout = "15s"
+  ignore_loop_deliver = false
+  keepalive_check_interval = "30s"
+  keepalive_multiplier = 1.5
+  max_awaiting_rel = 100
+  max_clientid_len = 65535
+  max_inflight = 32
+  max_mqueue_len = 1000
+  max_packet_size = "1MB"
+  max_qos_allowed = 2
+  max_subscriptions = infinity
+  max_topic_alias = 65535
+  max_topic_levels = 128
+  message_expiry_interval = infinity
+  mqueue_default_priority = lowest
+  mqueue_priorities = disabled
+  mqueue_store_qos0 = true
+  peer_cert_as_clientid = disabled
+  peer_cert_as_username = disabled
+  response_information = null
+  retain_available = false
+  retry_interval = infinity
+  server_keepalive = disabled
+  session_expiry_interval = "2h"
+  shared_subscription = true
+  shared_subscription_initial_sticky_pick = random
+  shared_subscription_strategy = round_robin
+  strict_mode = false
+  upgrade_qos = false
+  use_username_as_clientid = false
+  wildcard_subscription = true
+}
+retainer {
+  allow_never_expire = true
+  backend {
+    enable = true
+    index_specs = [[1, 2, 3], [1, 3], [2, 3], [3]]
+    max_retained_messages = 0
+    storage_type = disc
+    type = built_in_database
+  }
+  delivery_rate = "10000/s"
+  max_payload_size = "1MB"
+  max_publish_rate = "10000/s"
+  msg_clear_interval = "0s"
+  msg_expiry_interval = "0s"
+  msg_expiry_interval_override = disabled
+  stop_publish_clear_msg = false
+}
 rule_engine {
   ignore_sys_message = true
   jq_function_default_timeout = "10s"
@@ -327,7 +382,8 @@ rule_engine {
       ]
       description = ""
       enable = true
-      metadata {created_at = 1753828844752, last_modified_at = 1753828844752}
+      metadata {last_modified_at = 1755789642019}
+      name = ""
       sql = """~
         SELECT
           topic,
@@ -343,8 +399,9 @@ rule_engine {
         "kafka_producer:bridge_kafka_Altimeter"
       ]
       description = ""
-      enable = true
-      metadata {created_at = 1753829050683, last_modified_at = 1753829050683}
+      enable = false
+      metadata {last_modified_at = 1755789296362}
+      name = ""
       sql = """~
         SELECT
           topic,
@@ -360,8 +417,9 @@ rule_engine {
         "kafka_producer:bridge_kafka_Barometer"
       ]
       description = ""
-      enable = true
-      metadata {created_at = 1753829116728, last_modified_at = 1753829116728}
+      enable = false
+      metadata {last_modified_at = 1755789295947}
+      name = ""
       sql = """~
         SELECT
           topic,
@@ -377,8 +435,9 @@ rule_engine {
         "kafka_producer:bridge_kafka_Gyroscope"
       ]
       description = ""
-      enable = true
-      metadata {created_at = 1753828937130, last_modified_at = 1753828937130}
+      enable = false
+      metadata {last_modified_at = 1755792314236}
+      name = ""
       sql = """~
         SELECT
           topic,
@@ -395,7 +454,7 @@ rule_engine {
       ]
       description = ""
       enable = true
-      metadata {created_at = 1753828330565, last_modified_at = 1753828330565}
+      metadata {last_modified_at = 1755789720151}
       name = ""
       sql = """~
         SELECT
@@ -413,7 +472,7 @@ rule_engine {
       ]
       description = ""
       enable = true
-      metadata {created_at = 1753828556662, last_modified_at = 1753828556662}
+      metadata {last_modified_at = 1755789639486}
       name = ""
       sql = """~
         SELECT
@@ -431,7 +490,8 @@ rule_engine {
       ]
       description = ""
       enable = true
-      metadata {created_at = 1753829198553, last_modified_at = 1753829198553}
+      metadata {last_modified_at = 1755789638821}
+      name = ""
       sql = """~
         SELECT
           topic,
@@ -443,4 +503,11 @@ rule_engine {
           "wearables/cEDA"~"""
     }
   }
+}
+slow_subs {
+  enable = true
+  expire_interval = "300s"
+  stats_type = whole
+  threshold = "500ms"
+  top_k_num = 10
 }

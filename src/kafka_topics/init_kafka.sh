@@ -1,6 +1,13 @@
 #!/bin/bash
 
-topics=(
+cold_topics=(
+  users_changes # CDC
+  silver_layer
+  gold_layer
+  meals
+)
+
+hot_topics=(
   wearables.ppg.raw
   wearables.skin-temp.raw
   wearables.accelerometer.raw
@@ -8,11 +15,8 @@ topics=(
   wearables.altimeter.raw
   wearables.barometer.raw
   wearables.ceda.raw
-  users_changes # CDC
-  silver_layer
-  gold_layer
-  meals
 )
+
 
 # Setting kafka
 KAFKA_CONTAINER="broker_kafka"
@@ -28,16 +32,31 @@ while ! nc -z $KAFKA_CONTAINER 9092; do
 done
 echo "Kafka is ready"
 
-echo "Creating sensor topic"
-for topic in "${topics[@]}"; do
+# --- Cold topics ---
+echo "Creating cold topics"
+for topic in "${cold_topics[@]}"; do
   echo "Creating topic: $topic"
   /opt/kafka/bin/kafka-topics.sh \
     --bootstrap-server "$BOOTSTRAP_SERVER" \
     --create \
     --topic "$topic" \
-    --partitions $PARTITION \
-    --replication-factor $REPLICATION_FACTOR \
+    --partitions 6 \
+    --replication-factor 1 \
     --if-not-exists
 done
-echo "Sensor topic created"
+echo "Cold topics created"
+
+# --- Hot topics ---
+echo "Creating hot topics"
+for topic in "${hot_topics[@]}"; do
+  echo "Creating topic: $topic"
+  /opt/kafka/bin/kafka-topics.sh \
+    --bootstrap-server "$BOOTSTRAP_SERVER" \
+    --create \
+    --topic "$topic" \
+    --partitions 12 \
+    --replication-factor 1 \
+    --if-not-exists
+done
+echo "Hot topics created"
 

@@ -79,7 +79,7 @@ WALLCLOCK_T0 = None
 # LOAD CSVs
 # =========================
 # Lista utenti che vuoi simulare
-ALLOWED_USERS = [1, 2, 5]
+ALLOWED_USERS = [1, 2]
 
 def load_data():
     events = pd.read_csv(events_path, dtype={"user_id":"int64","activity":"string"})

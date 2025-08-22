@@ -261,7 +261,7 @@ def get_personalized_food_by_name(user_id: str, food_name: str) -> dict:
 
     cur.execute("""
                 SELECT *
-                FROM user_food
+                FROM user_foods
                 WHERE name = %s
                   AND user_id = %s
                 LIMIT 1;

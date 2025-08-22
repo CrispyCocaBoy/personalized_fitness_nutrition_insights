@@ -232,8 +232,8 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=4
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=2
     depends_on:
       - spark-master
 
@@ -245,8 +245,8 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=4
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=2
     depends_on:
       - spark-master
 
