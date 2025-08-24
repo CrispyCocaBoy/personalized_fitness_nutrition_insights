@@ -387,3 +387,25 @@ def delete_personalized_food(user_food_id: int, user_id: int) -> bool:
         raise
     finally:
         conn.close()
+
+# Activity calls
+def activity_default():
+    """
+    Recupera la lista delle attività di default dalla tabella activity_default.
+    Restituisce una lista di dict con chiavi: activity_id, name, icon.
+    """
+    conn = connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT activity_id, name, icon
+        FROM activity_default
+        ORDER BY activity_id;
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+
+    cur.close()
+    conn.close()
+
+    return [dict(zip(colnames, row)) for row in rows]

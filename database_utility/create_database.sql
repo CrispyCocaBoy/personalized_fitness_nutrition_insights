@@ -236,6 +236,14 @@ CREATE TABLE workout_recommendation_blacklist (
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (recommendation_id) REFERENCES workout_recommendation(recommendation_id)
 );
+
+-- 21. Activity
+--     Activity included in the datatbase
+CREATE TABLE activity_default(
+    activity_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    icon VARCHAR(20)
+);
 ---------------------------------------------------------
 -- STANDARD SETUP
 -- These are initial/default values for device types, sensors, and features
@@ -612,4 +620,36 @@ INSERT INTO default_foods (name,quantity,unit,calories,carbohydrates,protein,fat
  ('Trout Tradition','100','g','113.7','0.1','25.4','6.2',null,null,'3.5','0.1','54.9','381.4','1.2',null,'47.7','Fish'),
  ('Tequila Generic','100','ml','107.7','6.3','0.0',null,null,'4.3',null,null,null,'42.6','0.2',null,null,'Alcoholic Beverages');
 
---
+-- Default activity in the database
+
+INSERT INTO activity_default (activity_id, name, icon) VALUES
+(1, 'Running', '🏃‍♂️'),
+(2, 'Football', '⚽'),
+(3, 'Swimming', '🏊‍♂️'),
+(4, 'Gym', '🏋️‍♂️'),
+(5, 'Cycling', '🚴‍♂️'),
+(6, 'Tennis', '🎾'),
+(7, 'Yoga', '🧘‍♀️'),
+(8, 'Basketball', '🏀'),
+(9, 'Walking', '🚶‍♂️'),
+(10, 'Volleyball', '🏐'),
+(11, 'Soccer', '⚽'),
+(12, 'Baseball', '⚾'),
+(13, 'Hiking', '🥾'),
+(14, 'Dancing', '💃'),
+(15, 'Boxing', '🥊'),
+(16, 'Golf', '⛳'),
+(17, 'Skiing', '⛷️'),
+(18, 'Surfing', '🏄‍♂️'),
+(19, 'Rock Climbing', '🧗‍♂️'),
+(20, 'Badminton', '🏸'),
+(21, 'Table Tennis', '🏓'),
+(22, 'Martial Arts', '🥋'),
+(23, 'Rowing', '🚣‍♂️'),
+(24, 'Ice Skating', '⛸️'),
+(25, 'Skateboarding', '🛹'),
+(26, 'Bowling', '🎳'),
+(27, 'Archery', '🏹'),
+(28, 'Weightlifting', '🏋️‍♀️'),
+(29, 'Pilates', '🤸‍♀️'),
+(30, 'Crossfit', '💪');

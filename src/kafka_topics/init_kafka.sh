@@ -5,6 +5,7 @@ cold_topics=(
   silver_layer
   gold_layer
   meals
+  activities
 )
 
 hot_topics=(

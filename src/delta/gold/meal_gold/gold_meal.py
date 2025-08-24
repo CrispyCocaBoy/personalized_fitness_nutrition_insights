@@ -1,9 +1,9 @@
-# jobs/gold_meals_from_kafka_optimized.py
+# jobs/gold_meals_from_kafka_fast.py
 import os
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     col, from_json, to_timestamp, regexp_replace, current_timestamp,
-    to_date, lit, sum as Fsum, count as Fcount, max as Fmax, expr
+    to_date, lit, sum as Fsum, count as Fcount, max as Fmax, broadcast
 )
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from delta.tables import DeltaTable
@@ -13,41 +13,45 @@ from delta.tables import DeltaTable
 # ========================
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP", "broker_kafka:9092")
 MEALS_TOPIC     = os.getenv("MEALS_TOPIC", "meals")
-START_OFFSETS   = os.getenv("STARTING_OFFSETS", "latest")   # "latest" | "earliest" | JSON
+START_OFFSETS   = os.getenv("STARTING_OFFSETS", "latest")
 FAIL_ON_LOSS    = os.getenv("FAIL_ON_DATA_LOSS", "false")
-TRIGGER         = os.getenv("TRIGGER", "30 seconds")
-MAX_OFFSETS     = os.getenv("MAX_OFFSETS_PER_TRIGGER", "")  # es. "50000"
+TRIGGER         = os.getenv("TRIGGER", "5 seconds")
+MAX_OFFSETS     = os.getenv("MAX_OFFSETS_PER_TRIGGER", "")
 
 S3_ENDPOINT     = os.getenv("S3_ENDPOINT", "http://minio:9000")
 S3_ACCESS_KEY   = os.getenv("S3_ACCESS_KEY", "minioadmin")
 S3_SECRET_KEY   = os.getenv("S3_SECRET_KEY", "minioadmin")
 S3_BUCKET_GOLD  = os.getenv("S3_BUCKET_GOLD", "gold")
 
-FACT_PATH       = f"s3a://{S3_BUCKET_GOLD}/meals_fact"   # partiz. (user_id,event_date)
-DAILY_PATH      = f"s3a://{S3_BUCKET_GOLD}/meals_daily"  # merge su (user_id,event_date)
+FACT_PATH       = f"s3a://{S3_BUCKET_GOLD}/meals_fact"
+DAILY_PATH      = f"s3a://{S3_BUCKET_GOLD}/meals_daily"
 CKP_STREAM      = f"s3a://{S3_BUCKET_GOLD}/checkpoints/gold_meals"
+
+FACT_WRITE_PARTITIONS = int(os.getenv("FACT_WRITE_PARTITIONS", "4"))
 
 # ========================
 # Spark & Delta
 # ========================
 spark = (
     SparkSession.builder
-    .appName("GoldMeals (Fact + Daily) — Optimized")
+    .appName("GoldMeals Fast")
     .config("spark.sql.session.timeZone", "UTC")
-    .config("spark.sql.shuffle.partitions", "8")
-    .config("spark.default.parallelism", "8")
-    .config("spark.sql.streaming.stateStore.providerClass",
-            "org.apache.spark.sql.execution.streaming.state.RocksDBStateStoreProvider")
+    .config("spark.sql.shuffle.partitions", "4")
+    .config("spark.default.parallelism", "4")
+    .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    .config("spark.sql.adaptive.enabled", "true")
+    .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
+    .config("spark.sql.adaptive.skewJoin.enabled", "true")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-    # Delta compattazioni automatiche (se supportate)
+    .config("spark.delta.logStore.class", "org.apache.spark.sql.delta.storage.S3SingleDriverLogStore")
     .config("spark.databricks.delta.optimizeWrite.enabled", "true")
     .config("spark.databricks.delta.autoCompact.enabled", "true")
     .getOrCreate()
 )
 spark.sparkContext.setLogLevel("WARN")
 
-# MinIO / S3A
+# MinIO
 hadoopConf = spark._jsc.hadoopConfiguration()
 hadoopConf.set("fs.s3a.access.key", S3_ACCESS_KEY)
 hadoopConf.set("fs.s3a.secret.key", S3_SECRET_KEY)
@@ -57,15 +61,16 @@ hadoopConf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 hadoopConf.set("fs.s3a.fast.upload", "true")
 hadoopConf.set("fs.s3a.connection.maximum", "200")
 hadoopConf.set("fs.s3a.threads.max", "200")
-hadoopConf.set("fs.s3a.multipart.size", "134217728")  # 128MB
+hadoopConf.set("fs.s3a.multipart.size", "134217728")
 hadoopConf.set("fs.s3a.fast.upload.buffer", "disk")
 
-print("✅ Spark ready & MinIO configured (UTC)")
+print("✅ Spark ready & MinIO configured")
 
 # ========================
-# Schema JSON atteso dal gateway
+# Schema
 # ========================
 meal_schema = StructType([
+    StructField("task",   StringType(),  True),
     StructField("meal_id",   StringType(),  True),
     StructField("user_id",   StringType(),  True),
     StructField("meal_name", StringType(),  True),
@@ -73,7 +78,7 @@ meal_schema = StructType([
     StructField("carbs_g",   IntegerType(), True),
     StructField("protein_g", IntegerType(), True),
     StructField("fat_g",     IntegerType(), True),
-    StructField("timestamp", StringType(),  True),   # es. "2025-08-20T10:15:00Z"
+    StructField("timestamp", StringType(),  True),
     StructField("notes",     StringType(),  True),
     StructField("ingest_ts", StringType(),  True),
     StructField("source",    StringType(),  True),
@@ -81,7 +86,7 @@ meal_schema = StructType([
 ])
 
 # ========================
-# Lettura Kafka → parsing JSON
+# Kafka reader
 # ========================
 kafka_reader = (
     spark.readStream.format("kafka")
@@ -101,88 +106,141 @@ parsed = (
        .select("m.*")
 )
 
-# Timestamp ISO8601 con suffisso Z→UTC
-fact_meals_stream = (
+with_event = (
     parsed
     .withColumn(
         "event_ts",
-        # supporta "2025-08-20T10:15:00Z" e con millisecondi
         to_timestamp(regexp_replace(col("timestamp"), "Z$", ""), "yyyy-MM-dd'T'HH:mm:ss[.SSS]")
     )
     .withColumn("event_date", to_date(col("event_ts")))
     .withColumn("gold_ingest_ts", current_timestamp())
-    .select(
-        "meal_id","user_id","meal_name","kcal","carbs_g","protein_g","fat_g",
-        "notes","event_ts","event_date","ingest_ts","source","schema_version","gold_ingest_ts"
-    )
 )
 
 # ========================
-# ForeachBatch: write FACT + MERGE DAILY (una volta per batch)
+# ForeachBatch
 # ========================
 def process_batch(batch_df, batch_id: int):
     if batch_df.rdd.isEmpty():
-        print(f"⚠️ Batch {batch_id} vuoto")
         return
 
-    # FACT (scrittura unica partizionata)
-    (batch_df.write
-        .format("delta")
-        .mode("append")
-        .option("mergeSchema", "true")
-        .partitionBy("user_id", "event_date")
-        .save(FACT_PATH))
+    batch_df = batch_df.cache()
 
-    # DAILY (aggregazione e 1 MERGE)
-    daily = (
-        batch_df.groupBy("user_id", "event_date")
-                .agg(
-                    Fsum("kcal").alias("kcal_total"),
-                    Fsum("carbs_g").alias("carbs_total_g"),
-                    Fsum("protein_g").alias("protein_total_g"),
-                    Fsum("fat_g").alias("fat_total_g"),
-                    Fcount(lit(1)).alias("meals_count"),
-                    Fmax("event_ts").alias("last_meal_ts"),
-                )
-                .withColumn("gold_ingest_ts", current_timestamp())
+    adds_df = (
+        batch_df.filter((col("task").isNull()) | (col("task") == lit("add")))
+    )
+    deletes_df = (
+        batch_df.filter(col("task") == lit("delete"))
+                .select("meal_id", "user_id", "event_date")
+                .distinct()
     )
 
-    if DeltaTable.isDeltaTable(spark, DAILY_PATH):
-        tgt = DeltaTable.forPath(spark, DAILY_PATH)
-        (tgt.alias("t")
-            .merge(
-                daily.alias("s"),
-                "t.user_id = s.user_id AND t.event_date = s.event_date"
-            )
-            .whenMatchedUpdateAll()
-            .whenNotMatchedInsertAll()
-            .execute())
-    else:
-        (daily.write
-              .format("delta")
-              .mode("overwrite")
-              .option("overwriteSchema", "true")
-              .save(DAILY_PATH))
+    # --- ADD ---
+    if not adds_df.rdd.isEmpty():
+        adds_df_opt = adds_df.repartition(
+            FACT_WRITE_PARTITIONS, col("user_id"), col("event_date")
+        )
+        (adds_df_opt.write
+            .format("delta")
+            .mode("append")
+            .option("mergeSchema", "true")
+            .partitionBy("user_id", "event_date")
+            .save(FACT_PATH))
 
-    print(f"✅ Batch {batch_id}: FACT → {FACT_PATH} | DAILY MERGE → {DAILY_PATH}")
+        daily_adds = (
+            adds_df_opt.groupBy("user_id", "event_date")
+                   .agg(
+                       Fsum("kcal").alias("kcal_total"),
+                       Fsum("carbs_g").alias("carbs_total_g"),
+                       Fsum("protein_g").alias("protein_total_g"),
+                       Fsum("fat_g").alias("fat_total_g"),
+                       Fcount(lit(1)).alias("meals_count"),
+                       Fmax("event_ts").alias("last_meal_ts"),
+                   )
+                   .withColumn("gold_ingest_ts", current_timestamp())
+                   .coalesce(1)
+        )
+        if DeltaTable.isDeltaTable(spark, DAILY_PATH):
+            tgt = DeltaTable.forPath(spark, DAILY_PATH)
+            (tgt.alias("t")
+               .merge(
+                   daily_adds.alias("s"),
+                   "t.user_id = s.user_id AND t.event_date = s.event_date"
+               )
+               .whenMatchedUpdateAll()
+               .whenNotMatchedInsertAll()
+               .execute())
+        else:
+            (daily_adds.write
+                .format("delta")
+                .mode("overwrite")
+                .option("overwriteSchema", "true")
+                .save(DAILY_PATH))
+
+    # --- DELETE ---
+    if not deletes_df.rdd.isEmpty():
+        fact_dt = DeltaTable.forPath(spark, FACT_PATH)
+        (fact_dt.alias("t")
+            .merge(
+                deletes_df.alias("d"),
+                "t.user_id = d.user_id AND t.meal_id = d.meal_id"
+            )
+            .whenMatchedDelete()
+            .execute())
+
+        affected_keys = deletes_df.select("user_id", "event_date").distinct()
+        fact_now = spark.read.format("delta").load(FACT_PATH)
+
+        recalculated = (
+            fact_now.join(broadcast(affected_keys), ["user_id", "event_date"], "inner")
+                    .groupBy("user_id", "event_date")
+                    .agg(
+                        Fsum("kcal").alias("kcal_total"),
+                        Fsum("carbs_g").alias("carbs_total_g"),
+                        Fsum("protein_g").alias("protein_total_g"),
+                        Fsum("fat_g").alias("fat_total_g"),
+                        Fcount(lit(1)).alias("meals_count"),
+                        Fmax("event_ts").alias("last_meal_ts"),
+                    )
+                    .withColumn("gold_ingest_ts", current_timestamp())
+                    .coalesce(1)
+        )
+        if not recalculated.rdd.isEmpty():
+            tgt = DeltaTable.forPath(spark, DAILY_PATH) if DeltaTable.isDeltaTable(spark, DAILY_PATH) else None
+            if tgt is None:
+                (recalculated.write
+                    .format("delta")
+                    .mode("overwrite")
+                    .option("overwriteSchema", "true")
+                    .save(DAILY_PATH))
+            else:
+                (tgt.alias("t")
+                    .merge(
+                        recalculated.alias("s"),
+                        "t.user_id = s.user_id AND t.event_date = s.event_date"
+                    )
+                    .whenMatchedUpdateAll()
+                    .whenNotMatchedInsertAll()
+                    .execute())
+
+    batch_df.unpersist(False)
+    print(f"✅ Batch {batch_id} — adds={adds_df.count()} deletes={deletes_df.count()}")
 
 # ========================
 # Avvio streaming
 # ========================
 query = (
-    fact_meals_stream.writeStream
+    with_event.writeStream
     .foreachBatch(process_batch)
-    .outputMode("append")                 # richiesto dall’API
+    .outputMode("append")
     .trigger(processingTime=TRIGGER)
     .option("checkpointLocation", CKP_STREAM)
     .start()
 )
 
-print(f"🚀 GoldMeals avviato — FACT: {FACT_PATH} | DAILY: {DAILY_PATH}")
+print(f"🚀 GoldMeals FAST — FACT={FACT_PATH} DAILY={DAILY_PATH}")
 
 try:
     query.awaitTermination()
 except KeyboardInterrupt:
-    print("⏹ Stop richiesto")
     query.stop()
     spark.stop()
