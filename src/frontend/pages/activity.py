@@ -332,36 +332,11 @@ with main_col:
 
         st.divider()
 
-        # =========================
-        # 📊 Andamento (ultimi 30 giorni) — grafico + card
-        # =========================
         st.markdown("#### 📆 Andamento (ultimi 30 giorni)")
-
         daily_30 = load_activities_daily(user_id, limit=30)
-
         if not daily_30:
             st.info("Nessun aggregato giornaliero.")
         else:
-            # ---- GRAFICO GIORNI vs MINUTI ----
-            try:
-                import pandas as pd
-
-                chart_df = pd.DataFrame(daily_30)
-                # garantisco le colonne necessarie
-                if {"event_date", "duration_total_min"} <= set(chart_df.columns):
-                    chart_df["event_date"] = pd.to_datetime(chart_df["event_date"], errors="coerce")
-                    chart_df = chart_df.dropna(subset=["event_date"])
-                    chart_df = chart_df.sort_values("event_date")
-                    chart_df = chart_df.set_index("event_date")[["duration_total_min"]]
-                    chart_df.rename(columns={"duration_total_min": "Minuti attività"}, inplace=True)
-
-                    st.bar_chart(chart_df, use_container_width=True)
-                else:
-                    st.info("Dati insufficienti per il grafico.")
-            except Exception as e:
-                st.warning(f"Impossibile disegnare il grafico: {e}")
-
-            # ---- CARD GIORNALIERE (resta come riferimento sintetico) ----
             st.markdown('<div class="grid">', unsafe_allow_html=True)
             for d in daily_30:
                 ed = d.get("event_date")
@@ -370,6 +345,7 @@ with main_col:
                 last = d.get("last_activity_end_ts") or d.get("last_end_ts")
                 last_label = _iso_local_label(last)
 
+                # Mostra SOLO i campi disponibili nel DAILY
                 st.markdown(f"""
                 <div class="card">
                   <div style="display:flex; justify-content:space-between;">
@@ -383,7 +359,6 @@ with main_col:
                 </div>
                 """, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
-
 
     # =========================
     # Modalità 2: Aggiungi / Registra (Quick + Manuale)
