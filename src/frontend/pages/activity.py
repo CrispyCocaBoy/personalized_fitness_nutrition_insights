@@ -388,7 +388,7 @@ with main_col:
                 with qc1:
                     quick_day: date = st.date_input("Data (rapida)", value=date.today(), format="YYYY-MM-DD", key="quick_day")
                 with qc2:
-                    anchor = st.selectbox("Ancoraggio", ["🕒 Finita ora", "▶️ Iniziata ora"], index=0, key="quick_anchor")
+                    anchor = st.selectbox("Ancoraggio", ["🕒 Finita ora"], index=0, key="quick_anchor")
                 with qc3:
                     duration_min = st.number_input("Durata (min)", min_value=1, max_value=600, step=5, value=30, key="quick_dur")
 

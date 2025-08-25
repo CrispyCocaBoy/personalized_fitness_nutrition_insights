@@ -5,10 +5,10 @@ cold_topics=(
   silver_layer
   gold_layer
   meals
-  activities
 )
 
 hot_topics=(
+  activities
   wearables.ppg.raw
   wearables.skin-temp.raw
   wearables.accelerometer.raw
@@ -24,7 +24,6 @@ KAFKA_CONTAINER="broker_kafka"
 BOOTSTRAP_SERVER="broker_kafka:9092"
 
 # Setting topics
-PARTITION="6"
 REPLICATION_FACTOR="1"
 
 echo "Waiting for kafka to be ready"
