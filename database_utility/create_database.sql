@@ -245,6 +245,15 @@ CREATE TABLE activity_default(
     name VARCHAR(255) NOT NULL,
     icon VARCHAR(20)
 );
+
+-- 22. SENSOR_STATUS
+--     Stato attuale di ciascun sensore (acceso/spento)
+CREATE TABLE sensor_status (
+    sensor_id INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
+    active    BOOLEAN NOT NULL DEFAULT TRUE,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 ---------------------------------------------------------
 -- STANDARD SETUP
 -- These are initial/default values for device types, sensors, and features

@@ -2,6 +2,7 @@
 
 cold_topics=(
   users_changes # CDC
+  toggle_sensor # CDC
   silver_layer
   gold_layer
   meals

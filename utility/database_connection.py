@@ -744,4 +744,47 @@ def list_user_devices_detailed(user_id: int):
     finally:
         cur.close(); conn.close()
 
+def toggle_sensor_status(sensor_id: int, user_id: int) -> tuple[bool, str, bool]:
+    """
+    Attiva/disattiva un sensore per l'utente.
+    Se non esiste ancora in sensor_status viene creato.
+    Ritorna (ok, msg, new_state).
+    """
+    conn = connection(); cur = conn.cursor()
+    try:
+        # controlla che il sensore appartenga all'utente
+        cur.execute("SELECT 1 FROM sensor_to_user WHERE sensor_id = %s AND user_id = %s", (sensor_id, user_id))
+        if not cur.fetchone():
+            return False, "Sensore non trovato o non appartiene all'utente.", False
+
+        # recupera stato attuale
+        cur.execute("SELECT active FROM sensor_status WHERE sensor_id = %s", (sensor_id,))
+        row = cur.fetchone()
+
+        if row is None:
+            # se non c'è riga -> creiamo e impostiamo TRUE
+            cur.execute(
+                "INSERT INTO sensor_status (sensor_id, active) VALUES (%s, TRUE)",
+                (sensor_id,)
+            )
+            new_state = True
+        else:
+            # se esiste -> toggliamo
+            current_state = row[0]
+            new_state = not current_state
+            cur.execute(
+                "UPDATE sensor_status SET active = %s, updated_at = NOW() WHERE sensor_id = %s",
+                (new_state, sensor_id)
+            )
+
+        conn.commit()
+        msg = f"Sensore {sensor_id} {'attivato' if new_state else 'disattivato'}."
+        return True, msg, new_state
+
+    except Exception as e:
+        conn.rollback()
+        return False, f"Errore: {e}", False
+    finally:
+        cur.close(); conn.close()
+
 

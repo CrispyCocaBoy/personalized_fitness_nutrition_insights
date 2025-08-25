@@ -169,11 +169,24 @@ services:
 
   # Change Data Capture
   ## Kafka connector
-  change_data_capture:
+  change_data_capture_user_map:
     build:
-      context: ./src/change_data_capture
+      context: ./src/change_data_capture/CDC_user_map
       dockerfile: Dockerfile
-    container_name: change_data_capture
+    container_name: change_data_capture_user_map
+    depends_on:
+      - broker_kafka
+      - redis
+    environment:
+      KAFKA_BOOTSTRAP: broker_kafka:9092
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  change_data_capture_toggling_sensor:
+    build:
+      context: ./src/change_data_capture/CDC_toggling_sensor
+      dockerfile: Dockerfile
+    container_name: change_data_capture_toggling_sensor
     depends_on:
       - broker_kafka
       - redis
