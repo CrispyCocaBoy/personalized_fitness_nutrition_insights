@@ -91,6 +91,7 @@ CREATE TABLE sensor_to_user (
   device_id      INT NOT NULL REFERENCES device(device_id) ON DELETE CASCADE,
   sensor_type_id INT NOT NULL REFERENCES sensor_type(sensor_type_id) ON DELETE CASCADE,
   created_at     TIMESTAMPTZ DEFAULT NOW(),
+  custom_name VARCHAR(100),
   UNIQUE(device_id, sensor_type_id)
 );
 -- 10. USER_FEATURE_PREFERENCES
@@ -255,7 +256,8 @@ VALUES
   ('SimpleWatch', 'simpleguys', 'SW_001', 'Basic smartwatch'),
   ('SimpleBand',  'simpleguys', 'SB_001', 'Basic smartband'),
   ('SimpleRing',  'simpleguys', 'SR_001', 'Smart ring'),
-  ('Phone',       'generic',    NULL,     'Generic smartphone');
+  ('Phone',       'generic',    NULL,     'Generic smartphone'),
+  ('VirtualDevice', 'system',    NULL,     'Placeholder per sensori singoli''');
 
 -- Sensor types (hardware)
 INSERT INTO sensor_type (sensor_type_id, name, unit, description) VALUES
@@ -653,3 +655,4 @@ INSERT INTO activity_default (activity_id, name, icon) VALUES
 (28, 'Weightlifting', '🏋️‍♀️'),
 (29, 'Pilates', '🤸‍♀️'),
 (30, 'Crossfit', '💪');
+

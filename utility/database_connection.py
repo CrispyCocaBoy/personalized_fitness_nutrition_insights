@@ -179,45 +179,50 @@ def stream_selection():
     return available_types
 
 
-def bind_device(user_id, device_type_id, device_type_name):
+def bind_device(user_id: int, device_type_id: int, device_type_name: str, custom_device_name: str | None = None):
     conn = connection()
     cur = conn.cursor()
 
     try:
         # Recupero nome utente
         cur.execute("SELECT name FROM users_profile WHERE user_id = %s", (user_id,))
-        user_name = cur.fetchone()
+        row = cur.fetchone()
+        if not row:
+            return False, f"Utente {user_id} non trovato."
+        user_name = row[0]
 
-        device_name = f"{device_type_name} of {user_name[0]}"
+        # Nome dispositivo: custom oppure di default
+        device_name = custom_device_name.strip() if custom_device_name else f"{device_type_name} of {user_name}"
+
+        # Serial number random
         serial_number = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
 
         # Inserimento device e recupero device_id
         cur.execute("""
-                    INSERT INTO device (user_id, device_name, device_type_id, serial_number, registered_at)
-                    VALUES (%s, %s, %s, %s, NOW())
-                    RETURNING device_id
-                    """, (user_id, device_name, device_type_id, serial_number))
-
+            INSERT INTO device (user_id, device_name, device_type_id, serial_number, registered_at)
+            VALUES (%s, %s, %s, %s, NOW())
+            RETURNING device_id
+        """, (user_id, device_name, device_type_id, serial_number))
         device_id = cur.fetchone()[0]
 
         # Recupero sensori collegati al device type
         cur.execute("""
-                    SELECT sensor_type_id
-                    FROM predefined_device_type_sensors
-                    WHERE device_type_id = %s
-                    """, (device_type_id,))
+            SELECT sensor_type_id
+            FROM predefined_device_type_sensors
+            WHERE device_type_id = %s
+        """, (device_type_id,))
         sensors_to_generate = [row[0] for row in cur.fetchall()]
 
         # Inserimento sensori collegati al device
         for sensor_type_id in sensors_to_generate:
             cur.execute("""
-                        INSERT INTO sensor_to_user (device_id, user_id, sensor_type_id, created_at)
-                        VALUES (%s, %s, %s, NOW())
-                        """, (device_id, user_id, sensor_type_id))
+                INSERT INTO sensor_to_user (device_id, user_id, sensor_type_id, created_at)
+                VALUES (%s, %s, %s, NOW())
+            """, (device_id, user_id, sensor_type_id))
 
         # Commit finale
         conn.commit()
-        return True, f"Device {device_name} con sensori {sensors_to_generate} creato con successo!"
+        return True, f"Device '{device_name}' con sensori {sensors_to_generate} creato con successo!"
 
     except Exception as e:
         conn.rollback()
@@ -225,6 +230,66 @@ def bind_device(user_id, device_type_id, device_type_name):
 
     finally:
         conn.close()
+
+
+def bind_single_sensor(user_id: int, sensor_type_id: int, custom_name: str | None = None):
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        # utente esiste?
+        cur.execute("SELECT 1 FROM users WHERE user_id=%s", (user_id,))
+        if not cur.fetchone():
+            return False, f"Utente {user_id} non trovato."
+
+        # sensore esiste?
+        cur.execute("SELECT name FROM sensor_type WHERE sensor_type_id=%s", (sensor_type_id,))
+        row = cur.fetchone()
+        if not row:
+            return False, f"Sensor type {sensor_type_id} non trovato."
+        sensor_type_name = row[0]
+
+        # Nome sensore: custom oppure di default = sensor_type_name
+        sensor_name_final = custom_name.strip() if custom_name else sensor_type_name
+
+        # recupera/crea virtual device
+        cur.execute("""
+            SELECT d.device_id
+            FROM device d
+            WHERE d.user_id=%s AND d.device_name='SingleSensor'
+            LIMIT 1
+        """, (user_id,))
+        r = cur.fetchone()
+        if r:
+            device_id = r[0]
+        else:
+            cur.execute("SELECT device_type_id FROM device_type WHERE name='VirtualDevice' LIMIT 1")
+            r2 = cur.fetchone()
+            virtual_type_id = r2[0] if r2 else None
+
+            cur.execute("""
+                INSERT INTO device (user_id, device_name, device_type_id, serial_number, registered_at)
+                VALUES (%s, 'SingleSensor', %s, CONCAT('VIRTUAL-', FLOOR(RANDOM()*1e9)::text), NOW())
+                RETURNING device_id
+            """, (user_id, virtual_type_id))
+            device_id = cur.fetchone()[0]
+
+        # associazione
+        cur.execute("""
+            INSERT INTO sensor_to_user (device_id, user_id, sensor_type_id, created_at, custom_name)
+            VALUES (%s, %s, %s, NOW(), %s)
+            ON CONFLICT DO NOTHING
+        """, (device_id, user_id, sensor_type_id, sensor_name_final))
+
+        conn.commit()
+        return True, f"Sensore '{sensor_name_final}' ({sensor_type_name}) associato all'utente {user_id}."
+    except Exception as e:
+        conn.rollback()
+        return False, f"Errore: {e}"
+    finally:
+        conn.close()
+
+
+
 
 # Retrive default_meal
 def default_food():
@@ -409,3 +474,274 @@ def activity_default():
     conn.close()
 
     return [dict(zip(colnames, row)) for row in rows]
+
+
+def get_device_types():
+    """
+    Ritorna [(device_type_id, name)] dai device type disponibili.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT device_type_id, name
+            FROM device_type
+            ORDER BY name ASC
+        """)
+        rows = cur.fetchall()
+        return rows
+    finally:
+        cur.close()
+        conn.close()
+
+
+def get_sensors_for_device_type(device_type_id: int):
+    """
+    Ritorna [(sensor_type_id, sensor_name, priority)] per il device_type_id indicato.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT st.sensor_type_id, st.name, pdts.priority
+            FROM predefined_device_type_sensors AS pdts
+            JOIN device_type AS dt
+              ON dt.device_type_id = pdts.device_type_id
+            JOIN sensor_type AS st
+              ON st.sensor_type_id = pdts.sensor_type_id
+            WHERE dt.device_type_id = %s
+            ORDER BY pdts.priority ASC, st.name ASC
+        """, (device_type_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_device_types():
+    """
+    Ritorna [(device_type_id, device_type_name)]
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT device_type_id, device_type_name
+            FROM predefined_device_type
+            ORDER BY device_type_name ASC
+        """)
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_sensors_for_device_type(device_type_id: int):
+    """
+    Ritorna [(sensor_type_id, sensor_name)] per un device type.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT st.sensor_type_id, st.name
+            FROM predefined_device_type_sensors pdts
+            JOIN sensor_type st ON st.sensor_type_id = pdts.sensor_type_id
+            WHERE pdts.device_type_id = %s
+            ORDER BY st.name ASC
+        """, (device_type_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_user_devices(user_id: int):
+    """
+    Ritorna [(device_id, device_name)] dell'utente.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT device_id, device_name
+            FROM device
+            WHERE user_id = %s
+            ORDER BY registered_at DESC
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_all_sensor_types():
+    """
+    Ritorna [(sensor_type_id, name)] per tutti i sensori disponibili.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT sensor_type_id, name
+            FROM sensor_type
+            ORDER BY name ASC
+        """)
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_user_bound_sensors(user_id: int):
+    """
+    Ritorna le associazioni sensori dell'utente:
+    [(sensor_type_id, sensor_type_name, device_id, device_name, custom_name, created_at)]
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT
+                stu.sensor_type_id,
+                st.name         AS sensor_type_name,
+                stu.device_id,
+                d.device_name,
+                stu.custom_name,
+                stu.created_at
+            FROM sensor_to_user AS stu
+            JOIN sensor_type AS st ON st.sensor_type_id = stu.sensor_type_id
+            JOIN device      AS d  ON d.device_id      = stu.device_id
+            WHERE stu.user_id = %s
+            ORDER BY st.name ASC
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+def rename_user_sensor(sensor_id: int, user_id: int, new_name: str) -> tuple[bool, str]:
+    """
+    Aggiorna il nome personalizzato (custom_name) di un sensore già associato all'utente.
+    Ritorna (ok, msg).
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE sensor_to_user
+            SET custom_name = %s
+            WHERE sensor_id = %s AND user_id = %s
+            RETURNING sensor_id;
+        """, (new_name.strip() if new_name else None, sensor_id, user_id))
+        updated = cur.fetchone()
+        conn.commit()
+
+        if updated:
+            return True, f"Nome del sensore {sensor_id} aggiornato a '{new_name}'."
+        else:
+            return False, f"Nessun sensore trovato con id {sensor_id} per l'utente {user_id}."
+    except Exception as e:
+        conn.rollback()
+        return False, f"Errore: {e}"
+    finally:
+        cur.close()
+        conn.close()
+
+def delete_user_sensor(sensor_id: int, user_id: int):
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            DELETE FROM sensor_to_user
+             WHERE sensor_id = %s AND user_id = %s
+             RETURNING sensor_id
+        """, (sensor_id, user_id))
+        ok = cur.fetchone()
+        conn.commit()
+        return (ok is not None, "Sensore eliminato." if ok else "Sensore non trovato o non tuo.")
+    except Exception as e:
+        conn.rollback(); return False, f"Errore: {e}"
+    finally:
+        cur.close(); conn.close()
+
+def list_user_bound_sensors_full(user_id: int):
+    """
+    Ritorna [(sensor_id, sensor_type_id, sensor_type_name, device_id, device_name, custom_name, created_at)]
+    """
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT
+                stu.sensor_id,
+                stu.sensor_type_id,
+                st.name         AS sensor_type_name,
+                stu.device_id,
+                d.device_name,
+                stu.custom_name,
+                stu.created_at
+            FROM sensor_to_user AS stu
+            JOIN sensor_type AS st ON st.sensor_type_id = stu.sensor_type_id
+            JOIN device      AS d  ON d.device_id      = stu.device_id
+            WHERE stu.user_id = %s
+            ORDER BY d.device_name, st.name
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close(); conn.close()
+
+def delete_device(device_id: int, user_id: int):
+    """
+    Elimina il device dell'utente.
+    Nota: per FK ON DELETE CASCADE verranno eliminate anche le righe su sensor_to_user.
+    """
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            DELETE FROM device
+             WHERE device_id = %s AND user_id = %s
+             RETURNING device_id
+        """, (device_id, user_id))
+        ok = cur.fetchone()
+        conn.commit()
+        return (ok is not None, "Dispositivo eliminato." if ok else "Device non trovato o non tuo.")
+    except Exception as e:
+        conn.rollback(); return False, f"Errore: {e}"
+    finally:
+        cur.close(); conn.close()
+
+
+def rename_device(device_id: int, user_id: int, new_name: str):
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE device
+               SET device_name = %s
+             WHERE device_id = %s AND user_id = %s
+             RETURNING device_id
+        """, (new_name.strip(), device_id, user_id))
+        ok = cur.fetchone()
+        conn.commit()
+        return (ok is not None, "Nome dispositivo aggiornato." if ok else "Device non trovato o non tuo.")
+    except Exception as e:
+        conn.rollback(); return False, f"Errore: {e}"
+    finally:
+        cur.close(); conn.close()
+
+def list_user_devices_detailed(user_id: int):
+    """
+    Ritorna [(device_id, device_name, device_type_name, registered_at)] dell'utente.
+    """
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT d.device_id, d.device_name, COALESCE(dt.name,'-') AS device_type_name, d.registered_at
+            FROM device d
+            LEFT JOIN device_type dt ON dt.device_type_id = d.device_type_id
+            WHERE d.user_id = %s
+            ORDER BY d.registered_at DESC, d.device_id DESC
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close(); conn.close()
+
+

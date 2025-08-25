@@ -41,10 +41,10 @@ def render_sidebar(name: str, surname: str, user_id: str):
     # usa sempre questi link: saranno uguali ovunque
     st.page_link("pages/dashboard.py", label="Home", icon="🏠")
     st.page_link("pages/health.py", label="Heart", icon="❤️")
-    st.page_link("pages/sleep.py", label="Sleep", icon="🛌")
     st.page_link("pages/meals.py", label="Meals", icon="🍽️")
     st.page_link("pages/activity.py", label="Activity", icon="🔥")
     st.page_link("pages/settings.py", label="Setting", icon="⚙️")
+    st.page_link("pages/sleep.py", label="Sleep", icon="🛌")
 
 def render_header(title: str, subtitle: str, settings_page="pages/settings.py"):
     left, right = st.columns([6, 1])

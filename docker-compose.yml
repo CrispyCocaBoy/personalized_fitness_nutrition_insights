@@ -20,12 +20,12 @@ services:
     container_name: emqx1
 
     environment:
-      # --- SINGLE NODE (disabilita il cluster "fantasma") ---
+      # --- SINGLE NODE ---
       EMQX_NODE__NAME: emqx@node1.emqx.local
       EMQX_CLUSTER__DISCOVERY_STRATEGY: manual
       # oppure elimina proprio tutte le variabili di cluster
 
-      # --- DASHBOARD credenziali di default (cambiale!) ---
+      # --- DASHBOARD ---
       EMQX_DASHBOARD__DEFAULT_USERNAME: admin
       EMQX_DASHBOARD__DEFAULT_PASSWORD: public
 
