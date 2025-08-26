@@ -25,7 +25,7 @@ ACTIVITIES_TOPIC = os.getenv("ACTIVITIES_TOPIC", "activities")
 METRICS_FACT_PATH     = f"s3a://{S3_BUCKET_GOLD}/metrics_fact"
 ACTIVITIES_FACT_PATH  = f"s3a://{S3_BUCKET_GOLD}/activities_fact"
 ACTIVITIES_DAILY_PATH = f"s3a://{S3_BUCKET_GOLD}/activities_daily"
-CHECKPOINT_DIR        = f"s3a://{S3_BUCKET_GOLD}/_checkpoints/activities_enrichment"
+CHECKPOINT_DIR        = f"s3a://{S3_BUCKET_GOLD}/checkpoints/gold_activity"
 
 # stima lunghezza passo: 70 cm
 STEP_M = float(os.getenv("STEP_METERS", "0.7"))
@@ -34,7 +34,7 @@ STEP_M = float(os.getenv("STEP_METERS", "0.7"))
 # Spark Session
 # ========================
 spark = (
-    SparkSession.builder.appName("activities-enrichment-add-delete")
+    SparkSession.builder.appName("gold_activity")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     # MinIO / S3A

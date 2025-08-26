@@ -7,7 +7,7 @@ from pyspark.sql.types import StructType, StringType, DoubleType, LongType
 # ========================
 try:
     spark = SparkSession.builder \
-        .appName("BronzeLayerOptimized") \
+        .appName("bronze_layer") \
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
         .getOrCreate()

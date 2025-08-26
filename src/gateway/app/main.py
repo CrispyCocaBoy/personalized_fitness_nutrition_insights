@@ -45,7 +45,7 @@ producer = Producer({"bootstrap.servers": KAFKA_BOOTSTRAP})
 app = FastAPI(title="Meals, Activities & Metrics Gateway", version="1.2.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ⚠️ in prod limitare i domini
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

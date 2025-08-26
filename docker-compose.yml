@@ -228,7 +228,7 @@ services:
 # ETL process
   ## Spark Master
   spark-master:
-    image: bitnamilegacy/spark:latest
+    image: bitnamilegacy/spark:3.5.5
     container_name: spark-master
     command: /opt/bitnami/scripts/spark/run.sh master
     environment:
@@ -239,26 +239,38 @@ services:
 
   ## Spark Worker 1
   spark-worker-1:
-    image: bitnamilegacy/spark:latest
+    image: bitnamilegacy/spark:3.5.5
     container_name: spark-worker-1
     command: /opt/bitnami/scripts/spark/run.sh worker
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=3
     depends_on:
       - spark-master
 
   ## Spark Worker 2
   spark-worker-2:
-    image: bitnamilegacy/spark:latest
+    image: bitnamilegacy/spark:3.5.5
     container_name: spark-worker-2
     command: /opt/bitnami/scripts/spark/run.sh worker
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+    depends_on:
+      - spark-master
+
+  spark-worker-3:
+    image: bitnamilegacy/spark:3.5.5
+    container_name: spark-worker-3
+    command: /opt/bitnami/scripts/spark/run.sh worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
       - SPARK_WORKER_CORES=2
     depends_on:
       - spark-master
@@ -286,11 +298,11 @@ services:
       - emqx1
 
   ## gold layer job
-  gold_layer:
+  gold_metrics:
     build:
       context: .
       dockerfile: src/delta/gold/sensor_gold/Dockerfile
-    container_name: gold_layer
+    container_name: gold_metrics
     depends_on:
       - broker_kafka
       - silver_layer

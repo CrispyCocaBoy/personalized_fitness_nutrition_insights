@@ -34,7 +34,7 @@ FACT_WRITE_PARTITIONS = int(os.getenv("FACT_WRITE_PARTITIONS", "4"))
 # ========================
 spark = (
     SparkSession.builder
-    .appName("GoldMeals Fast")
+    .appName("gold_meal")
     .config("spark.sql.session.timeZone", "UTC")
     .config("spark.sql.shuffle.partitions", "4")
     .config("spark.default.parallelism", "4")

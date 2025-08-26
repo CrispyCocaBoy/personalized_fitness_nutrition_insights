@@ -12,7 +12,7 @@ import time
 # ============================
 spark = (
     SparkSession.builder
-    .appName("SilverLayerPerUserOptimizedDualOutput")
+    .appName("silver_layer")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     .config("spark.sql.adaptive.enabled", "true")

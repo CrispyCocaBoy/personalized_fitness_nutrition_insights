@@ -16,9 +16,19 @@ COPY src/delta/gold/sensor_gold/ .
 
 # Avvio dello script con i pacchetti necessari: Delta + Kafka
 CMD spark-submit \
-  --master local[*] \
-  --packages io.delta:delta-spark_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5 \
-  --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension \
-  --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog \
-  gold_layer.py
+    --master spark://spark-master:7077 \
+    --deploy-mode client \
+    --name gold_metrics \
+    --packages io.delta:delta-spark_2.12:3.3.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5 \
+    --conf spark.dynamicAllocation.enabled=false \
+    --conf spark.cores.max=1 \
+    --conf spark.executor.instances=1 \
+    --conf spark.executor.cores=1 \
+    --conf spark.executor.memory=700m \
+    --conf spark.driver.memory=500m \
+    --conf spark.sql.shuffle.partitions=8 \
+    --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension \
+    --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog \
+    gold_metrics.py
+
 
