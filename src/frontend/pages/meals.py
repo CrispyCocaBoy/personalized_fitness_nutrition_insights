@@ -30,14 +30,17 @@ name, surname = db.retrive_name(user_id)
 # =========================
 BACKEND_URL = "http://gateway:8000"
 
+
 def _backend() -> str | None:
     if not BACKEND_URL:
         return None
     return BACKEND_URL.rstrip("/")
 
+
 def _iso_utc_now() -> str:
     # ISO8601 con suffisso Z (UTC)
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+
 
 def _to_iso_utc_from_local(day: date, at: dtime, tz: str = "Europe/Rome") -> str:
     """Converte (giorno, ora) locali in ISO8601 UTC 'Z'."""
@@ -45,6 +48,7 @@ def _to_iso_utc_from_local(day: date, at: dtime, tz: str = "Europe/Rome") -> str
     local_dt = naive.replace(tzinfo=ZoneInfo(tz))
     utc_dt = local_dt.astimezone(timezone.utc)
     return utc_dt.isoformat().replace("+00:00", "Z")
+
 
 def send_meal(payload: dict) -> tuple[bool, str]:
     """
@@ -54,7 +58,7 @@ def send_meal(payload: dict) -> tuple[bool, str]:
     be = _backend()
     try:
         import requests
-        url = f"{be}/api/meals"  # <-- invariato (endpoint di ingest)
+        url = f"{be}/api/meals"  # endpoint di ingest
         # Normalizza timestamp in UTC Z se manca
         if "timestamp" not in payload or not payload["timestamp"]:
             payload["timestamp"] = _iso_utc_now()
@@ -67,6 +71,30 @@ def send_meal(payload: dict) -> tuple[bool, str]:
         return False, f"Errore backend: {r.status_code} {r.text}"
     except Exception as e:
         return False, f"Errore di rete: {e}"
+
+
+def delete_meal(meal_id: str, user_id: str, timestamp: str) -> tuple[bool, str]:
+    """
+    Elimina un pasto specifico via DELETE /api/meals/{meal_id}.
+    Il gateway richiede anche il timestamp originale per ricalcolare la daily.
+    """
+    be = _backend()
+    if not be:
+        return False, "Backend non configurato"
+    try:
+        import requests
+        url = f"{be}/api/meals/{meal_id}"
+        params = {"user_id": str(user_id), "timestamp": timestamp}
+        r = requests.delete(url, params=params, timeout=10)
+        if r.ok:
+            return True, "Pasto eliminato "
+        else:
+            error_detail = r.json().get("detail", r.text) if r.headers.get("content-type", "").startswith(
+                "application/json") else r.text
+            return False, f"Errore backend: {r.status_code} - {error_detail}"
+    except Exception as e:
+        return False, f"Errore di rete: {e}"
+
 
 def load_meals(user_id: str, limit: int = 25, start_date: str | None = None, end_date: str | None = None) -> list[dict]:
     """
@@ -83,7 +111,7 @@ def load_meals(user_id: str, limit: int = 25, start_date: str | None = None, end
             params["start_date"] = start_date
         if end_date:
             params["end_date"] = end_date
-        url = f"{be}/meals/facts"  # <-- nuovo endpoint di lettura
+        url = f"{be}/meals/facts"
         r = requests.get(url, params=params, timeout=20)
         if r.ok:
             return r.json()
@@ -94,7 +122,9 @@ def load_meals(user_id: str, limit: int = 25, start_date: str | None = None, end
         st.warning(f"Errore di rete: {e}")
         return []
 
-def load_meals_daily(user_id: str, start_date: str | None = None, end_date: str | None = None, limit: int = 30) -> list[dict]:
+
+def load_meals_daily(user_id: str, start_date: str | None = None, end_date: str | None = None, limit: int = 30) -> list[
+    dict]:
     """
     Recupera aggregati giornalieri via API /meals/daily (meal_daily).
     """
@@ -108,11 +138,12 @@ def load_meals_daily(user_id: str, start_date: str | None = None, end_date: str 
             params["start_date"] = start_date
         if end_date:
             params["end_date"] = end_date
-        url = f"{be}/meals/daily"  # <-- endpoint daily
+        url = f"{be}/meals/daily"
         r = requests.get(url, params=params, timeout=20)
         return r.json() if r.ok else []
     except Exception:
         return []
+
 
 # =========================
 # Helpers UI
@@ -143,6 +174,7 @@ def _normalize_items(items):
                 "source": source
             })
     return norm
+
 
 def _grid_buttons(items, source_label: str, cols=3):
     items = _normalize_items(items)
@@ -205,6 +237,7 @@ def _grid_buttons(items, source_label: str, cols=3):
                             st.rerun()
                         else:
                             st.error(msg)
+
 
 def _grid_personalized(items, cols=3):
     items = _normalize_items(items)
@@ -283,6 +316,7 @@ def _grid_personalized(items, cols=3):
                             except Exception as e:
                                 st.error(f"Errore eliminazione: {e}")
 
+
 # =========================
 # Layout a 2 colonne
 # =========================
@@ -339,8 +373,9 @@ with main_col:
         if not meals_day:
             st.info("Nessun pasto registrato per il giorno selezionato.")
         else:
-            st.markdown('<div class="grid">', unsafe_allow_html=True)
-            for m in meals_day:
+            # Mostro i pasti con possibilità di eliminazione
+            for idx, m in enumerate(meals_day):
+                meal_id = m.get("meal_id")
                 meal_name = m.get("meal_name") or m.get("name") or "Pasto"
                 ts = m.get("event_ts") or m.get("timestamp") or m.get("ts")
                 kcal = m.get("kcal", 0)
@@ -348,28 +383,66 @@ with main_col:
                 protein = m.get("protein_g", 0)
                 fat = m.get("fat_g", 0)
                 notes = m.get("notes", "")
+
+                # Orario locale (Europe/Rome) e stringa originale per delete
                 try:
                     ts_str = ts if isinstance(ts, str) else str(ts)
-                    dt = datetime.fromisoformat(ts_str.replace("Z", ""))
-                    ts_label = dt.strftime("%H:%M")
+                    # interpreta 'Z' come UTC e converte in Europe/Rome
+                    dt_utc = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                    ts_label = dt_utc.astimezone(ZoneInfo("Europe/Rome")).strftime("%H:%M")
                 except Exception:
                     ts_label = str(ts)
-                st.markdown(f"""
-                <div class="card">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="font-weight:700;">{meal_name}</div>
-                    <div class="small">{ts_label}</div>
-                  </div>
-                  <div class="small" style="margin:6px 0 10px;">{notes if notes else ''}</div>
-                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <span class="badge">🔥 {kcal} kcal</span>
-                    <span class="badge">🥖 {carbs} g</span>
-                    <span class="badge">🥚 {protein} g</span>
-                    <span class="badge">🫒 {fat} g</span>
-                  </div>
-                </div>
-                """, unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+                    # fallback: se manca offset, forza 'Z' per la delete
+                    ts_str = ts_label + "Z" if ("Z" not in str(ts)) else str(ts)
+
+                # Layout del pasto con bottone elimina
+                col_info, col_delete = st.columns([0.85, 0.15])
+
+                with col_info:
+                    st.markdown(f"""
+                    <div class="card">
+                      <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="font-weight:700;">{meal_name}</div>
+                        <div class="small">{ts_label}</div>
+                      </div>
+                      <div class="small" style="margin:6px 0 10px;">{notes if notes else ''}</div>
+                      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <span class="badge">🔥 {kcal} kcal</span>
+                        <span class="badge">🥖 {carbs} g</span>
+                        <span class="badge">🥚 {protein} g</span>
+                        <span class="badge">🫒 {fat} g</span>
+                      </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with col_delete:
+                    if meal_id:
+                        confirm_key = f"confirm_delete_meal_{meal_id}_{idx}"
+                        if st.session_state.get(confirm_key, False):
+                            if st.button("❌ Conferma", key=f"confirm_{meal_id}_{idx}",
+                                         use_container_width=True, type="secondary"):
+                                # Normalizza: se manca Z/offset, aggiungi Z
+                                ts_to_send = ts_str
+                                if "Z" not in ts_to_send and "+" not in ts_to_send:
+                                    ts_to_send = ts_to_send + "Z"
+                                ok, msg = delete_meal(meal_id, user_id, ts_to_send)
+                                if ok:
+                                    st.success(msg)
+                                    st.session_state[confirm_key] = False
+                                    time.sleep(5)
+                                    st.rerun()
+                                else:
+                                    st.error(msg)
+                                    st.session_state[confirm_key] = False
+                            if st.button("🔙", key=f"cancel_{meal_id}_{idx}",
+                                         use_container_width=True):
+                                st.session_state[confirm_key] = False
+                                st.rerun()
+                        else:
+                            if st.button("🗑️", key=f"delete_{meal_id}_{idx}",
+                                         use_container_width=True):
+                                st.session_state[confirm_key] = True
+                                st.rerun()
 
         st.divider()
 
@@ -384,11 +457,12 @@ with main_col:
                 kcal = d.get("kcal_total", 0)
                 carbs = d.get("carbs_total_g", 0)
                 prot = d.get("protein_total_g", 0)
-                fat  = d.get("fat_total_g", 0)
-                cnt  = d.get("meals_count", 0)
+                fat = d.get("fat_total_g", 0)
+                cnt = d.get("meals_count", 0)
                 last = d.get("last_meal_ts")
                 try:
-                    last_label = datetime.fromisoformat(str(last).replace("Z","")).strftime("%H:%M") if last else "-"
+                    last_label = datetime.fromisoformat(str(last).replace("Z", "+00:00")).astimezone(
+                        ZoneInfo("Europe/Rome")).strftime("%H:%M") if last else "-"
                 except Exception:
                     last_label = str(last) if last else "-"
                 st.markdown(f"""
@@ -456,17 +530,20 @@ with main_col:
         with t4:
             st.write("Aggiungi rapidamente un alimento ai **tuoi Personalizzati** (comparirà nella tab ⭐).")
 
+
             def _nfloat(x):
                 try:
                     return float(x) if x is not None else None
                 except Exception:
                     return None
 
+
             def _nint(x):
                 try:
                     return int(x) if x is not None else 0
                 except Exception:
                     return 0
+
 
             with st.form("form_personal_food_quick", clear_on_submit=True, border=True):
                 c1, c2 = st.columns([2, 1])
@@ -566,8 +643,7 @@ with main_col:
             seen_keys.add(key)
             star = "⭐ " if (it.get("source") == "personalized") else ""
             qty_label = f" ({it['quantity']} {it['unit']})" if it.get("quantity") and it.get("unit") else ""
-            label = f"{star}{it['name']}{qty_label} — 🔥 {it.get('kcal',0)} kcal"
-            # il value conserva source+name per lookup preciso
+            label = f"{star}{it['name']}{qty_label} — 🔥 {it.get('kcal', 0)} kcal"
             options.append((label, {"source": it.get("source") or "default", "name": it["name"]}))
 
         if not options:
@@ -576,7 +652,8 @@ with main_col:
             with st.form("form_add_meal_custom_dt", clear_on_submit=True, border=True):
                 cdate, ctime = st.columns([1, 1])
                 with cdate:
-                    day_sel: date = st.date_input("Giorno del pasto", value=date.today(), format="YYYY-MM-DD", key="meal_day_sel")
+                    day_sel: date = st.date_input("Giorno del pasto", value=date.today(), format="YYYY-MM-DD",
+                                                  key="meal_day_sel")
                 with ctime:
                     now_local = datetime.now(ZoneInfo("Europe/Rome")).time().replace(second=0, microsecond=0)
                     time_sel: dtime = st.time_input("Ora del pasto", value=now_local, step=300, key="meal_time_sel")
@@ -597,7 +674,6 @@ with main_col:
                 submit_custom = st.form_submit_button("➕ Aggiungi pasto con data/ora", use_container_width=True)
 
                 if submit_custom:
-                    # recupera 'value' dal label scelto
                     chosen_map = {lbl: val for (lbl, val) in options}
                     meta = chosen_map.get(chosen_label)
                     if not meta:
@@ -605,14 +681,13 @@ with main_col:
                     else:
                         # lookup preciso su DB
                         if meta["source"] == "personalized":
-                            food = db.get_personalized_food_by_name(user_id, meta["name"])
+                            food = db.get_personalized_food(user_id, meta["name"])
                         else:
-                            food = db.get_food_by_name(meta["name"])
+                            food = db.get_food(meta["name"])
 
                         if not food:
-                            st.error("Alimento non trovato nel DB.")
+                            st.error("Alimento non trovato nel database.")
                         else:
-                            iso_ts = _to_iso_utc_from_local(day_sel, time_sel, tz="Europe/Rome")
                             payload = {
                                 "meal_id": str(uuid.uuid4()),
                                 "user_id": user_id,
@@ -621,7 +696,7 @@ with main_col:
                                 "carbs_g": int(float(food.get("carbohydrates") or 0)),
                                 "protein_g": int(float(food.get("protein") or 0)),
                                 "fat_g": int(float(food.get("fat") or 0)),
-                                "timestamp": iso_ts,  # 👈 usa data/ora scelti, convertiti in UTC Z
+                                "timestamp": _to_iso_utc_from_local(day_sel, time_sel, tz="Europe/Rome"),
                                 "notes": notes_in or "",
                                 "quantity": float(food.get("quantity") or 0),
                                 "unit": food.get("unit") or None,

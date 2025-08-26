@@ -35,7 +35,7 @@ RAW_UNIT = {"ppg": "adc", "accelerometer": "g", "ceda": "uS", "skin_temp": "C"}
 # =========================
 # Frequenze (Hz)
 # =========================
-PPG_FS = 5          # era 100
+PPG_FS = 25          # era 100
 ACC_FS = 5          # era 50
 CEDA_FS = 1         # era 4
 SKIN_FS = 1         # generiamo a 1 Hz ma pubblichiamo 1/5 s (vedi sotto)

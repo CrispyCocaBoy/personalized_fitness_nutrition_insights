@@ -16,3 +16,14 @@ WITH
     format = 'json',
     envelope = 'wrapped',
     unordered;
+
+-- Emissione eventi per ogni INSERT/UPDATE/DELETE su sensor_status
+CREATE CHANGEFEED FOR TABLE sensor_status
+INTO 'kafka://broker_kafka:9092?topic_name=toggle_sensor'
+WITH
+    cursor = 'now()',
+    key_column = 'sensor_id',
+    format = 'json',
+    envelope = 'wrapped',
+    diff,          -- include "before" negli UPDATE
+    unordered;

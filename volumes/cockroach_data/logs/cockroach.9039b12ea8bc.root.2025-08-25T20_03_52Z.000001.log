@@ -1,0 +1,345 @@
+I250825 20:03:52.716943 1 util/log/file_sync_buffer.go:237 ⋮ [config]   file created at: 2025/08/25 20:03:52
+I250825 20:03:52.716950 1 util/log/file_sync_buffer.go:237 ⋮ [config]   running on machine: ‹9039b12ea8bc›
+I250825 20:03:52.716956 1 util/log/file_sync_buffer.go:237 ⋮ [config]   binary: CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250825 20:03:52.716958 1 util/log/file_sync_buffer.go:237 ⋮ [config]   arguments: [‹/cockroach/cockroach› ‹start-single-node› ‹--certs-dir=certs› ‹--advertise-addr=127.0.0.1:26257› ‹--insecure› ‹--http-addr=0.0.0.0:8080›]
+I250825 20:03:52.716964 1 util/log/file_sync_buffer.go:237 ⋮ [config]   log format (utf8=✓): crdb-v2
+I250825 20:03:52.716965 1 util/log/file_sync_buffer.go:237 ⋮ [config]   line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid [chan@]file:line redactionmark \[tags\] [counter] msg
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1  ALL SECURITY CONTROLS HAVE BEEN DISABLED!
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +This mode is intended for non-production testing only.
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +In this mode:
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Your cluster is open to any client that can access ‹any of your IP addresses›.
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders with access to your machine or network can observe client-server traffic.
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can log in without password and read or write any data in the cluster.
+W250825 20:03:52.716271 1 1@cli/start.go:1438 ⋮ [n?] 1 +- Intruders can consume all your server's resources and cause unavailability.
+I250825 20:03:52.717896 1 1@cli/start.go:1448 ⋮ [n?] 2  To start a secure server without mandating TLS for clients,
+I250825 20:03:52.717896 1 1@cli/start.go:1448 ⋮ [n?] 2 +consider --accept-sql-without-tls instead. For other options, see:
+I250825 20:03:52.717896 1 1@cli/start.go:1448 ⋮ [n?] 2 +
+I250825 20:03:52.717896 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://go.crdb.dev/issue-v/53404/v25.2
+I250825 20:03:52.717896 1 1@cli/start.go:1448 ⋮ [n?] 2 +- https://www.cockroachlabs.com/docs/v25.2/secure-a-cluster.html
+I250825 20:03:52.718116 1 server/status/recorder.go:856 ⋮ [n?] 3  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 12 GiB instead: ›
+W250825 20:03:52.718131 1 1@cli/start.go:1360 ⋮ [n?] 4  Using the default setting for --cache (128 MiB).
+W250825 20:03:52.718131 1 1@cli/start.go:1360 ⋮ [n?] 4 +  A significantly larger value is usually needed for good performance.
+W250825 20:03:52.718131 1 1@cli/start.go:1360 ⋮ [n?] 4 +  If you have a dedicated server a reasonable setting is --cache=.25 (2.9 GiB).
+I250825 20:03:52.718198 1 server/status/recorder.go:856 ⋮ [n?] 5  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 12 GiB instead: ›
+I250825 20:03:52.718204 1 1@cli/start.go:1477 ⋮ [n?] 6  CockroachDB CCL v25.2.0 (aarch64-unknown-linux-gnu, built 2025/05/15 21:07:42, go1.23.7 X:nocoverageredesign)
+I250825 20:03:52.718524 1 server/status/recorder.go:856 ⋮ [n?] 7  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 12 GiB instead: ›
+I250825 20:03:52.718531 1 1@cli/start.go:554 ⋮ [n?] 8  soft memory limit of Go runtime is set to 6.6 GiB
+I250825 20:03:52.718539 1 1@cli/start.go:591 ⋮ [n?] 9  GC target percentage of Go runtime is set to 300%
+I250825 20:03:52.727360 1 server/status/recorder.go:856 ⋮ [T1,Vsystem,n?] 10  ‹available memory from cgroups (8.0 EiB) is unsupported, using system memory 12 GiB instead: ›
+I250825 20:03:52.727375 1 server/config.go:674 ⋮ [T1,Vsystem,n?] 11  system total memory: 12 GiB
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12  server configuration:
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +max offset             500000000
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +cache size             128 MiB
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +SQL memory pool size   2.9 GiB
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan interval          10m0s
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan min idle time     10ms
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +scan max idle time     1s
+I250825 20:03:52.727386 1 server/config.go:676 ⋮ [T1,Vsystem,n?] 12 +event log enabled      true
+I250825 20:03:52.727437 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13  using local environment variables:
+I250825 20:03:52.727437 1 1@cli/start.go:1338 ⋮ [T1,Vsystem,n?] 13 +COCKROACH_CHANNEL=official-docker
+I250825 20:03:52.727445 1 1@cli/start.go:1345 ⋮ [T1,Vsystem,n?] 14  process identity: uid 0 euid 0 gid 0 egid 0
+I250825 20:03:52.729862 1 1@cli/start.go:1500 ⋮ [T1,Vsystem,n?] 15  GEOS loaded from directory ‹/usr/local/lib/cockroach›
+I250825 20:03:52.729886 1 1@cli/start.go:777 ⋮ [T1,Vsystem,n?] 16  starting cockroach node
+I250825 20:03:53.045310 43 server/config.go:880 ⋮ [T1,Vsystem,n?] 17  1 storage engine initialized
+I250825 20:03:53.045326 43 server/config.go:883 ⋮ [T1,Vsystem,n?] 18  Pebble cache size: 128 MiB
+I250825 20:03:53.045334 43 server/config.go:883 ⋮ [T1,Vsystem,n?] 19  store 0: max size 0 B, max open file limit 1043576
+I250825 20:03:53.045337 43 server/config.go:883 ⋮ [T1,Vsystem,n?] 20  store 0: /cockroach/cockroach-data: rw encrypted=false fs:{bdev=/run/host_mark/Users fstype=fakeowner mountpoint=/cockroach/cockroach-data mountopts=rw,nosuid,nodev,relatime,fakeowner}
+I250825 20:03:53.048348 142 util/cidr/cidr.go:299 ⋮ [T1,Vsystem,n?] 21  CIDR lookup updated with 0 destinations
+I250825 20:03:53.087200 43 1@server/clock_monotonicity.go:61 ⋮ [T1,Vsystem,n?] 22  monitoring forward clock jumps based on server.clock.forward_jump_check.enabled
+I250825 20:03:53.091315 43 1@server/clock_monotonicity.go:136 ⋮ [T1,Vsystem,n1] 23  Sleeping till wall time 1756152233091311717 to catches up to 1756152233587147677 to ensure monotonicity. Sub: 495.83596ms
+I250825 20:03:53.091409 580 1@server/server.go:1802 ⋮ [T1,Vsystem,n1] 24  connecting to gossip network to verify cluster ID "7c4e678d-486f-4806-8e59-dd3b5b489461"
+W250825 20:03:53.588134 43 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25  Running a server without --sql-addr, with a combined RPC/SQL listener, is deprecated.
+W250825 20:03:53.588134 43 1@cli/start.go:1299 ⋮ [T1,Vsystem,n1] 25 +This feature will be removed in a later version of CockroachDB.
+W250825 20:03:53.588525 43 1@gossip/gossip.go:1460 ⋮ [T1,Vsystem,n1] 26  no addresses found; use --join to specify a connected node
+I250825 20:03:53.594453 269 kv/kvserver/kvstorage/init.go:250 ⋮ [T1,Vsystem,n1,s1] 27  beginning range descriptor iteration
+I250825 20:03:53.595593 269 kv/kvserver/kvstorage/init.go:374 ⋮ [T1,Vsystem,n1,s1] 28  range descriptor iteration done: 58 range descriptors, 0 intents, 0 tombstones; stats: ‹seeked 120 times (61 internal); stepped 0 times (0 internal); blocks: 144KB cached, 18KB not cached (read time: 161.666µs); points: 59 (1.2KB keys, 1.8KB values); separated: 6 (343B, 0B fetched)›
+I250825 20:03:53.621975 269 kv/kvserver/kvstorage/init.go:501 ⋮ [T1,Vsystem,n1,s1] 29  loaded replica ID for 58/58 replicas
+I250825 20:03:53.622942 269 kv/kvserver/kvstorage/init.go:518 ⋮ [T1,Vsystem,n1,s1] 30  loaded Raft state for 58/58 replicas
+I250825 20:03:53.623016 269 kv/kvserver/kvstorage/init.go:545 ⋮ [T1,Vsystem,n1,s1] 31  loaded 58 replicas
+I250825 20:03:53.623039 269 kv/kvserver/kvstorage/init.go:576 ⋮ [T1,Vsystem,n1,s1] 32  verified 58/58 replicas
+I250825 20:03:53.636637 269 kv/kvserver/store.go:2369 ⋮ [T1,Vsystem,n1,s1] 33  initialized 58/58 replicas
+I250825 20:03:53.636989 269 server/node.go:690 ⋮ [T1,Vsystem,n1] 34  initialized store s1 in 47ms (58 replicas)
+I250825 20:03:53.637125 43 kv/kvserver/stores.go:261 ⋮ [T1,Vsystem,n1] 35  read 0 node addresses from persistent storage
+I250825 20:03:53.637363 580 1@server/server.go:1805 ⋮ [T1,Vsystem,n1] 36  node connected via gossip
+I250825 20:03:53.639730 658 kv/kvserver/storeliveness/support_manager.go:285 ⋮ [T1,Vsystem,n1,s1] 37  starting to heartbeat store {NodeID:1 StoreID:1}
+I250825 20:03:53.639828 43 server/node.go:801 ⋮ [T1,Vsystem,n1] 38  started with attributes []
+I250825 20:03:53.640092 43 server/goroutinedumper/goroutinedumper.go:117 ⋮ [T1,Vsystem,n1] 39  writing goroutine dumps to ‹/cockroach/cockroach-data/logs/goroutine_dump›
+I250825 20:03:53.640303 43 server/profiler/heapprofiler.go:72 ⋮ [T1,Vsystem,n1] 40  writing go heap profiles to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250825 20:03:53.640335 43 server/profiler/memory_monitoring_profiler.go:66 ⋮ [T1,Vsystem,n1] 41  writing memory monitoring dumps to ‹/cockroach/cockroach-data/logs/heap_profiler› at least every 1h0m0s
+I250825 20:03:53.640341 43 server/profiler/cgoprofiler.go:66 ⋮ [T1,Vsystem,n1] 42  to enable jmalloc profiling: "export MALLOC_CONF=prof:true" or "ln -s prof:true /etc/malloc.conf"
+I250825 20:03:53.640360 43 server/profiler/statsprofiler.go:68 ⋮ [T1,Vsystem,n1] 43  writing memory stats to ‹/cockroach/cockroach-data/logs/heap_profiler› at last every 1h0m0s
+I250825 20:03:53.640770 43 server/profiler/activequeryprofiler.go:88 ⋮ [T1,Vsystem,n1] 44  writing go query profiles to ‹/cockroach/cockroach-data/logs/heap_profiler›
+I250825 20:03:53.640797 43 server/profiler/cpuprofiler.go:87 ⋮ [T1,Vsystem,n1] 45  writing cpu profile dumps to ‹/cockroach/cockroach-data/logs/pprof_dump›
+I250825 20:03:53.641164 43 1@server/server.go:1999 ⋮ [T1,Vsystem,n1] 46  starting http server at ‹[::]:8080› (use: ‹127.0.0.1:8080›)
+I250825 20:03:53.641178 43 1@server/server.go:2007 ⋮ [T1,Vsystem,n1] 47  starting grpc/postgres server at ‹[::]:26257›
+I250825 20:03:53.641187 43 1@server/server.go:2008 ⋮ [T1,Vsystem,n1] 48  advertising CockroachDB node at ‹127.0.0.1:26257›
+I250825 20:03:53.654412 658 kv/kvserver/storeliveness/supporter_state.go:298 ⋮ [T1,Vsystem,n1,s1] 49  provided support for store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:135 Expiration:1756152071.209636502,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:136 Expiration:1756152236.639822301,0}
+I250825 20:03:53.659561 658 kv/kvserver/storeliveness/requester_state.go:425 ⋮ [T1,Vsystem,n1,s1] 50  received support from store {NodeID:1 StoreID:1}; old = {Target:{NodeID:1 StoreID:1} Epoch:136 Expiration:0,0}, new = {Target:{NodeID:1 StoreID:1} Epoch:136 Expiration:1756152236.639822301,0}
+I250825 20:03:53.689455 43 1@util/log/event_log.go:39 ⋮ [T1,Vsystem,n1] 51 ={"Timestamp":1756152233689438676,"EventType":"node_restart","NodeID":1,"StartedAt":1756152233588770467,"LastUp":1756152066794149334}
+I250825 20:03:53.689948 651 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 52  spanconfig-subscriber: established range feed cache
+I250825 20:03:53.690256 653 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 53  settings-watcher: established range feed cache
+I250825 20:03:53.708923 43 sql/sqlliveness/slinstance/slinstance.go:435 ⋮ [T1,Vsystem,n1] 54  starting SQL liveness instance
+I250825 20:03:53.715789 942 sql/sqlliveness/slstorage/slstorage.go:540 ⋮ [T1,Vsystem,n1] 55  inserted sqlliveness session 01018067f33f7c140147158bd9bf541a2d0d96 with expiry 1756152273.709020801,0
+I250825 20:03:53.715870 942 sql/sqlliveness/slinstance/slinstance.go:247 ⋮ [T1,Vsystem,n1] 56  created new SQL liveness session 01018067f33f7c140147158bd9bf541a2d0d96
+I250825 20:03:53.715904 43 sql/sqlinstance/instancestorage/instancestorage.go:338 ⋮ [T1,Vsystem,n1] 57  assigning instance id to rpc addr ‹127.0.0.1:26257› and sql addr ‹127.0.0.1:26257›
+I250825 20:03:53.717391 43 server/server_sql.go:1618 ⋮ [T1,Vsystem,n1] 58  bound sqlinstance: Instance{RegionPrefix: gA==, InstanceID: 1, SQLAddr: ‹127.0.0.1:26257›, RPCAddr: ‹127.0.0.1:26257›, SessionID: 01018067f33f7c140147158bd9bf541a2d0d96, Locality: , BinaryVersion: 25.2}
+I250825 20:03:53.717649 43 upgrade/upgrademanager/manager.go:171 ⋮ [T1,Vsystem,n1] 59  running permanent upgrades up to version: 25.2
+I250825 20:03:53.718762 1235 sql/sqlstats/persistedsqlstats/provider.go:159 ⋮ [T1,Vsystem,n1] 60  starting sql-stats-worker with initial delay: 9m56.479716167s
+I250825 20:03:53.718973 1248 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 61  system-config-cache: established range feed cache
+I250825 20:03:53.720171 1271 kv/kvserver/replica_rangefeed.go:882 ⋮ [T1,Vsystem,n1,rangefeed=‹lease›,mux_n=1,gen=2,r6/1:‹/Table/{0-4}›,sm=1,sid=1,s1] 62  RangeFeed closed timestamp 1756045313.474469257,0 is behind by 29h42m0.245698919s (behind=29h42m0.245698919s target=3s nudge=true cancel=false)
+I250825 20:03:53.721520 1200 sql/temporary_schema.go:506 ⋮ [T1,Vsystem,n1] 63  running temporary object cleanup background job
+I250825 20:03:53.737514 1200 sql/temporary_schema.go:556 ⋮ [T1,Vsystem,n1] 64  found 0 temporary schemas
+I250825 20:03:53.737542 1200 sql/temporary_schema.go:559 ⋮ [T1,Vsystem,n1] 65  early exiting temporary schema cleaner as no temporary schemas were found
+I250825 20:03:53.737555 1200 sql/temporary_schema.go:560 ⋮ [T1,Vsystem,n1] 66  completed temporary object cleanup job
+I250825 20:03:53.737577 1200 sql/temporary_schema.go:641 ⋮ [T1,Vsystem,n1] 67  temporary object cleaner next scheduled to run at 2025-08-25 20:33:53.718705301 +0000 UTC m=+1801.275809752
+I250825 20:03:53.750971 43 upgrade/upgrademanager/manager.go:233 ⋮ [T1,Vsystem,n1] 68  detected the last permanent upgrade (v0.0-upgrading-step-004) to have already completed; no permanent upgrades will run
+I250825 20:03:53.751028 43 server/server_sql.go:1720 ⋮ [T1,Vsystem,n1] 69  done ensuring all necessary startup migrations have run
+I250825 20:03:53.752523 43 server/license/enforcer.go:262 ⋮ [T1,Vsystem,n1] 70  trial license expiry initialized to 1970-01-01 00:00:00 +0000 UTC
+I250825 20:03:53.752610 43 server/license/enforcer.go:298 ⋮ [T1,Vsystem,n1] 71  fetched existing cluster init grace period end time: 2025-08-24 14:50:24 +0000 UTC
+I250825 20:03:53.752661 43 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 72  enforcer license updated: type is none, grace period ends at "2025-08-24 14:50:24 +0000 UTC", telemetry required: false
+I250825 20:03:53.752673 43 server/license/enforcer.go:498 ⋮ [T1,Vsystem,n1] 73  enforcer license updated: type is none, grace period ends at "2025-08-24 14:50:24 +0000 UTC", telemetry required: false
+I250825 20:03:53.763582 1445 sql/sqlliveness/slstorage/slstorage.go:391 ⋮ [n1,intExec=expire-sessions] 74  deleted session 01018032fa7622f028443c950392a684fa93cd which expired at 1756152104.266048125,0
+I250825 20:03:53.765644 1477 sql/syntheticprivilegecache/cache.go:202 ⋮ [T1,Vsystem,n1] 75  warmed privileges for virtual tables in 9.203334ms
+I250825 20:03:53.778243 1487 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 76  tenant-settings-watcher: established range feed cache
+I250825 20:03:53.778377 1489 kv/kvclient/rangefeed/rangefeedcache/watcher.go:340 ⋮ [T1,Vsystem,n1] 77  tenant-entry-watcher: established range feed cache
+I250825 20:03:53.778472 1489 multitenant/tenantcapabilities/tenantcapabilitieswatcher/watcher.go:285 ⋮ [T1,Vsystem,n1] 78  received results of a full table scan for tenant capabilities
+I250825 20:03:53.778816 1479 jobs/job_scheduler.go:407 ⋮ [T1,Vsystem,n1] 79  waiting 4m0s before scheduled jobs daemon start
+I250825 20:03:53.784618 43 server/license/enforcer.go:582 ⋮ [T1,Vsystem,n1] 80  disable all license enforcement
+I250825 20:03:53.784704 43 1@server/server_sql.go:1971 ⋮ [T1,Vsystem,n1] 81  serving sql connections
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82  node startup completed:
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +CockroachDB node starting at 2025-08-25 20:03:53.784737093 +0000 UTC m=+1.341841543 (took 1.1s)
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +build:               CCL v25.2.0 @ 2025/05/15 21:07:42 (go1.23.7 X:nocoverageredesign)
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +malloc_conf:         prof:false,prof_active:true,background_thread:true,thp:never,metadata_thp:disabled,narenas:48,dirty_decay_ms:2000,muzzy_decay_ms:0
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +webui:               ‹http://127.0.0.1:8080›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +sql:                 ‹postgresql://root@127.0.0.1:26257/defaultdb?sslmode=disable›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +sql (JDBC):          ‹jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable&user=root›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +RPC client flags:    ‹/cockroach/cockroach <client cmd> --host=127.0.0.1:26257 --insecure›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +logs:                ‹/cockroach/cockroach-data/logs›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +temp dir:            ‹/cockroach/cockroach-data/cockroach-temp1385013070›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +external I/O path:   ‹/cockroach/cockroach-data/extern›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +store[0]:            ‹path=/cockroach/cockroach-data›
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +clusterID:           7c4e678d-486f-4806-8e59-dd3b5b489461
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +status:              restarted pre-existing node
+I250825 20:03:53.784992 43 1@cli/start.go:1286 ⋮ [T1,Vsystem,n1] 82 +nodeID:              1
+I250825 20:03:53.785053 1485 server/auto_upgrade.go:81 ⋮ [T1,Vsystem,n1] 83  no need to upgrade, cluster already at the newest version
+I250825 20:03:53.817055 1732 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 85  released orphaned lease: ID=1 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817122 1736 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 86  released orphaned lease: ID=6 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817074 1735 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 87  released orphaned lease: ID=5 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817082 1733 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 88  released orphaned lease: ID=3 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817089 1734 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 84  released orphaned lease: ID=4 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817711 1721 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 89  released orphaned lease: ID=11 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817787 1722 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 90  released orphaned lease: ID=12 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817834 1719 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 91  released orphaned lease: ID=8 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817878 1720 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 92  released orphaned lease: ID=9 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.817923 1718 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 93  released orphaned lease: ID=7 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818122 1727 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 94  released orphaned lease: ID=20 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818172 1723 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 95  released orphaned lease: ID=13 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818214 1724 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 96  released orphaned lease: ID=14 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818257 1725 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 97  released orphaned lease: ID=15 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818314 1726 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 98  released orphaned lease: ID=19 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818507 1748 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 99  released orphaned lease: ID=26 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818570 1728 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 100  released orphaned lease: ID=21 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818614 1729 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 101  released orphaned lease: ID=23 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818653 1746 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 102  released orphaned lease: ID=24 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818692 1747 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 103  released orphaned lease: ID=25 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.818999 1753 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 104  released orphaned lease: ID=32 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.819483 1749 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 105  released orphaned lease: ID=27 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.819614 1751 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 106  released orphaned lease: ID=30 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.819629 1752 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 107  released orphaned lease: ID=31 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.819659 1750 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 108  released orphaned lease: ID=28 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820382 1755 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 109  released orphaned lease: ID=34 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820406 1738 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 110  released orphaned lease: ID=36 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820500 1754 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 111  released orphaned lease: ID=33 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820530 1737 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 112  released orphaned lease: ID=35 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820542 1575 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 113  released orphaned lease: ID=37 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820680 1706 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 114  released orphaned lease: ID=40 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.820740 1739 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 115  released orphaned lease: ID=39 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.821663 1662 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 116  released orphaned lease: ID=42 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.821800 1740 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 117  released orphaned lease: ID=44 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.821853 1741 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 118  released orphaned lease: ID=45 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.821899 1663 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 119  released orphaned lease: ID=43 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.821945 1661 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 120  released orphaned lease: ID=41 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.822432 1762 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 121  released orphaned lease: ID=48 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.822449 1764 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 122  released orphaned lease: ID=51 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.822447 1665 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 123  released orphaned lease: ID=47 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.822557 1763 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 124  released orphaned lease: ID=50 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.822602 1664 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 125  released orphaned lease: ID=46 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.823133 1742 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 126  released orphaned lease: ID=56 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.823244 1707 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 127  released orphaned lease: ID=52 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.823311 1765 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 128  released orphaned lease: ID=53 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.823355 1766 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 129  released orphaned lease: ID=55 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.823386 1756 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 130  released orphaned lease: ID=54 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824019 1743 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 131  released orphaned lease: ID=61 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824131 1708 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 132  released orphaned lease: ID=57 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824189 1709 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 133  released orphaned lease: ID=58 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824237 1710 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 134  released orphaned lease: ID=59 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824302 1711 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 135  released orphaned lease: ID=60 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824694 1580 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 136  released orphaned lease: ID=66 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824741 1576 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 137  released orphaned lease: ID=62 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824741 1577 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 138  released orphaned lease: ID=63 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824836 1578 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 139  released orphaned lease: ID=64 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.824846 1579 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 140  released orphaned lease: ID=65 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.825374 1785 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 141  released orphaned lease: ID=68 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.825477 1757 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 142  released orphaned lease: ID=70 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826161 1788 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 143  released orphaned lease: ID=104 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826319 1786 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 144  released orphaned lease: ID=69 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826373 1758 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 145  released orphaned lease: ID=71 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826445 1787 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 146  released orphaned lease: ID=72 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826540 1581 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 147  released orphaned lease: ID=67 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826898 1800 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 148  released orphaned lease: ID=108 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.826983 1678 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 149  released orphaned lease: ID=105 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.827108 1680 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 150  released orphaned lease: ID=107 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.827461 1679 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 151  released orphaned lease: ID=106 ver=15 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.827614 1681 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 152  released orphaned lease: ID=110 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.827673 1789 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 153  released orphaned lease: ID=109 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.828137 1793 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 154  released orphaned lease: ID=115 ver=7 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.828225 1790 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 155  released orphaned lease: ID=112 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.828289 1810 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 156  released orphaned lease: ID=111 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.828337 1791 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 157  released orphaned lease: ID=113 ver=7 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.828429 1792 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 158  released orphaned lease: ID=114 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.829096 1811 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 159  released orphaned lease: ID=122 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.829533 1827 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 160  released orphaned lease: ID=117 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.829554 1829 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 161  released orphaned lease: ID=119 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.829554 1828 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 162  released orphaned lease: ID=118 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.829653 1826 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 163  released orphaned lease: ID=116 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.830342 1831 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 164  released orphaned lease: ID=125 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.830510 1832 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 165  released orphaned lease: ID=126 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.830728 1582 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 166  released orphaned lease: ID=124 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.830918 1687 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 167  released orphaned lease: ID=127 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.831014 1830 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 168  released orphaned lease: ID=123 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.831604 1812 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 169  released orphaned lease: ID=128 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.831665 1768 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 170  released orphaned lease: ID=130 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.832129 1814 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 171  released orphaned lease: ID=134 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.832501 1767 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 172  released orphaned lease: ID=129 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.832538 1769 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 173  released orphaned lease: ID=131 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.832563 1770 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 174  released orphaned lease: ID=132 ver=2 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.832600 1813 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 175  released orphaned lease: ID=133 ver=3 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:53.832968 1833 sql/catalog/lease/lease.go:2467 ⋮ [T1,Vsystem,n1] 176  released orphaned lease: ID=136 ver=1 expiration={0001-01-01 00:00:00 +0000 UTC}
+I250825 20:03:54.471721 268 1@gossip/gossip.go:1476 ⋮ [T1,Vsystem,n1] 177  node has connected to cluster via gossip
+I250825 20:03:54.473524 268 kv/kvserver/stores.go:280 ⋮ [T1,Vsystem,n1] 178  wrote 0 node addresses to persistent storage
+I250825 20:03:54.670307 1480 server/diagnostics/update_checker.go:144 ⋮ [T1,Vsystem,n1] 179  a new version is available: ‹25.3.0›, details: ‹https://www.cockroachlabs.com/docs/releases/v25.3#v25-3-0›
+I250825 20:04:20.911476 1246 jobs/adopt.go:105 ⋮ [T1,Vsystem,n1] 180  claimed 8 jobs
+I250825 20:04:20.916351 2354 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=103] 182  job 103: resuming execution
+I250825 20:04:20.916429 2351 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1098946398292541441] 181  job 1098946398292541441: resuming execution
+I250825 20:04:20.916350 2358 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1101272398269054977] 183  job 1101272398269054977: resuming execution
+I250825 20:04:20.916375 2355 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=104] 184  job 104: resuming execution
+I250825 20:04:20.916380 2356 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=105] 185  job 105: resuming execution
+I250825 20:04:20.916387 2357 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=1098958321112612865] 186  job 1098958321112612865: resuming execution
+I250825 20:04:20.916398 2353 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=101] 187  job 101: resuming execution
+I250825 20:04:20.916420 2352 jobs/adopt.go:224 ⋮ [T1,Vsystem,n1,job=100] 188  job 100: resuming execution
+I250825 20:04:20.926259 2248 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 189  KEY VISUALIZER job 100: stepping through state running
+I250825 20:04:20.926196 2362 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=104] 190  MVCC STATISTICS UPDATE job 104: stepping through state running
+I250825 20:04:20.926589 2377 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1098946398292541441] 191  AUTO SPAN CONFIG RECONCILIATION job 1098946398292541441: stepping through state running
+I250825 20:04:20.926741 2313 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=105] 192  UPDATE TABLE METADATA CACHE job 105: stepping through state running
+I250825 20:04:20.926206 2312 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=101] 193  POLL JOBS STATS job 101: stepping through state running
+I250825 20:04:20.926929 2332 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 194  AUTO UPDATE SQL ACTIVITY job 103: stepping through state running
+I250825 20:04:20.930848 1809 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=1098958321112612865] 195  CHANGEFEED job 1098958321112612865: stepping through state running
+I250825 20:04:20.931132 2332 sql/sql_activity_update_job.go:88 ⋮ [T1,Vsystem,n1,job=AUTO UPDATE SQL ACTIVITY id=103] 196  starting sql stats activity flush job
+I250825 20:04:20.931900 2362 sql/mvcc_statistics_update_job.go:63 ⋮ [T1,Vsystem,n1,job=MVCC STATISTICS UPDATE id=104] 197  starting mvcc statistics update job
+I250825 20:04:20.933924 2405 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 198  using bulk oracle for DistSQL planning
+I250825 20:04:20.935103 2405 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 199  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcR_REXZxcTelSmIt2S7vQi0VKTI5OqGNsEtkW8b8XtR-7AzMwl-fD5308mcD_6ECAOsq-pYZIiwjTXbkryowjIr9DXt4VwKC3mj7KE3kQT4BQMRicVeS9dUtrWhcO-ieIlIHphzEs7YqBso5ATBBM6AgEvFuj3rato1YG65IUGGgK0nQr-6sM6kg-esJKRMmjrDtKMMuSCWM-QzUzsGP4j_dBtgQCX_gc7kGkM7tV6b2zfTDkEnwt9DAGEe0522dsn18U4GcCeIvAZ_KD7T29Cr6UlJ4lxThXDEi3tD2Et6NT9MlZte5u5cMKWhuafNimuBWH_u_IB0fy9O9-L0l4lcSvkSoGTWefvxkNArBEXijK41xRE-c7zOK6znRck5bY1LIodQPLB7L1y4m-HO3zin38NSw_2MjOE4MP8jvdUyB3Mr3xwag_k3l-8zsAAP__cuDqlw==›
+I250825 20:04:20.936058 2411 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 200  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:20.951179 2386 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1101272398269054977] 201 ={"Timestamp":1756152260951166841,"EventType":"status_change","JobID":1101272398269054977,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250825 20:04:20.953191 2417 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 202  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+I250825 20:04:20.953672 2411 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 203  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:20.953870 2386 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1101272398269054977,create-stats-distsql] 204  using computed sample size of 10000 for histogram construction
+I250825 20:04:20.958248 2514 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-frontier] 205  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+W250825 20:04:20.959331 1809 ccl/changefeedccl/changefeed_stmt.go:1476 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 206  Changefeed job 1098958321112612865 encountered transient error: ‹unable to dial›: dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host› (attempt 1)
+I250825 20:04:20.975680 2377 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:241 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441] 207  established range feed over system.descriptors starting at time 1756152260.937153883,0
+I250825 20:04:20.975756 2377 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:300 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441] 208  established range feed over system.zones starting at time 1756152260.937153883,0
+I250825 20:04:20.975826 2377 spanconfig/spanconfigsqlwatcher/sqlwatcher.go:401 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441] 209  established range feed over system.protected_ts_records starting at time 1756152260.937153883,0
+I250825 20:04:20.991585 2386 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1,job=1101272398269054977] 210 ={"Timestamp":1756152260991582050,"EventType":"status_change","JobID":1101272398269054977,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250825 20:04:26.064627 2707 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 211  using bulk oracle for DistSQL planning
+I250825 20:04:26.065883 2707 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 212  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcR8yJOmiupnQpzEW7pV3oxSIlY45OqGNsEtkW8b8XtR-7CzMwl-fD5308mcD_6EBCfVJ9Sw2RlhHysijzIhWIKHYoil0ODHqr6aM6kwf5CAgVg8HZmry3bmlN68JB_wTJGZh-GMPSrhjU1hHICYIJHYGEd2vU27Z11KpgXcKBgaagTLeyv6pQn8hHj1jJKHlQx44STNNkwljMUM0M7Bj-431QLYHEZz6HO5B8ZrcqvXe2D4Zcgi-F7scgo71g-5Tts4sC4pUA3iLwmfxge08vgi8l8VdJMc4VA9ItbQ_h7ehq-uRsve5u5f0KWhuafNimuBWH_u_IB0fq_O9-z0l4lSSukSoGTWefvhkNEpqiyKhBHR9LVcYZz49xUe7ymGueZaJoyiwTsHygWr-c6MvJPq3Yh1_D8oON6jwx-KC-0x0FcmfTGx9M_Wcyz29-BwAA__8Zw-k0›
+I250825 20:04:26.066601 2711 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 213  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:26.079665 2717 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 214  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+I250825 20:04:26.080374 2711 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 215  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:26.086013 2788 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-frontier] 216  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+W250825 20:04:26.086311 1809 ccl/changefeedccl/changefeed_stmt.go:1476 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 217  Changefeed job 1098958321112612865 encountered transient error: ‹unable to dial›: dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host› (attempt 2)
+I250825 20:04:32.689997 2890 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 218  GC still needed following GC, recomputing MVCC stats
+I250825 20:04:32.690103 2890 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 219  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:04:32.690103 2890 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 219 +‹likely last GC: 3m42.124861299s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:04:32.690103 2890 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 219 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:04:32.690266 2890 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 220  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:04:32.690266 2890 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 220 +‹likely last GC: 3m45.341841716s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:04:32.690266 2890 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 220 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:04:35.692724 2863 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 221  using bulk oracle for DistSQL planning
+I250825 20:04:35.694651 2863 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 222  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV2LnDAUhu_7K-RcR_REZ0ZzNaVLYS7aLe1CLxYpMTk6oY6xSWRbxP9e1H7sLuzCXJ4Pn_fxZAL_owMB6iz7lhoiLSJMy6LcFRlHRL5HXux3wKC3mj7KC3kQ94BQMRicVeS9dUtrWhdO-ieIlIHphzEs7YqBso5ATBBM6AgEvFuj3rato1YG65IUGGgK0nQr-6sM6kw-usdKRMmdrDtKMMuSCWM-QzUzsGP4j_dBtgQCH_mcbkCkM7tW6b2zfTDkEnwqdDsGER05O2bsmL8owJ8J4DUCn8kPtvf0JPilpPRZUoxzxYB0S9tDeDs6RZ-cVevuVt6uoLWhyYdtiltx6v-OfHAkL__u95iEr5L4a6SKQdPZh29Gg4DmoHR2OOSxyhXG-b5WcaF4E5dZWe54XdYF1bB8IFu_nOjL2T6s2Ltfw_KDjew8Mfggv9MNBXIX0xsfjPozmec3vwMAAP__TETp9g==›
+I250825 20:04:35.695994 3030 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 223  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:35.710500 3036 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 224  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+I250825 20:04:35.711443 3030 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 225  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:35.716064 3061 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-frontier] 226  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+W250825 20:04:35.716382 1809 ccl/changefeedccl/changefeed_stmt.go:1476 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 227  Changefeed job 1098958321112612865 encountered transient error: ‹unable to dial›: dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host› (attempt 3)
+I250825 20:04:52.795175 3324 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 228  using bulk oracle for DistSQL planning
+I250825 20:04:52.795743 3324 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 229  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkV3LmzAUx-_3KeRcR_TEx6K56tjDoBdbx1bYRZGRmqMNs8YlkW6I332oe2kLLfTyvPj7_zwZwP1oQEB5lG1NFZESAcZ5lqdZwhGRr5BnqxQYtEbRR3kiB2IPCAWDzpqSnDN2ag3zwkb9BBEz0G3X-6ldMCiNJRADeO0bAgHv5qi3dW2plt7YKAYGirzUzcz-Kn15JBfssRBBtJOHhiJMkmjAkI9QjAxM7__jnZc1gcALn80riHhkzyq9t6b1mmyE10Lb3otgzdk6YeuXuwL8RgCfEfhMrjOto6vge0nxTVKIY8GAVE3LQzjT25I-WVPOu0u5nUFzQ5HzyxSXYtP-HTlvSZ7-3e-ShA9J_BGpYFA15vxNKxCAaZWlaZaHKsEkfMlXWZhjJkNMecq5olzxA0wfyNpNJ_pyNOcZu_vVTT9YycYRgw_yO72SJ3vSrXZel38m4_jmdwAAAP__6rbo0g==›
+I250825 20:04:52.796174 3378 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 230  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:52.803510 3384 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 231  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+I250825 20:04:52.803899 3378 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 232  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:04:52.808819 3305 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-frontier] 233  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+W250825 20:04:52.809046 1809 ccl/changefeedccl/changefeed_stmt.go:1476 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 234  Changefeed job 1098958321112612865 encountered transient error: ‹unable to dial›: dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host› (attempt 4)
+I250825 20:04:53.880007 3776 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 235 ={"Timestamp":1756152293880001718,"EventType":"status_change","JobID":1101273149813587969,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: running","PreviousStatus":"running","NewStatus":"running","RunNum":0}
+I250825 20:04:53.881952 3776 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1101273149813587969,create-stats-distsql] 236  using computed sample size of 10000 for histogram construction
+I250825 20:04:53.891961 3776 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1101273149813587969,create-stats-distsql] 237  using computed sample size of 10000 for histogram construction
+I250825 20:04:53.903351 3776 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1101273149813587969,create-stats-distsql] 238  using computed sample size of 10000 for histogram construction
+I250825 20:04:53.918184 3776 sql/distsql_plan_stats.go:209 ⋮ [T1,Vsystem,n1,job=AUTO CREATE PARTIAL STATS id=1101273149813587969,create-stats-distsql] 239  using computed sample size of 10000 for histogram construction
+I250825 20:04:53.947730 3776 1@jobs/structured_log.go:49 ⋮ [T1,Vsystem,n1] 240 ={"Timestamp":1756152293947726384,"EventType":"status_change","JobID":1101273149813587969,"JobType":"AUTO CREATE PARTIAL STATS","Description":"state changed to: succeeded","PreviousStatus":"running","NewStatus":"succeeded","RunNum":0}
+I250825 20:05:22.737719 4501 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 241  GC still needed following GC, recomputing MVCC stats
+I250825 20:05:22.738041 4501 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 242  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:05:22.738041 4501 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 242 +‹likely last GC: 44.929111119s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:05:22.738041 4501 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 242 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:05:22.738139 4501 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 243  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:05:22.738139 4501 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 243 +‹likely last GC: 50.05286437s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:05:22.738139 4501 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 243 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:05:34.437565 4634 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 244  using bulk oracle for DistSQL planning
+I250825 20:05:34.442658 4634 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 245  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkU2L2zAQhu_9FWbOMtb4YxvrlNKlkEO7pV3oYTFFK40dUcdyJZltMf7vxXbbTQIJ5Dgfft7HoxH8zxYEqL3sGqqJtIiQl5uy2GQpIqZ3mG7uCmDQWU2f5IE8iCdAqBj0ziry3rq5NS4LO_0LBGdgun4Ic7tioKwjECMEE1oCAe-XqHdN46iRwbqEAwNNQZp2YX-TQe3JR09YiSh5lM8tJZhlyYhxOkE1MbBDeMX7IBsCgUc-u3sQfGK3Kn1wtguGXIKnQg9DENE2ZduMbfOLAumZAN4i8IV8bztPJ8GXkvhZUoxTxYB0Q-tDeDs4RZ-dVcvuWj4soKWhyYd1imux6_6NfHAkD__vd0zCq6T0GqliULf25bvRIEDWVEjOKS6U5HGuiue4zCmPpX6bYVFTyYsc5g9k4-cTfd3blwX7-Luff7CWrScGH-UPuqdA7mA644NRfyfT9OZPAAAA__9Z5OoF›
+I250825 20:05:34.446302 4640 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 246  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:05:34.460626 4742 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 247  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+I250825 20:05:34.462647 4640 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 248  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:05:34.468442 4700 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-frontier] 249  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+W250825 20:05:34.469199 1809 ccl/changefeedccl/changefeed_stmt.go:1476 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 250  Changefeed job 1098958321112612865 encountered transient error: ‹unable to dial›: dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host› (attempt 5)
+I250825 20:06:18.816239 5370 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 251  GC still needed following GC, recomputing MVCC stats
+I250825 20:06:18.816370 5370 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 252  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:06:18.816370 5370 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 252 +‹likely last GC: 51.943746289s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:06:18.816370 5370 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 252 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:06:18.816492 5370 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 253  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:06:18.816492 5370 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 253 +‹likely last GC: 56.083331456s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:06:18.816492 5370 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 253 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:06:46.970186 5856 ccl/changefeedccl/changefeed_dist.go:414 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 254  using bulk oracle for DistSQL planning
+I250825 20:06:46.971391 5856 ccl/changefeedccl/changefeed_dist.go:577 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 255  changefeed plan diagram: ‹https://cockroachdb.github.io/distsqlplan/decode.html#eJyUkU1r3DAQhu_9FWbOMvZIu7ZXpy0NhT20KW2gh2CKVpr1inotV5JJi_F_L7b7kQQS2ON8-Hkfj0YIP1qQoM-qa-hEZGSC-a7abSvBEZEXyKtiCww6Z-ijulAAeQ8INYPeO00hOD-3xmXhYH6CzBnYrh_i3K4ZaOcJ5AjRxpZAwrsl6m3TeGpUdD7LgYGhqGy7sL-qqM8UknusZZLdqWNLGQqRjZjyCeqJgRvif3yIqiGQ-MjncAMyn9i1Su-966Iln-FTodshymTP2V6w_eZFAf5MAK8R-Eyhd12gJ8EvJeXPklKcagZkGlofIrjBa_rknV521_J2AS0NQyGuU1yLQ_d3FKIndfl3v8ckfJXEXyPVDE6te_hmDUjYCjSmxDJVYlelm7w4popEmVJBmvON4GV1hPkD1YT5RF_O7mHB3v3q5x88qTYQgw_qO91QJH-xnQ3R6j-TaXrzOwAA__8XjOlR›
+I250825 20:06:46.973078 5958 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 256  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:06:46.990313 5964 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-aggregator] 257  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+I250825 20:06:46.991224 5958 ccl/changefeedccl/sink_kafka_v2.go:246 ⋮ [-] 258  updating kafka metadata for topics: [‹users_changes›]
+I250825 20:06:46.997126 5990 github.com/twmb/franz-go/pkg/kgo/logger.go:123 ⋮ [T1,Vsystem,n1,job=1098958321112612865,change-frontier] 259  kafka(kgo): WARN unable to open connection to broker ‹addr›=‹broker_kafka:9092› ‹broker›=‹seed_0› ‹err›=dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host›
+W250825 20:06:46.997504 1809 ccl/changefeedccl/changefeed_stmt.go:1476 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 260  Changefeed job 1098958321112612865 encountered transient error: ‹unable to dial›: dial tcp: ‹lookup broker_kafka on 127.0.0.11:53: no such host› (attempt 6)
+I250825 20:06:48.858991 6016 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 261  GC still needed following GC, recomputing MVCC stats
+I250825 20:06:48.859054 6016 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 262  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:06:48.859054 6016 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 262 +‹likely last GC: 25.750864041s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:06:48.859054 6016 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 262 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:06:48.859123 6016 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 263  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:06:48.859123 6016 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 263 +‹likely last GC: 30.045822417s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:06:48.859123 6016 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 263 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:07:58.963525 7056 kv/kvserver/mvcc_gc_queue.go:796 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 264  GC still needed following GC, recomputing MVCC stats
+I250825 20:07:58.963619 7056 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 265  old score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:07:58.963619 7056 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 265 +‹likely last GC: 1m4.830528253s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:07:58.963619 7056 kv/kvserver/mvcc_gc_queue.go:797 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 265 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:07:58.963705 7056 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 266  new score ‹queue=true with 0.00/fuzz(0.95)=0.00=valScaleScore(0.00)*deadFrac(0.00)+intentScore(0.00)›
+I250825 20:07:58.963705 7056 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 266 +‹likely last GC: 1m10.107502963s ago, 0 B non-live, curr. age 0 B*s, min exp. reduction: 0 B*s›
+I250825 20:07:58.963705 7056 kv/kvserver/mvcc_gc_queue.go:798 ⋮ [T1,Vsystem,n1,mvccGC,s1,r86/1:‹/{Table/134-Max}›] 266 +‹hint: {0,0 1755445834.582834013,0 1755445834.587412388,0}›
+I250825 20:08:33.823671 1 1@cli/start.go:993 ⋮ [T1,Vsystem,n1] 267  received signal 'terminated'
+I250825 20:08:33.824237 1 1@cli/start.go:1034 ⋮ [T1,Vsystem,n1] 268  initiating graceful shutdown of server
+I250825 20:08:33.825350 7780 server/drain.go:353 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 269  all tenant servers stopped
+I250825 20:08:33.825422 7780 1@server/drain.go:399 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 270  waiting for health probes to notice that the node is not ready for new sql connections
+I250825 20:08:36.826214 7783 1@server/drain.go:513 ⋮ [T1,Vsystem,n1,server drain process,call-graceful-drain] 271  number of open connections: 0
+I250825 20:08:38.826813 7781 1@cli/start.go:1046 ⋮ [T1,Vsystem,n1] 272  366 running tasks
+I250825 20:08:43.825169 7781 1@cli/start.go:1046 ⋮ [T1,Vsystem,n1] 273  366 running tasks
+W250825 20:08:43.825664 1244 jobs/registry.go:1069 ⋮ [T1,Vsystem,n1] 274  canceling all adopted jobs due to graceful drain request
+I250825 20:08:43.825761 1409 sql/stats/automatic_stats.go:745 ⋮ [T1,Vsystem,n1] 275  draining stats garbage collector
+I250825 20:08:43.825688 1408 sql/stats/automatic_stats.go:694 ⋮ [T1,Vsystem,n1] 276  draining auto stats refresher
+I250825 20:08:43.826438 2248 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=100] 277  KEY VISUALIZER job 100: stepping through state succeeded
+W250825 20:08:43.826924 2578 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441,rangefeed=‹sql-watcher-descriptor-rangefeed›,mux_n=1,gen=2] 278  error closing mux rangefeed client: context canceled
+W250825 20:08:43.826924 2511 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441,rangefeed=‹sql-watcher-zones-rangefeed›,mux_n=1,gen=2] 279  error closing mux rangefeed client: context canceled
+W250825 20:08:43.827337 1809 ccl/changefeedccl/changefeed_stmt.go:1335 ⋮ [T1,Vsystem,n1,job=CHANGEFEED id=1098958321112612865] 280  job failed (ran out of retries: context canceled)
+I250825 20:08:43.827352 2332 jobs/registry.go:1681 ⋮ [T1,Vsystem,n1,job=103] 281  AUTO UPDATE SQL ACTIVITY job 103: stepping through state succeeded
+W250825 20:08:43.827001 2448 kv/kvclient/kvcoord/dist_sender_mux_rangefeed.go:406 ⋮ [T1,Vsystem,n1,job=AUTO SPAN CONFIG RECONCILIATION id=1098946398292541441,rangefeed=‹sql-watcher-protected-ts-records-rangefeed›,mux_n=1,gen=2] 282  error closing mux rangefeed client: context canceled

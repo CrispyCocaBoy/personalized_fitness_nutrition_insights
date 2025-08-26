@@ -91,6 +91,7 @@ CREATE TABLE sensor_to_user (
   device_id      INT NOT NULL REFERENCES device(device_id) ON DELETE CASCADE,
   sensor_type_id INT NOT NULL REFERENCES sensor_type(sensor_type_id) ON DELETE CASCADE,
   created_at     TIMESTAMPTZ DEFAULT NOW(),
+  custom_name VARCHAR(100),
   UNIQUE(device_id, sensor_type_id)
 );
 -- 10. USER_FEATURE_PREFERENCES
@@ -101,6 +102,14 @@ CREATE TABLE user_feature_preferences (
   device_id      INT NOT NULL REFERENCES device(device_id) ON DELETE CASCADE,
   updated_at     TIMESTAMPTZ DEFAULT NOW(),
   PRIMARY KEY (user_id, feature_id, device_id)
+);
+
+-- 22. SENSOR_STATUS
+--     Stato attuale di ciascun sensore (acceso/spento)
+CREATE TABLE sensor_status (
+    sensor_id INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
+    active    BOOLEAN NOT NULL DEFAULT TRUE,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 
@@ -236,6 +245,42 @@ CREATE TABLE workout_recommendation_blacklist (
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (recommendation_id) REFERENCES workout_recommendation(recommendation_id)
 );
+
+-- 21. Activity
+--     Activity included in the datatbase
+CREATE TABLE activity_default(
+    activity_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    icon VARCHAR(20)
+);
+
+-- 21. Activity
+--     sensor_status
+CREATE TABLE IF NOT EXISTS sensor_status (
+  sensor_id  INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
+  active     BOOLEAN NOT NULL DEFAULT TRUE,
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Funzione trigger (PL/pgSQL)
+CREATE OR REPLACE FUNCTION sensor_status_autocreate()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO sensor_status (sensor_id, active, updated_at)
+  VALUES ((NEW).sensor_id, TRUE, now())
+  ON CONFLICT (sensor_id) DO NOTHING;
+  RETURN NULL;  -- AFTER trigger: il ritorno è ignorato per convenzione
+END;
+$$ LANGUAGE PLpgSQL;
+
+-- Trigger: dopo ogni INSERT su sensor_to_user
+DROP TRIGGER IF EXISTS trg_sensor_status_autocreate ON sensor_to_user;
+
+CREATE TRIGGER trg_sensor_status_autocreate
+AFTER INSERT ON sensor_to_user
+FOR EACH ROW
+EXECUTE FUNCTION sensor_status_autocreate();
+
 ---------------------------------------------------------
 -- STANDARD SETUP
 -- These are initial/default values for device types, sensors, and features
@@ -247,7 +292,8 @@ VALUES
   ('SimpleWatch', 'simpleguys', 'SW_001', 'Basic smartwatch'),
   ('SimpleBand',  'simpleguys', 'SB_001', 'Basic smartband'),
   ('SimpleRing',  'simpleguys', 'SR_001', 'Smart ring'),
-  ('Phone',       'generic',    NULL,     'Generic smartphone');
+  ('Phone',       'generic',    NULL,     'Generic smartphone'),
+  ('VirtualDevice', 'system',    NULL,     'Placeholder per sensori singoli''');
 
 -- Sensor types (hardware)
 INSERT INTO sensor_type (sensor_type_id, name, unit, description) VALUES
@@ -612,4 +658,37 @@ INSERT INTO default_foods (name,quantity,unit,calories,carbohydrates,protein,fat
  ('Trout Tradition','100','g','113.7','0.1','25.4','6.2',null,null,'3.5','0.1','54.9','381.4','1.2',null,'47.7','Fish'),
  ('Tequila Generic','100','ml','107.7','6.3','0.0',null,null,'4.3',null,null,null,'42.6','0.2',null,null,'Alcoholic Beverages');
 
---
+-- Default activity in the database
+
+INSERT INTO activity_default (activity_id, name, icon) VALUES
+(1, 'Running', '🏃‍♂️'),
+(2, 'Football', '⚽'),
+(3, 'Swimming', '🏊‍♂️'),
+(4, 'Gym', '🏋️‍♂️'),
+(5, 'Cycling', '🚴‍♂️'),
+(6, 'Tennis', '🎾'),
+(7, 'Yoga', '🧘‍♀️'),
+(8, 'Basketball', '🏀'),
+(9, 'Walking', '🚶‍♂️'),
+(10, 'Volleyball', '🏐'),
+(11, 'Soccer', '⚽'),
+(12, 'Baseball', '⚾'),
+(13, 'Hiking', '🥾'),
+(14, 'Dancing', '💃'),
+(15, 'Boxing', '🥊'),
+(16, 'Golf', '⛳'),
+(17, 'Skiing', '⛷️'),
+(18, 'Surfing', '🏄‍♂️'),
+(19, 'Rock Climbing', '🧗‍♂️'),
+(20, 'Badminton', '🏸'),
+(21, 'Table Tennis', '🏓'),
+(22, 'Martial Arts', '🥋'),
+(23, 'Rowing', '🚣‍♂️'),
+(24, 'Ice Skating', '⛸️'),
+(25, 'Skateboarding', '🛹'),
+(26, 'Bowling', '🎳'),
+(27, 'Archery', '🏹'),
+(28, 'Weightlifting', '🏋️‍♀️'),
+(29, 'Pilates', '🤸‍♀️'),
+(30, 'Crossfit', '💪');
+

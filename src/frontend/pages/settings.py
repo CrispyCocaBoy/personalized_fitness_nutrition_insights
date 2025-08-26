@@ -141,11 +141,17 @@ with main_col:
 
     st.divider()
 
-    # --- Sezione Dispositivo ---
-    st.subheader("Dispositivo")
+# --- Gestione dispositivi e sensori ---
+    st.subheader("🔧 Gestione dispositivi e sensori")
+    st.caption("Accedi alla pagina dove puoi rinominare, eliminare o aggiungere dispositivi e sensori.")
 
-    watch_list = fetch_device_names()
-    selected_watch = st.selectbox("Seleziona il tuo orologio:", watch_list)
-
-    if st.button("Conferma orologio"):
-        st.success(f"Hai selezionato: {selected_watch}")
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        # Se Streamlit supporta page_link
+        try:
+            st.page_link("pages/manage_bindings.py", label="Vai alla gestione", icon="🔗")
+        except Exception:
+            if st.button("Apri gestione"):
+                st.switch_page("pages/manage_bindings.py")
+    with col2:
+        st.caption("Puoi modificare i nomi dei dispositivi e dei sensori o rimuoverli definitivamente.")

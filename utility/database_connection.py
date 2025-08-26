@@ -1,58 +1,53 @@
-import psycopg2
+import psycopg
 import bcrypt
 import random
 import string
 
-# --- CONNESSIONI AI DATABASE ---
-
+# Connessioni
 def connection():
-    """Connessione al DB principale per utenti, profili, device, ecc."""
-    return psycopg2.connect(
+    return psycopg.connect(
         host="cockroachdb",
         port=26257,
-        dbname="user_device_db", # DB per i dati del frontend
+        dbname="user_device_db",
         user="root"
+        #user="admin",
+        #password="admin",
+        #sslmode="require"  # CockroachDB spesso richiede SSL
     )
 
-def connection_recommendations():
-    """Connessione al DB per leggere le raccomandazioni generate da Spark."""
-    return psycopg2.connect(
-        host="cockroachdb",
-        port=26257,
-        dbname="defaultdb", # DB per i dati di Spark
-        user="root"
-    )
-
-# --- FUNZIONI UTENTE (usano la connessione standard a 'user_device_db') ---
-
+# Register User
 def register_user(username, email, password):
     conn = connection()
     cur = conn.cursor()
+
+    # Controllo duplicati
+    cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+    if cur.fetchone():
+        conn.close()
+        return False, "Username già esistente.", None
+
+    cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+    if cur.fetchone():
+        conn.close()
+        return False, "Email già esistente.", None
+
+    # Hash password
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
     try:
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        if cur.fetchone():
-            conn.close()
-            return False, "Username già esistente.", None
-
-        cur.execute("SELECT * FROM users WHERE email = %s", (email,))
-        if cur.fetchone():
-            conn.close()
-            return False, "Email già esistente.", None
-
-        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         cur.execute(
             "INSERT INTO users (username, email, password) VALUES (%s, %s, %s) RETURNING user_id",
             (username, email, hashed)
         )
-        user_id = cur.fetchone()[0]
+        user_id = cur.fetchone()[0]  # Recupera user_id appena creato
         conn.commit()
+        conn.close()
         return True, "Registrazione avvenuta con successo.", user_id
     except Exception as e:
-        return False, f"Errore durante la registrazione: {e}", None
-    finally:
-        cur.close()
         conn.close()
+        return False, f"Errore durante la registrazione: {e}", None
 
+# Complete profile
 def complete_profile(user_id, name, surname, gender, birthday, country):
     conn = connection()
     cur = conn.cursor()
@@ -67,125 +62,240 @@ def complete_profile(user_id, name, surname, gender, birthday, country):
         conn.rollback()
         return False, f"Errore durante l'inserimento del profilo: {e}"
     finally:
-        cur.close()
         conn.close()
 
+# Set weight and height
 def set_height(user_id, height):
     conn = connection()
     cur = conn.cursor()
     try:
-        cur.execute("UPDATE users_profile SET height = %s WHERE user_id = %s", (height, user_id))
+        cur.execute("""
+            UPDATE users_profile
+            SET height = %s
+            WHERE user_id = %s
+        """, (height, user_id))
         conn.commit()
         return True, "Altezza salvata con successo."
     except Exception as e:
         conn.rollback()
         return False, f"Errore altezza: {e}"
     finally:
-        cur.close()
         conn.close()
 
 def set_weight(user_id, weight):
     conn = connection()
     cur = conn.cursor()
     try:
-        cur.execute("INSERT INTO weight (user_id, weight, measured_at) VALUES (%s, %s, NOW())", (user_id, weight))
+        cur.execute("""
+            INSERT INTO weight (user_id, weight, measured_at)
+            VALUES (%s, %s, NOW())
+        """, (user_id, weight))
         conn.commit()
         return True, "Peso salvato con successo."
     except Exception as e:
         conn.rollback()
         return False, f"Errore peso: {e}"
     finally:
-        cur.close()
         conn.close()
 
+# Access
 def check_credentials(login_input, password, method):
-    conn = connection()
-    cur = conn.cursor()
     try:
-        query = "SELECT user_id, password FROM users WHERE "
-        query += "username = %s" if method == "Username" else "email = %s"
-        cur.execute(query, (login_input,))
+        conn = connection()
+        cur = conn.cursor()
+
+        # Selezione in base al metodo scelto
+        if method == "Username":
+            cur.execute("SELECT user_id, password FROM users WHERE username = %s", (login_input,))
+        else:  # Email
+            cur.execute("SELECT user_id, password FROM users WHERE email = %s", (login_input,))
+
         result = cur.fetchone()
+        conn.close()
+
         if not result:
-            return "not_found", None
+            return "not_found", None  # L'utente non esiste
+
         user_id, hashed_pw = result[0], result[1].encode('utf-8')
+
+        # Verifica della password
         if bcrypt.checkpw(password.encode('utf-8'), hashed_pw):
             return "success", user_id
         else:
             return "wrong_password", None
+
     except Exception as e:
-        print(f"Errore check_credentials: {e}")
         return "error", None
-    finally:
-        cur.close()
-        conn.close()
+
 
 def retrive_name(user_id):
     conn = connection()
     cur = conn.cursor()
     try:
-        cur.execute("SELECT name, surname FROM users_profile WHERE user_id = %s", (user_id,))
+        cur.execute("""
+                    SELECT name, surname
+                    FROM users_profile
+                    WHERE user_id = %s
+                    """, (user_id,))
         row = cur.fetchone()
-        return (row[0], row[1]) if row else (None, None)
+
+        if row:
+            name, surname = row
+            return name, surname
+        else:
+            return None, None  # utente non trovato
     except Exception as e:
-        print(f"Errore recupero nome: {e}")
-        return None, None
+        conn.rollback()
+        return False, f"Errore nome: {e}"
     finally:
         cur.close()
         conn.close()
 
-def random_selection():
-    conn = connection()
-    cur = conn.cursor()
-    cur.execute("SELECT device_type_id, name FROM device_type")
-    available_types = cur.fetchall()
-    conn.close()
-    return random.choice(available_types)
 
-def stream_selection():
+# The device selection can be done
+# - Via randomization
+def random_selection():
+    # Connection
     conn = connection()
     cur = conn.cursor()
+
+    # Device random selection
     cur.execute("SELECT device_type_id, name FROM device_type")
     available_types = cur.fetchall()
-    conn.close()
+    device_type_id, device_type_name = random.choice(available_types)
+    conn.close
+    return device_type_id, device_type_name
+
+# - Via selection in the streamlit app
+def stream_selection():
+    # Connection
+    conn = connection()
+    cur = conn.cursor()
+
+    # Device random selection
+    cur.execute("SELECT device_type_id, name FROM device_type")
+    available_types = cur.fetchall()
+    conn.close
     return available_types
 
-def bind_device(user_id, device_type_id, device_type_name):
+
+def bind_device(user_id: int, device_type_id: int, device_type_name: str, custom_device_name: str | None = None):
+    conn = connection()
+    cur = conn.cursor()
+
+    try:
+        # Recupero nome utente
+        cur.execute("SELECT name FROM users_profile WHERE user_id = %s", (user_id,))
+        row = cur.fetchone()
+        if not row:
+            return False, f"Utente {user_id} non trovato."
+        user_name = row[0]
+
+        # Nome dispositivo: custom oppure di default
+        device_name = custom_device_name.strip() if custom_device_name else f"{device_type_name} of {user_name}"
+
+        # Serial number random
+        serial_number = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+
+        # Inserimento device e recupero device_id
+        cur.execute("""
+            INSERT INTO device (user_id, device_name, device_type_id, serial_number, registered_at)
+            VALUES (%s, %s, %s, %s, NOW())
+            RETURNING device_id
+        """, (user_id, device_name, device_type_id, serial_number))
+        device_id = cur.fetchone()[0]
+
+        # Recupero sensori collegati al device type
+        cur.execute("""
+            SELECT sensor_type_id
+            FROM predefined_device_type_sensors
+            WHERE device_type_id = %s
+        """, (device_type_id,))
+        sensors_to_generate = [row[0] for row in cur.fetchall()]
+
+        # Inserimento sensori collegati al device
+        for sensor_type_id in sensors_to_generate:
+            cur.execute("""
+                INSERT INTO sensor_to_user (device_id, user_id, sensor_type_id, created_at)
+                VALUES (%s, %s, %s, NOW())
+            """, (device_id, user_id, sensor_type_id))
+
+        # Commit finale
+        conn.commit()
+        return True, f"Device '{device_name}' con sensori {sensors_to_generate} creato con successo!"
+
+    except Exception as e:
+        conn.rollback()
+        return False, f"Errore: {e}"
+
+    finally:
+        conn.close()
+
+
+def bind_single_sensor(user_id: int, sensor_type_id: int, custom_name: str | None = None):
     conn = connection()
     cur = conn.cursor()
     try:
-        cur.execute("SELECT name FROM users_profile WHERE user_id = %s", (user_id,))
-        user_name = cur.fetchone()
-        device_name = f"{device_type_name} of {user_name[0]}"
-        serial_number = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+        # utente esiste?
+        cur.execute("SELECT 1 FROM users WHERE user_id=%s", (user_id,))
+        if not cur.fetchone():
+            return False, f"Utente {user_id} non trovato."
+
+        # sensore esiste?
+        cur.execute("SELECT name FROM sensor_type WHERE sensor_type_id=%s", (sensor_type_id,))
+        row = cur.fetchone()
+        if not row:
+            return False, f"Sensor type {sensor_type_id} non trovato."
+        sensor_type_name = row[0]
+
+        # Nome sensore: custom oppure di default = sensor_type_name
+        sensor_name_final = custom_name.strip() if custom_name else sensor_type_name
+
+        # recupera/crea virtual device
         cur.execute("""
-                    INSERT INTO device (user_id, device_name, device_type_id, serial_number, registered_at)
-                    VALUES (%s, %s, %s, %s, NOW())
-                    RETURNING device_id
-                    """, (user_id, device_name, device_type_id, serial_number))
-        device_id = cur.fetchone()[0]
-        cur.execute("""
-                    SELECT sensor_type_id
-                    FROM predefined_device_type_sensors
-                    WHERE device_type_id = %s
-                    """, (device_type_id,))
-        sensors_to_generate = [row[0] for row in cur.fetchall()]
-        for sensor_type_id in sensors_to_generate:
+            SELECT d.device_id
+            FROM device d
+            WHERE d.user_id=%s AND d.device_name='SingleSensor'
+            LIMIT 1
+        """, (user_id,))
+        r = cur.fetchone()
+        if r:
+            device_id = r[0]
+        else:
+            cur.execute("SELECT device_type_id FROM device_type WHERE name='VirtualDevice' LIMIT 1")
+            r2 = cur.fetchone()
+            virtual_type_id = r2[0] if r2 else None
+
             cur.execute("""
-                        INSERT INTO sensor_to_user (device_id, user_id, sensor_type_id, created_at)
-                        VALUES (%s, %s, %s, NOW())
-                        """, (device_id, user_id, sensor_type_id))
+                INSERT INTO device (user_id, device_name, device_type_id, serial_number, registered_at)
+                VALUES (%s, 'SingleSensor', %s, CONCAT('VIRTUAL-', FLOOR(RANDOM()*1e9)::text), NOW())
+                RETURNING device_id
+            """, (user_id, virtual_type_id))
+            device_id = cur.fetchone()[0]
+
+        # associazione
+        cur.execute("""
+            INSERT INTO sensor_to_user (device_id, user_id, sensor_type_id, created_at, custom_name)
+            VALUES (%s, %s, %s, NOW(), %s)
+            ON CONFLICT DO NOTHING
+        """, (device_id, user_id, sensor_type_id, sensor_name_final))
+
         conn.commit()
-        return True, f"Device {device_name} con sensori {sensors_to_generate} creato con successo!"
+        return True, f"Sensore '{sensor_name_final}' ({sensor_type_name}) associato all'utente {user_id}."
     except Exception as e:
         conn.rollback()
         return False, f"Errore: {e}"
     finally:
         conn.close()
 
+
+
+
+# Retrive default_meal
 def default_food():
     conn = connection()
     cur = conn.cursor()
+
     cur.execute("""
         SELECT food_id, name, calories, carbohydrates, protein, fat, quantity, unit, category
         FROM default_foods
@@ -193,8 +303,10 @@ def default_food():
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
+
     cur.close()
     conn.close()
+
     return [dict(zip(colnames, row)) for row in rows]
 
 def get_food_by_name(food_name: str) -> dict:
@@ -207,9 +319,11 @@ def get_food_by_name(food_name: str) -> dict:
     conn.close()
     return dict(zip(colnames, row)) if row else None
 
+
 def get_personalized_food_by_name(user_id: str, food_name: str) -> dict:
     conn = connection()
     cur = conn.cursor()
+
     cur.execute("""
                 SELECT *
                 FROM user_foods
@@ -217,15 +331,20 @@ def get_personalized_food_by_name(user_id: str, food_name: str) -> dict:
                   AND user_id = %s
                 LIMIT 1;
                 """, (food_name, user_id))
+
     row = cur.fetchone()
     colnames = [desc[0] for desc in cur.description]
+
     cur.close()
     conn.close()
+
     return dict(zip(colnames, row)) if row else None
+
 
 def personalized_food(user_id: int):
     conn = connection()
     cur = conn.cursor()
+
     cur.execute("""
         SELECT user_food_id, name, quantity, unit,
                calories, carbohydrates, protein, fat, fiber, sugars,
@@ -236,12 +355,38 @@ def personalized_food(user_id: int):
         ORDER BY user_food_id DESC;
     """, (user_id,))
     rows = cur.fetchall()
-    colnames = [desc[0] for desc in cur.description]
     cur.close()
     conn.close()
-    return [dict(zip(colnames, row)) for row in rows]
+
+    foods = []
+    for r in rows:
+        foods.append({
+            "user_food_id": r[0],
+            "name": r[1],
+            "quantity": r[2],
+            "unit": r[3],
+            "calories": r[4],
+            "carbohydrates": r[5],
+            "protein": r[6],
+            "fat": r[7],
+            "fiber": r[8],
+            "sugars": r[9],
+            "saturated_fat": r[10],
+            "trans_fat": r[11],
+            "cholesterol": r[12],
+            "potassium": r[13],
+            "iron": r[14],
+            "vitamin_c": r[15],
+            "vitamin_a": r[16],
+            "category": r[17],
+        })
+    return foods
+
+
+
 
 def insert_personalized_food(user_id: str, food: dict):
+
     sql = """
           INSERT INTO user_foods (user_id, name, quantity, unit, \
                                   calories, carbohydrates, protein, fat, fiber, sugars, \
@@ -253,17 +398,28 @@ def insert_personalized_food(user_id: str, food: dict):
                   %s, %s, %s)
           RETURNING name; \
           """
+
     params = (
-        user_id, (food.get("name") or "").strip(), food.get("quantity"),
-        (food.get("unit") or None), int(food.get("calories") or 0),
-        int(food.get("carbohydrates") or 0), int(food.get("protein") or 0),
-        int(food.get("fat") or 0), int(food.get("fiber") or 0),
-        int(food.get("sugars") or 0), int(food.get("saturated_fat") or 0),
-        int(food.get("trans_fat") or 0), int(food.get("cholesterol") or 0),
-        int(food.get("potassium") or 0), int(food.get("iron") or 0),
-        int(food.get("vitamin_c") or 0), int(food.get("vitamin_a") or 0),
+        user_id,
+        (food.get("name") or "").strip(),
+        food.get("quantity"),
+        (food.get("unit") or None),
+        int(food.get("calories") or 0),
+        int(food.get("carbohydrates") or 0),
+        int(food.get("protein") or 0),
+        int(food.get("fat") or 0),
+        int(food.get("fiber") or 0),
+        int(food.get("sugars") or 0),
+        int(food.get("saturated_fat") or 0),
+        int(food.get("trans_fat") or 0),
+        int(food.get("cholesterol") or 0),
+        int(food.get("potassium") or 0),
+        int(food.get("iron") or 0),
+        int(food.get("vitamin_c") or 0),
+        int(food.get("vitamin_a") or 0),
         (food.get("category") or None),
     )
+
     conn = connection()
     cur = conn.cursor()
     cur.execute(sql, params)
@@ -274,11 +430,16 @@ def insert_personalized_food(user_id: str, food: dict):
     return str(inserted_id)
 
 def delete_personalized_food(user_food_id: int, user_id: int) -> bool:
+    """
+    Cancella una riga da user_foods in modo sicuro (verifica user_id).
+    Ritorna True se ha cancellato qualcosa, False se non ha trovato nulla.
+    """
     sql = """
         DELETE FROM user_foods
         WHERE user_food_id = %s AND user_id = %s
         RETURNING user_food_id;
     """
+
     conn = connection()
     try:
         with conn.cursor() as cur:
@@ -292,268 +453,505 @@ def delete_personalized_food(user_food_id: int, user_id: int) -> bool:
     finally:
         conn.close()
 
-def get_workout_recommendations(user_id: str, limit: int = 5) -> list[dict]:
+# Activity calls
+def activity_default():
     """
-    Recupera le ultime raccomandazioni di allenamento non completate per un utente.
+    Recupera la lista delle attività di default dalla tabella activity_default.
+    Restituisce una lista di dict con chiavi: activity_id, name, icon.
     """
-    conn = connection_recommendations() # <-- USA LA CONNESSIONE A 'defaultdb'
+    conn = connection()
     cur = conn.cursor()
-    try:
-        # NOTA: Questa query potrebbe fallire se la tabella 'user_workout_recommendations'
-        # e la colonna 'status' non esistono in 'defaultdb'.
-        query = """
-            SELECT recommendation_id, user_id, workout_type, details, generated_at
-            FROM user_workout_recommendations
-            WHERE CAST(user_id AS INT) = %s AND status = 'pending'
-            ORDER BY generated_at DESC
-            LIMIT %s;
-        """
-        cur.execute(query, (int(user_id), limit))
-        recommendations = []
-        columns = [desc[0] for desc in cur.description]
-        for row in cur.fetchall():
-            recommendations.append(dict(zip(columns, row)))
-        return recommendations
-    except Exception as e:
-        print(f"!!! ERRORE DURANTE IL RECUPERO DELLE RACCOMANDAZIONI: {e}")
-        return []
-    finally:
-        cur.close()
-        conn.close()
 
-def get_latest_daily_metrics(user_id: str) -> dict | None:
+    cur.execute("""
+        SELECT activity_id, name, icon
+        FROM activity_default
+        ORDER BY activity_id;
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+
+    cur.close()
+    conn.close()
+
+    return [dict(zip(colnames, row)) for row in rows]
+
+def get_device_types():
+    """
+    Ritorna [(device_type_id, name)] dai device type disponibili,
+    escludendo il tipo 'VirtualDevice'.
+    """
     conn = connection()
     cur = conn.cursor()
     try:
-        # NOTA: Questa query potrebbe fallire se 'gold_metrics_daily' non è in 'user_device_db'
-        query = """
-            SELECT 
-                steps_total,
-                hr_bpm_avg,
-                sleep_total_minutes,
-                calories_total
-            FROM gold_metrics_daily
-            WHERE user_id = %s
-            ORDER BY event_date DESC
-            LIMIT 1;
-        """
-        cur.execute(query, (int(user_id),))
-        row = cur.fetchone()
-        if not row:
-            return None
-        columns = [desc[0] for desc in cur.description]
-        return dict(zip(columns, row))
-    except Exception as e:
-        print(f"ERROR fetching latest daily metrics: {e}")
-        return None
-    finally:
-        cur.close()
-        conn.close()
-
-def get_next_recommendation(user_id: str) -> dict | None:
-    """
-    Recupera la prossima raccomandazione valida per un utente,
-    escludendo quelle presenti nella sua blacklist e usando la data del database.
-    """
-    conn = connection_recommendations() # <-- USA LA CONNESSIONE A 'defaultdb'
-    cur = conn.cursor()
-    try:
-        query = """
-            SELECT r.recommendation_id, r.workout_type, r.details
-            FROM user_workout_rankings AS r
-            LEFT JOIN user_device_db.public.user_recommendation_blacklist AS b
-            ON r.user_id = b.user_id AND r.recommendation_id = b.recommendation_id
-            WHERE r.user_id = %s
-              AND b.blacklist_id IS NULL -- Esclude le raccomandazioni in blacklist
-              AND r.generated_at::date = CURRENT_DATE -- Considera solo le classifiche di oggi (robusto)
-            ORDER BY r.rank ASC
-            LIMIT 1;
-        """
-        cur.execute(query, (int(user_id),))
-        row = cur.fetchone()
-        if not row:
-            return None
-        columns = [desc[0] for desc in cur.description]
-        return dict(zip(columns, row))
-    except Exception as e:
-        print(f"ERROR fetching next recommendation: {e}")
-        return None
-    finally:
-        cur.close()
-        conn.close()
-
-def add_to_blacklist(user_id: str, recommendation_id: int):
-    """Aggiunge una raccomandazione alla blacklist di un utente (in 'user_device_db')."""
-    conn = connection() # <-- Usa la connessione standard
-    cur = conn.cursor()
-    try:
-        query = "INSERT INTO user_recommendation_blacklist (user_id, recommendation_id) VALUES (%s, %s);"
-        cur.execute(query, (int(user_id), recommendation_id))
-        conn.commit()
-        return True
-    except Exception as e:
-        print(f"ERROR adding to blacklist: {e}")
-        conn.rollback()
-        return False
-    finally:
-        cur.close()
-        conn.close()
-
-def log_positive_feedback(user_id: str, recommendation_id: int):
-    """Registra un feedback positivo per una raccomandazione (in 'user_device_db')."""
-    conn = connection() # <-- Usa la connessione standard
-    cur = conn.cursor()
-    try:
-        query = "INSERT INTO user_recommendation_feedback (user_id, recommendation_id) VALUES (%s, %s);"
-        cur.execute(query, (int(user_id), recommendation_id))
-        conn.commit()
-        return True
-    except Exception as e:
-        print(f"ERROR logging positive feedback: {e}")
-        conn.rollback()
-        return False
-    finally:
-        cur.close()
-        conn.close()
-
-def get_available_recommendations(user_id: str) -> list[dict]:
-    """
-    Recupera TUTTE le raccomandazioni valide per un utente (non in blacklist),
-    complete di probabilità di successo per la selezione pesata.
-    """
-    conn = connection_recommendations() # <-- USA LA CONNESSIONE A 'defaultdb'
-    cur = conn.cursor()
-    try:
-        query = """
-            SELECT r.recommendation_id, r.workout_type, r.details, r.success_prob
-            FROM user_workout_rankings AS r
-            WHERE r.user_id = %s
-              AND r.generated_at::date = CURRENT_DATE
-              AND NOT EXISTS (
-                  SELECT 1
-                  FROM user_device_db.public.user_recommendation_blacklist b
-                  WHERE b.user_id = r.user_id
-                    AND b.recommendation_id = r.recommendation_id
-              );
-        """
-        cur.execute(query, (int(user_id),))
+        cur.execute("""
+            SELECT device_type_id, name
+            FROM device_type
+            WHERE name <> 'VirtualDevice'
+            ORDER BY name ASC
+        """)
         rows = cur.fetchall()
-        if not rows:
-            return []
-        columns = [desc[0] for desc in cur.description]
-        return [dict(zip(columns, row)) for row in rows]
-    except Exception as e:
-        print(f"ERROR fetching available recommendations: {e}")
-        return []
+        return rows
     finally:
         cur.close()
         conn.close()
 
-def reset_blacklist(user_id: str) -> bool:
-    """Rimuove tutte le voci dalla blacklist per un dato utente (in 'user_device_db')."""
-    conn = connection() # <-- Usa la connessione standard
+
+def get_sensors_for_device_type(device_type_id: int):
+    """
+    Ritorna [(sensor_type_id, sensor_name, priority)] per il device_type_id indicato.
+    (Nessuna modifica qui: 'VirtualDevice' non ci arriva perché filtrato a monte.)
+    """
+    conn = connection()
     cur = conn.cursor()
     try:
-        query = "DELETE FROM user_recommendation_blacklist WHERE user_id = %s;"
-        cur.execute(query, (int(user_id),))
+        cur.execute("""
+            SELECT st.sensor_type_id, st.name, pdts.priority
+            FROM predefined_device_type_sensors AS pdts
+            JOIN device_type AS dt
+              ON dt.device_type_id = pdts.device_type_id
+            JOIN sensor_type AS st
+              ON st.sensor_type_id = pdts.sensor_type_id
+            WHERE dt.device_type_id = %s
+            ORDER BY pdts.priority ASC, st.name ASC
+        """, (device_type_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_device_types():
+    """
+    Ritorna [(device_type_id, device_type_name)] da 'predefined_device_type',
+    escludendo 'VirtualDevice'.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT device_type_id, device_type_name
+            FROM predefined_device_type
+            WHERE device_type_name <> 'VirtualDevice'
+            ORDER BY device_type_name ASC
+        """)
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_sensors_for_device_type(device_type_id: int):
+    """
+    Ritorna [(sensor_type_id, sensor_name)] per un device type.
+    (Nessuna modifica qui.)
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT st.sensor_type_id, st.name
+            FROM predefined_device_type_sensors pdts
+            JOIN sensor_type st ON st.sensor_type_id = pdts.sensor_type_id
+            WHERE pdts.device_type_id = %s
+            ORDER BY st.name ASC
+        """, (device_type_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_user_devices(user_id: int):
+    """
+    Ritorna [(device_id, device_name)] dell'utente,
+    escludendo i device 'VirtualDevice' e/o il contenitore 'SingleSensor'.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT d.device_id, d.device_name
+            FROM device d
+            LEFT JOIN device_type dt ON dt.device_type_id = d.device_type_id
+            WHERE d.user_id = %s
+              AND COALESCE(dt.name, '') <> 'VirtualDevice'   -- nasconde i device virtuali
+              AND d.device_name <> 'SingleSensor'            -- paracadute se type mancante
+            ORDER BY d.registered_at DESC
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+def list_all_sensor_types():
+    """
+    Ritorna [(sensor_type_id, name)] per tutti i sensori disponibili.
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT sensor_type_id, name
+            FROM sensor_type
+            ORDER BY name ASC
+        """)
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+def list_user_bound_sensors(user_id: int):
+    """
+    Ritorna le associazioni sensori dell'utente:
+    [(sensor_type_id, sensor_type_name, device_id, device_name, custom_name, created_at)]
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT
+                stu.sensor_type_id,
+                st.name         AS sensor_type_name,
+                stu.device_id,
+                d.device_name,
+                stu.custom_name,
+                stu.created_at
+            FROM sensor_to_user AS stu
+            JOIN sensor_type AS st ON st.sensor_type_id = stu.sensor_type_id
+            JOIN device      AS d  ON d.device_id      = stu.device_id
+            WHERE stu.user_id = %s
+            ORDER BY st.name ASC
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+def rename_user_sensor(sensor_id: int, user_id: int, new_name: str) -> tuple[bool, str]:
+    """
+    Aggiorna il nome personalizzato (custom_name) di un sensore già associato all'utente.
+    Ritorna (ok, msg).
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE sensor_to_user
+            SET custom_name = %s
+            WHERE sensor_id = %s AND user_id = %s
+            RETURNING sensor_id;
+        """, (new_name.strip() if new_name else None, sensor_id, user_id))
+        updated = cur.fetchone()
         conn.commit()
-        return True
+
+        if updated:
+            return True, f"Nome del sensore {sensor_id} aggiornato a '{new_name}'."
+        else:
+            return False, f"Nessun sensore trovato con id {sensor_id} per l'utente {user_id}."
     except Exception as e:
-        print(f"ERROR resetting blacklist: {e}")
         conn.rollback()
-        return False
+        return False, f"Errore: {e}"
     finally:
         cur.close()
         conn.close()
 
+def delete_user_sensor(sensor_id: int, user_id: int):
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            DELETE FROM sensor_to_user
+             WHERE sensor_id = %s AND user_id = %s
+             RETURNING sensor_id
+        """, (sensor_id, user_id))
+        ok = cur.fetchone()
+        conn.commit()
+        return (ok is not None, "Sensore eliminato." if ok else "Sensore non trovato o non tuo.")
+    except Exception as e:
+        conn.rollback(); return False, f"Errore: {e}"
+    finally:
+        cur.close(); conn.close()
 
-# Aggiungi queste nuove funzioni in database_connection.py
+def list_user_bound_sensors_full(user_id: int):
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT
+                stu.sensor_id,
+                stu.sensor_type_id,
+                st.name         AS sensor_type_name,
+                stu.device_id,
+                d.device_name,
+                stu.custom_name,
+                stu.created_at,
+                COALESCE(ss.active, FALSE) AS is_active
+            FROM sensor_to_user AS stu
+            JOIN sensor_type AS st ON st.sensor_type_id = stu.sensor_type_id
+            JOIN device      AS d  ON d.device_id      = stu.device_id
+            LEFT JOIN sensor_status AS ss ON ss.sensor_id = stu.sensor_id
+            WHERE stu.user_id = %s
+            ORDER BY d.device_name, st.name
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close(); conn.close()
 
-def get_available_nutrition_recommendations(user_id: str) -> list[dict]:
+
+def delete_device(device_id: int, user_id: int):
     """
-    Recupera TUTTE le raccomandazioni nutrizionali valide per un utente (non in blacklist),
-    complete di probabilità di successo per la selezione pesata.
+    Elimina il device dell'utente.
+    Nota: per FK ON DELETE CASCADE verranno eliminate anche le righe su sensor_to_user.
     """
-    conn = connection_recommendations() # <-- Connessione a 'defaultdb'
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            DELETE FROM device
+             WHERE device_id = %s AND user_id = %s
+             RETURNING device_id
+        """, (device_id, user_id))
+        ok = cur.fetchone()
+        conn.commit()
+        return (ok is not None, "Dispositivo eliminato." if ok else "Device non trovato o non tuo.")
+    except Exception as e:
+        conn.rollback(); return False, f"Errore: {e}"
+    finally:
+        cur.close(); conn.close()
+
+
+def rename_device(device_id: int, user_id: int, new_name: str):
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE device
+               SET device_name = %s
+             WHERE device_id = %s AND user_id = %s
+             RETURNING device_id
+        """, (new_name.strip(), device_id, user_id))
+        ok = cur.fetchone()
+        conn.commit()
+        return (ok is not None, "Nome dispositivo aggiornato." if ok else "Device non trovato o non tuo.")
+    except Exception as e:
+        conn.rollback(); return False, f"Errore: {e}"
+    finally:
+        cur.close(); conn.close()
+
+def list_user_devices_detailed(user_id: int):
+    """
+    Ritorna [(device_id, device_name, device_type_name, registered_at)] dell'utente.
+    """
+    conn = connection(); cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT d.device_id, d.device_name, COALESCE(dt.name,'-') AS device_type_name, d.registered_at
+            FROM device d
+            LEFT JOIN device_type dt ON dt.device_type_id = d.device_type_id
+            WHERE d.user_id = %s
+                AND COALESCE(dt.name, '') <> 'VirtualDevice'   -- nasconde i device virtuali
+                AND d.device_name <> 'SingleSensor'
+            ORDER BY d.registered_at DESC, d.device_id DESC
+        """, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close(); conn.close()
+
+def toggle_sensor_status(sensor_id: int, user_id: int) -> tuple[bool, str, bool]:
+    """
+    Attiva/disattiva un sensore per l'utente.
+    Se non esiste ancora in sensor_status viene creato.
+    Ritorna (ok, msg, new_state).
+    """
+    conn = connection(); cur = conn.cursor()
+    try:
+        # controlla che il sensore appartenga all'utente
+        cur.execute("SELECT 1 FROM sensor_to_user WHERE sensor_id = %s AND user_id = %s", (sensor_id, user_id))
+        if not cur.fetchone():
+            return False, "Sensore non trovato o non appartiene all'utente.", False
+
+        # recupera stato attuale
+        cur.execute("SELECT active FROM sensor_status WHERE sensor_id = %s", (sensor_id,))
+        row = cur.fetchone()
+
+        if row is None:
+            # se non c'è riga -> creiamo e impostiamo TRUE
+            cur.execute(
+                "INSERT INTO sensor_status (sensor_id, active) VALUES (%s, TRUE)",
+                (sensor_id,)
+            )
+            new_state = True
+        else:
+            # se esiste -> toggliamo
+            current_state = row[0]
+            new_state = not current_state
+            cur.execute(
+                "UPDATE sensor_status SET active = %s, updated_at = NOW() WHERE sensor_id = %s",
+                (new_state, sensor_id)
+            )
+
+        conn.commit()
+        msg = f"Sensore {sensor_id} {'attivato' if new_state else 'disattivato'}."
+        return True, msg, new_state
+
+    except Exception as e:
+        conn.rollback()
+        return False, f"Errore: {e}", False
+    finally:
+        cur.close(); conn.close()
+
+
+# =============================================================================
+# FUNZIONI PER RACCOMANDAZIONI ML (NUOVE DA ML_INTEGRATION BRANCH)
+# =============================================================================
+
+def get_workout_recommendations(user_id: int, limit: int = 5):
+    """
+    Recupera raccomandazioni di workout per l'utente dalla tabella workout_recommendations
+    """
+    conn = connection()
     cur = conn.cursor()
     try:
-        # Query sulla tabella di ranking nutrizionale, escludendo la blacklist nutrizionale
-        query = """
-            SELECT r.id_recommendation, r.nutrition_plan, r.details, r.success_prob
-            FROM user_nutrition_rankings AS r
-            WHERE r.user_id = %s
-              AND r.generated_at::date = CURRENT_DATE
-              AND NOT EXISTS (
-                  SELECT 1
-                  FROM user_device_db.public.user_nutrition_blacklist b
-                  WHERE b.user_id = r.user_id
-                    AND b.recommendation_id = r.id_recommendation
-              );
-        """
-        cur.execute(query, (int(user_id),))
-        rows = cur.fetchall()
-        if not rows:
-            return []
+        cur.execute("""
+            SELECT recommendation_id, workout_type, details
+            FROM workout_recommendations 
+            WHERE user_id = %s 
+              AND is_active = TRUE
+            ORDER BY created_at DESC
+            LIMIT %s
+        """, (user_id, limit))
         
-        # Rinominiamo le colonne per essere compatibili con la UI card generica
-        # 'id_recommendation' -> 'recommendation_id'
-        # 'nutrition_plan' -> 'workout_type'
-        columns = ['recommendation_id', 'workout_type', 'details', 'success_prob']
-        return [dict(zip(columns, row)) for row in rows]
-    except Exception as e:
-        print(f"ERROR fetching available nutrition recommendations: {e}")
-        return []
+        rows = cur.fetchall()
+        recommendations = []
+        for row in rows:
+            recommendations.append({
+                'recommendation_id': row[0],
+                'workout_type': row[1],
+                'details': row[2]
+            })
+        return recommendations
     finally:
         cur.close()
         conn.close()
 
-def add_to_nutrition_blacklist(user_id: str, recommendation_id: int):
-    """Aggiunge una raccomandazione nutrizionale alla blacklist di un utente."""
-    conn = connection() # <-- Connessione a 'user_device_db'
+def get_nutrition_recommendations(user_id: int, limit: int = 5):
+    """
+    Recupera raccomandazioni nutrizionali per l'utente dalla tabella nutrition_recommendations
+    """
+    conn = connection()
     cur = conn.cursor()
     try:
-        query = "INSERT INTO user_nutrition_blacklist (user_id, recommendation_id) VALUES (%s, %s);"
-        cur.execute(query, (int(user_id), recommendation_id))
+        cur.execute("""
+            SELECT recommendation_id, meal_type, details
+            FROM nutrition_recommendations 
+            WHERE user_id = %s 
+              AND is_active = TRUE
+            ORDER BY created_at DESC
+            LIMIT %s
+        """, (user_id, limit))
+        
+        rows = cur.fetchall()
+        recommendations = []
+        for row in rows:
+            recommendations.append({
+                'recommendation_id': row[0],
+                'workout_type': row[1],  # Manteniamo la chiave workout_type per compatibilità con render_recommendation_card
+                'details': row[2]
+            })
+        return recommendations
+    finally:
+        cur.close()
+        conn.close()
+
+def save_workout_feedback(user_id: int, recommendation_id: int, feedback: str):
+    """
+    Salva feedback per una raccomandazione di workout
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO workout_feedback (user_id, recommendation_id, feedback, created_at)
+            VALUES (%s, %s, %s, NOW())
+            RETURNING feedback_id
+        """, (user_id, recommendation_id, feedback))
+        
+        feedback_id = cur.fetchone()[0]
         conn.commit()
-        return True
+        return True, feedback_id
     except Exception as e:
-        print(f"ERROR adding to nutrition blacklist: {e}")
+        conn.rollback()
+        return False, str(e)
+    finally:
+        cur.close()
+        conn.close()
+
+def save_nutrition_feedback(user_id: int, recommendation_id: int, feedback: str):
+    """
+    Salva feedback per una raccomandazione nutrizionale
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO nutrition_feedback (user_id, recommendation_id, feedback, created_at)
+            VALUES (%s, %s, %s, NOW())
+            RETURNING feedback_id
+        """, (user_id, recommendation_id, feedback))
+        
+        feedback_id = cur.fetchone()[0]
+        conn.commit()
+        return True, feedback_id
+    except Exception as e:
+        conn.rollback()
+        return False, str(e)
+    finally:
+        cur.close()
+        conn.close()
+
+def blacklist_workout_recommendation(user_id: int, recommendation_id: int):
+    """
+    Disattiva una raccomandazione di workout (blacklist)
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE workout_recommendations
+            SET is_active = FALSE
+            WHERE user_id = %s AND recommendation_id = %s
+            RETURNING recommendation_id
+        """, (user_id, recommendation_id))
+        
+        result = cur.fetchone()
+        conn.commit()
+        return result is not None
+    except Exception as e:
         conn.rollback()
         return False
     finally:
         cur.close()
         conn.close()
 
-def log_positive_nutrition_feedback(user_id: str, recommendation_id: int):
-    """Registra un feedback positivo per una raccomandazione nutrizionale."""
-    conn = connection() # <-- Connessione a 'user_device_db'
+def blacklist_nutrition_recommendation(user_id: int, recommendation_id: int):
+    """
+    Disattiva una raccomandazione nutrizionale (blacklist)
+    """
+    conn = connection()
     cur = conn.cursor()
     try:
-        query = "INSERT INTO user_nutrition_feedback (user_id, recommendation_id) VALUES (%s, %s);"
-        cur.execute(query, (int(user_id), recommendation_id))
+        cur.execute("""
+            UPDATE nutrition_recommendations
+            SET is_active = FALSE
+            WHERE user_id = %s AND recommendation_id = %s
+            RETURNING recommendation_id
+        """, (user_id, recommendation_id))
+        
+        result = cur.fetchone()
         conn.commit()
-        return True
+        return result is not None
     except Exception as e:
-        print(f"ERROR logging positive nutrition feedback: {e}")
         conn.rollback()
         return False
     finally:
         cur.close()
         conn.close()
 
-def reset_nutrition_blacklist(user_id: str) -> bool:
-    """Rimuove tutte le voci dalla blacklist nutrizionale per un dato utente."""
-    conn = connection() # <-- Connessione a 'user_device_db'
-    cur = conn.cursor()
-    try:
-        query = "DELETE FROM user_nutrition_blacklist WHERE user_id = %s;"
-        cur.execute(query, (int(user_id),))
-        conn.commit()
-        return True
-    except Exception as e:
-        print(f"ERROR resetting nutrition blacklist: {e}")
-        conn.rollback()
-        return False
-    finally:
-        cur.close()
-        conn.close()
+

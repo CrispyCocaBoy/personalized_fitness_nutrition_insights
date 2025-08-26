@@ -28,7 +28,8 @@ with st.form("profile_form"):
             st.success("Profilo completato con successo!")
             time.sleep(1)
             st.session_state["logged_in"] = True
-            st.switch_page("pages/device_binding")
+            st.session_state["registration_flow"] = True
+            st.switch_page("pages/device_binding.py")
         else:
             if not success_h:
                 st.error(msg_h)
