@@ -1,5 +1,6 @@
 # jobs/gold_metrics_with_daily_optimized.py
 import os
+import psycopg
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     col, from_json, expr, current_timestamp, when, avg, stddev,
@@ -7,7 +8,7 @@ from pyspark.sql.functions import (
     sum as Fsum, avg as Favg, min as Fmin, max as Fmax, count as Fcount
 )
 from pyspark.sql.types import (
-    StructType, StructField, StringType, DoubleType, LongType, FloatType, IntegerType
+    StructType, StructField, StringType, DoubleType, LongType, FloatType, IntegerType, BooleanType
 )
 from pyspark.sql.functions import udf
 from delta.tables import DeltaTable
@@ -31,6 +32,24 @@ USER_WEIGHT_KG  = float(os.getenv("USER_WEIGHT_KG", "75"))   # peso in kg usato 
 
 FACT_PATH       = f"{USERS_BASE}/metrics_fact"       # partizioni: user_id, event_date
 DAILY_PATH      = f"{USERS_BASE}/metrics_daily"      # chiave: (user_id, event_date)
+
+# --------- filtro toggle da Redis ---------
+SENSOR_TOGGLE_FILTER = os.getenv("SENSOR_TOGGLE_FILTER", "0").strip() == "1"
+REDIS_HOST_TOGGLE    = os.getenv("REDIS_HOST_TOGGLE", "redis")
+REDIS_PORT_TOGGLE    = int(os.getenv("REDIS_PORT_TOGGLE", "6379"))
+REDIS_DB_TOGGLE      = int(os.getenv("REDIS_DB_TOGGLE", "0"))  # DB 0: sensor_id -> 0/1
+REDIS_HASH_TOGGLE    = os.getenv("REDIS_HASH_TOGGLE", "")      # se usi HSET, es. "sensor_toggle"
+REDIS_KEY_PREFIX     = os.getenv("REDIS_KEY_PREFIX", "sensor:")  # prefisso per chiavi sciolte
+# -------------------------------------------------------------------
+
+# ---- Fallback DB (CockroachDB / Postgres wire) ----
+CRDB_HOST     = os.getenv("CRDB_HOST", "cockroachdb")
+CRDB_PORT     = int(os.getenv("CRDB_PORT", "26257"))
+CRDB_DBNAME   = os.getenv("CRDB_DBNAME", "user_device_db")
+CRDB_USER     = os.getenv("CRDB_USER", "root")
+CRDB_PASSWORD = os.getenv("CRDB_PASSWORD", "")            # se non usi password, lascia vuoto
+CRDB_SSLMODE  = os.getenv("CRDB_SSLMODE", "disable")      # 'require' se cluster sicuro
+CRDB_TIMEOUT  = int(os.getenv("CRDB_TIMEOUT", "5"))
 
 # ========================
 # Spark & Delta
@@ -101,6 +120,138 @@ df_silver = (
     .select("data.*")
     .withColumn("datetime", expr("from_unixtime(timestamp/1000)").cast("timestamp"))
 )
+# -------------------------------------------------------------------
+# filtro sensori ON/OFF da Redis
+# -------------------------------------------------------------------
+_toggle_broadcast = None
+_toggle_last_refresh = 0.0
+
+def _load_toggle_map_from_redis():
+    """
+    Legge DB 0: mappa sensor_id -> '0'/'1'.
+    - Se REDIS_HASH_TOGGLE è settato: HGETALL <hash>
+    - Altrimenti: SCAN '<prefix>*' e GET per ogni chiave
+    Se Redis non risponde o la mappa è vuota, usa il fallback su CockroachDB.
+    """
+    mapping = {}
+    try:
+        r = redis.StrictRedis(
+            host=REDIS_HOST_TOGGLE, port=REDIS_PORT_TOGGLE,
+            db=REDIS_DB_TOGGLE, decode_responses=True
+        )
+        if REDIS_HASH_TOGGLE:
+            m = r.hgetall(REDIS_HASH_TOGGLE) or {}
+            mapping = {k: ('1' if str(v) == '1' else '0') for k, v in m.items()}
+        else:
+            cursor = 0
+            keys = []
+            match = f"{REDIS_KEY_PREFIX}*"
+            while True:
+                cursor, batch = r.scan(cursor=cursor, match=match, count=1000)
+                keys.extend(batch)
+                if cursor == 0:
+                    break
+            if keys:
+                pipe = r.pipeline()
+                for k in keys:
+                    pipe.get(k)
+                vals = pipe.execute()
+                pref_len = len(REDIS_KEY_PREFIX)
+                mapping = {
+                    k[pref_len:]: ('1' if str(v) == '1' else '0')
+                    for k, v in zip(keys, vals) if v is not None
+                }
+    except Exception as e:
+        print(f"⚠️ Redis non disponibile: {e}")
+        mapping = {}
+
+    # ---- FALLBACK: se mapping vuoto, prova CockroachDB ----
+    if not mapping:
+        db_map = _load_toggle_map_from_db()
+        if db_map:
+            print(f"ℹ️ Toggle map caricata da CockroachDB: {len(db_map)} righe")
+            return db_map
+
+    return mapping
+
+
+# fallback -> usare in caso di emergenza
+def _load_toggle_map_from_db():
+    """
+    Fallback: legge la tabella sensor_status da CockroachDB e
+    ritorna dict[str, '0'|'1'] in base al campo 'active'.
+    """
+    try:
+        # DSN-style; sslmode e timeout sono utili per non bloccare lo stream
+        dsn = (
+            f"host={CRDB_HOST} port={CRDB_PORT} dbname={CRDB_DBNAME} "
+            f"user={CRDB_USER} sslmode={CRDB_SSLMODE} connect_timeout={CRDB_TIMEOUT}"
+        )
+        if CRDB_PASSWORD:
+            dsn += f" password={CRDB_PASSWORD}"
+
+        with psycopg.connect(dsn) as conn:
+            with conn.cursor() as cur:
+                # Prendiamo tutto: se vuoi solo attivi, cambia in WHERE active = true
+                cur.execute("SELECT sensor_id, active FROM sensor_status")
+                rows = cur.fetchall()  # [(sensor_id, active_bool), ...]
+                mapping = {str(r[0]): ('1' if bool(r[1]) else '0') for r in rows}
+                return mapping
+    except Exception as e:
+        # Silenzioso: se fallisce anche il DB, restituisco {} -> no-op
+        print(f"⚠️ Fallback DB sensor_status non disponibile: {e}")
+        return {}
+
+
+def _ensure_toggle_broadcast(force=False, ttl_sec=300):
+
+    global _toggle_broadcast, _toggle_last_refresh
+    if not SENSOR_TOGGLE_FILTER:
+        return _toggle_broadcast  # dormiente
+    now = time.time()
+    if not force and (now - _toggle_last_refresh) < ttl_sec and _toggle_broadcast is not None:
+        return _toggle_broadcast
+    m = _load_toggle_map_from_redis()
+    try:
+        if _toggle_broadcast is not None:
+            _toggle_broadcast.unpersist(blocking=False)
+            _toggle_broadcast.destroy()
+    except Exception:
+        pass
+    _toggle_broadcast = spark.sparkContext.broadcast(m)
+    _toggle_last_refresh = now
+    return _toggle_broadcast
+
+def _is_sensor_on_udf_factory():
+
+    def _inner(sensor_id):
+        if not SENSOR_TOGGLE_FILTER:
+            return True
+        try:
+            m = _toggle_broadcast.value if _toggle_broadcast is not None else {}
+        except Exception:
+            m = {}
+        if not m:
+            return True
+        sid = str(sensor_id) if sensor_id is not None else ""
+        return m.get(sid, '1') == '1'  # default ON
+    return udf(_inner, BooleanType())
+
+_is_sensor_on = _is_sensor_on_udf_factory()
+
+def apply_sensor_toggle_filter(df):
+    _ensure_toggle_broadcast(force=False, ttl_sec=1)  # soft-refresh
+    # Se flag OFF o mappa vuota -> no-op
+    try:
+        m = _toggle_broadcast.value if _toggle_broadcast is not None else {}
+    except Exception:
+        m = {}
+    if not SENSOR_TOGGLE_FILTER or not m:
+        return df
+    return df.withColumn("_on", _is_sensor_on(col("sensor_id"))) \
+             .filter(col("_on")) \
+             .drop("_on")
+# -------------------------------------------------------------------
 
 # ========================
 # UDF PPG: HR (bpm) + HRV (ms)

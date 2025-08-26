@@ -296,6 +296,7 @@ services:
       - silver_layer
       - spark-master
       - emqx1
+      - redis
 
   gold_meal:
     build:
@@ -319,18 +320,6 @@ services:
       - spark-master
       - emqx1
 
-
-  ## Latency monitor
-#  latency-monitor:
-#   build:
-#     context: .
-#      dockerfile: src/latency_monitor/Dockerfile
-#    container_name: latency-monitor
-#    depends_on:
-#      - spark-master
-#      - minio
-#      - bronze_layer
-
 # Gateway
   gateway:
     build:
@@ -343,7 +332,6 @@ services:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
 
-      # 👇 Forza il kernel Delta a NON usare IMDS e a puntare MinIO
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
       AWS_REGION: us-east-1

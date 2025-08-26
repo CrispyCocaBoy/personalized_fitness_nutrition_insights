@@ -5,7 +5,7 @@ USER root
 WORKDIR /app
 
 # Installa le librerie Python
-RUN pip install --no-cache-dir pyspark==3.5.5 delta-spark==3.3.1 redis boto3 pyarrow
+RUN pip install --no-cache-dir pyspark==3.5.5 delta-spark==3.3.1 redis boto3 pyarrow psycopg[binary]
 
 # Torna all'utente non-root
 USER 1001
