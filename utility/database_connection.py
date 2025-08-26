@@ -475,10 +475,10 @@ def activity_default():
 
     return [dict(zip(colnames, row)) for row in rows]
 
-
 def get_device_types():
     """
-    Ritorna [(device_type_id, name)] dai device type disponibili.
+    Ritorna [(device_type_id, name)] dai device type disponibili,
+    escludendo il tipo 'VirtualDevice'.
     """
     conn = connection()
     cur = conn.cursor()
@@ -486,6 +486,7 @@ def get_device_types():
         cur.execute("""
             SELECT device_type_id, name
             FROM device_type
+            WHERE name <> 'VirtualDevice'
             ORDER BY name ASC
         """)
         rows = cur.fetchall()
@@ -498,6 +499,7 @@ def get_device_types():
 def get_sensors_for_device_type(device_type_id: int):
     """
     Ritorna [(sensor_type_id, sensor_name, priority)] per il device_type_id indicato.
+    (Nessuna modifica qui: 'VirtualDevice' non ci arriva perché filtrato a monte.)
     """
     conn = connection()
     cur = conn.cursor()
@@ -520,7 +522,8 @@ def get_sensors_for_device_type(device_type_id: int):
 
 def list_device_types():
     """
-    Ritorna [(device_type_id, device_type_name)]
+    Ritorna [(device_type_id, device_type_name)] da 'predefined_device_type',
+    escludendo 'VirtualDevice'.
     """
     conn = connection()
     cur = conn.cursor()
@@ -528,6 +531,7 @@ def list_device_types():
         cur.execute("""
             SELECT device_type_id, device_type_name
             FROM predefined_device_type
+            WHERE device_type_name <> 'VirtualDevice'
             ORDER BY device_type_name ASC
         """)
         return cur.fetchall()
@@ -539,6 +543,7 @@ def list_device_types():
 def list_sensors_for_device_type(device_type_id: int):
     """
     Ritorna [(sensor_type_id, sensor_name)] per un device type.
+    (Nessuna modifica qui.)
     """
     conn = connection()
     cur = conn.cursor()
@@ -558,22 +563,25 @@ def list_sensors_for_device_type(device_type_id: int):
 
 def list_user_devices(user_id: int):
     """
-    Ritorna [(device_id, device_name)] dell'utente.
+    Ritorna [(device_id, device_name)] dell'utente,
+    escludendo i device 'VirtualDevice' e/o il contenitore 'SingleSensor'.
     """
     conn = connection()
     cur = conn.cursor()
     try:
         cur.execute("""
-            SELECT device_id, device_name
-            FROM device
-            WHERE user_id = %s
-            ORDER BY registered_at DESC
+            SELECT d.device_id, d.device_name
+            FROM device d
+            LEFT JOIN device_type dt ON dt.device_type_id = d.device_type_id
+            WHERE d.user_id = %s
+              AND COALESCE(dt.name, '') <> 'VirtualDevice'   -- nasconde i device virtuali
+              AND d.device_name <> 'SingleSensor'            -- paracadute se type mancante
+            ORDER BY d.registered_at DESC
         """, (user_id,))
         return cur.fetchall()
     finally:
         cur.close()
         conn.close()
-
 
 def list_all_sensor_types():
     """
@@ -665,9 +673,6 @@ def delete_user_sensor(sensor_id: int, user_id: int):
         cur.close(); conn.close()
 
 def list_user_bound_sensors_full(user_id: int):
-    """
-    Ritorna [(sensor_id, sensor_type_id, sensor_type_name, device_id, device_name, custom_name, created_at)]
-    """
     conn = connection(); cur = conn.cursor()
     try:
         cur.execute("""
@@ -678,16 +683,19 @@ def list_user_bound_sensors_full(user_id: int):
                 stu.device_id,
                 d.device_name,
                 stu.custom_name,
-                stu.created_at
+                stu.created_at,
+                COALESCE(ss.active, FALSE) AS is_active
             FROM sensor_to_user AS stu
             JOIN sensor_type AS st ON st.sensor_type_id = stu.sensor_type_id
             JOIN device      AS d  ON d.device_id      = stu.device_id
+            LEFT JOIN sensor_status AS ss ON ss.sensor_id = stu.sensor_id
             WHERE stu.user_id = %s
             ORDER BY d.device_name, st.name
         """, (user_id,))
         return cur.fetchall()
     finally:
         cur.close(); conn.close()
+
 
 def delete_device(device_id: int, user_id: int):
     """
@@ -738,6 +746,8 @@ def list_user_devices_detailed(user_id: int):
             FROM device d
             LEFT JOIN device_type dt ON dt.device_type_id = d.device_type_id
             WHERE d.user_id = %s
+                AND COALESCE(dt.name, '') <> 'VirtualDevice'   -- nasconde i device virtuali
+                AND d.device_name <> 'SingleSensor'
             ORDER BY d.registered_at DESC, d.device_id DESC
         """, (user_id,))
         return cur.fetchall()

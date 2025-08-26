@@ -104,6 +104,14 @@ CREATE TABLE user_feature_preferences (
   PRIMARY KEY (user_id, feature_id, device_id)
 );
 
+-- 22. SENSOR_STATUS
+--     Stato attuale di ciascun sensore (acceso/spento)
+CREATE TABLE sensor_status (
+    sensor_id INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
+    active    BOOLEAN NOT NULL DEFAULT TRUE,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 
 -- 11. DEFAULT_FOODS
 --     Default food database with nutritional information
@@ -246,13 +254,32 @@ CREATE TABLE activity_default(
     icon VARCHAR(20)
 );
 
--- 22. SENSOR_STATUS
---     Stato attuale di ciascun sensore (acceso/spento)
-CREATE TABLE sensor_status (
-    sensor_id INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
-    active    BOOLEAN NOT NULL DEFAULT TRUE,
-    updated_at TIMESTAMPTZ DEFAULT NOW()
+-- 21. Activity
+--     sensor_status
+CREATE TABLE IF NOT EXISTS sensor_status (
+  sensor_id  INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
+  active     BOOLEAN NOT NULL DEFAULT TRUE,
+  updated_at TIMESTAMPTZ DEFAULT now()
 );
+
+-- Funzione trigger (PL/pgSQL)
+CREATE OR REPLACE FUNCTION sensor_status_autocreate()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO sensor_status (sensor_id, active, updated_at)
+  VALUES ((NEW).sensor_id, TRUE, now())
+  ON CONFLICT (sensor_id) DO NOTHING;
+  RETURN NULL;  -- AFTER trigger: il ritorno è ignorato per convenzione
+END;
+$$ LANGUAGE PLpgSQL;
+
+-- Trigger: dopo ogni INSERT su sensor_to_user
+DROP TRIGGER IF EXISTS trg_sensor_status_autocreate ON sensor_to_user;
+
+CREATE TRIGGER trg_sensor_status_autocreate
+AFTER INSERT ON sensor_to_user
+FOR EACH ROW
+EXECUTE FUNCTION sensor_status_autocreate();
 
 ---------------------------------------------------------
 -- STANDARD SETUP
