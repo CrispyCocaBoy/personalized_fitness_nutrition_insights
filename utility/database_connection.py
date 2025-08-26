@@ -798,3 +798,160 @@ def toggle_sensor_status(sensor_id: int, user_id: int) -> tuple[bool, str, bool]
         cur.close(); conn.close()
 
 
+# =============================================================================
+# FUNZIONI PER RACCOMANDAZIONI ML (NUOVE DA ML_INTEGRATION BRANCH)
+# =============================================================================
+
+def get_workout_recommendations(user_id: int, limit: int = 5):
+    """
+    Recupera raccomandazioni di workout per l'utente dalla tabella workout_recommendations
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT recommendation_id, workout_type, details
+            FROM workout_recommendations 
+            WHERE user_id = %s 
+              AND is_active = TRUE
+            ORDER BY created_at DESC
+            LIMIT %s
+        """, (user_id, limit))
+        
+        rows = cur.fetchall()
+        recommendations = []
+        for row in rows:
+            recommendations.append({
+                'recommendation_id': row[0],
+                'workout_type': row[1],
+                'details': row[2]
+            })
+        return recommendations
+    finally:
+        cur.close()
+        conn.close()
+
+def get_nutrition_recommendations(user_id: int, limit: int = 5):
+    """
+    Recupera raccomandazioni nutrizionali per l'utente dalla tabella nutrition_recommendations
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            SELECT recommendation_id, meal_type, details
+            FROM nutrition_recommendations 
+            WHERE user_id = %s 
+              AND is_active = TRUE
+            ORDER BY created_at DESC
+            LIMIT %s
+        """, (user_id, limit))
+        
+        rows = cur.fetchall()
+        recommendations = []
+        for row in rows:
+            recommendations.append({
+                'recommendation_id': row[0],
+                'workout_type': row[1],  # Manteniamo la chiave workout_type per compatibilità con render_recommendation_card
+                'details': row[2]
+            })
+        return recommendations
+    finally:
+        cur.close()
+        conn.close()
+
+def save_workout_feedback(user_id: int, recommendation_id: int, feedback: str):
+    """
+    Salva feedback per una raccomandazione di workout
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO workout_feedback (user_id, recommendation_id, feedback, created_at)
+            VALUES (%s, %s, %s, NOW())
+            RETURNING feedback_id
+        """, (user_id, recommendation_id, feedback))
+        
+        feedback_id = cur.fetchone()[0]
+        conn.commit()
+        return True, feedback_id
+    except Exception as e:
+        conn.rollback()
+        return False, str(e)
+    finally:
+        cur.close()
+        conn.close()
+
+def save_nutrition_feedback(user_id: int, recommendation_id: int, feedback: str):
+    """
+    Salva feedback per una raccomandazione nutrizionale
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            INSERT INTO nutrition_feedback (user_id, recommendation_id, feedback, created_at)
+            VALUES (%s, %s, %s, NOW())
+            RETURNING feedback_id
+        """, (user_id, recommendation_id, feedback))
+        
+        feedback_id = cur.fetchone()[0]
+        conn.commit()
+        return True, feedback_id
+    except Exception as e:
+        conn.rollback()
+        return False, str(e)
+    finally:
+        cur.close()
+        conn.close()
+
+def blacklist_workout_recommendation(user_id: int, recommendation_id: int):
+    """
+    Disattiva una raccomandazione di workout (blacklist)
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE workout_recommendations
+            SET is_active = FALSE
+            WHERE user_id = %s AND recommendation_id = %s
+            RETURNING recommendation_id
+        """, (user_id, recommendation_id))
+        
+        result = cur.fetchone()
+        conn.commit()
+        return result is not None
+    except Exception as e:
+        conn.rollback()
+        return False
+    finally:
+        cur.close()
+        conn.close()
+
+def blacklist_nutrition_recommendation(user_id: int, recommendation_id: int):
+    """
+    Disattiva una raccomandazione nutrizionale (blacklist)
+    """
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute("""
+            UPDATE nutrition_recommendations
+            SET is_active = FALSE
+            WHERE user_id = %s AND recommendation_id = %s
+            RETURNING recommendation_id
+        """, (user_id, recommendation_id))
+        
+        result = cur.fetchone()
+        conn.commit()
+        return result is not None
+    except Exception as e:
+        conn.rollback()
+        return False
+    finally:
+        cur.close()
+        conn.close()
+
+

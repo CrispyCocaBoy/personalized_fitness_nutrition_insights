@@ -1,5 +1,16 @@
-.venv/
-__pycache__/
-*.pyc
+# Ignora i file di configurazione di Docker e Git
+.dockerignore
+Dockerfile*
+docker-compose*
 .git
 .gitignore
+
+# Ignora la cache e gli ambienti virtuali di Python
+__pycache__/
+*.pyc
+.venv
+venv/
+env/
+
+# CRUCIALE: Ignora i volumi con i dati dei container
+volumes/
