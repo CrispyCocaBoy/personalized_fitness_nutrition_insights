@@ -1,16 +1,13 @@
-# Ignora i file di configurazione di Docker e Git
-.dockerignore
-Dockerfile*
-docker-compose*
-.git
-.gitignore
 
-# Ignora la cache e gli ambienti virtuali di Python
+# Ignora i log generati da Airflow
+logs/
+
+# Ignora i volumi di dati locali (buona pratica per non includerli nelle immagini)
+volumes/
+
+# Ignora le cache di Python
 __pycache__/
 *.pyc
-.venv
-venv/
-env/
 
-# CRUCIALE: Ignora i volumi con i dati dei container
-volumes/
+# Ignora la cartella di Git
+.git/

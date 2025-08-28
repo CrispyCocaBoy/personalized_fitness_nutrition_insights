@@ -43,138 +43,42 @@ with sidebar_col:
 with main_col:
     ui.render_header(f"Benvenuto, {name} {surname}!", "La tua dashboard personale")
 
-    # Oggi - KPI reali dal gateway
-    st.markdown("#### Oggi")
-
-    # Fetch today's metrics from gateway
-    metrics_today = fetch_gateway_data("/metrics/daily", {
-        "user_id": user_id,
-        "start_date": today_date,
-        "end_date": today_date,
-        "limit": 1
-    })
-
-    # Fetch today's meals from gateway  
-    meals_today = fetch_gateway_data("/meals/daily", {
-        "user_id": user_id,
-        "start_date": today_date,
-        "end_date": today_date,
-        "limit": 1
-    })
-
-    r1c1, r1c2, r1c3 = st.columns(3)
+    # --- NUOVO INVITO ALL'AZIONE ---
+    st.info("💡 Visualizza i tuoi consigli personalizzati di allenamento e nutrizione nella nuova pagina dedicata!", icon="💡")
+    if st.button("Vai ai Consigli del Giorno", use_container_width=True, type="primary"):
+        st.switch_page("pages/recommendations.py")
     
-    with r1c1:
-        st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
-        if metrics_today:
-            steps = metrics_today[0].get('steps_total', 0)
-            st.metric("Passi", f"{steps:,}", "Oggi")
-        else:
-            # Fallback con valori simulati se il gateway non è disponibile
-            st.metric("Passi", "8,214", "Simulato")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-    with r1c2:
-        st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
-        if metrics_today:
-            hr_avg = metrics_today[0].get('hr_bpm_avg', 0)
-            if hr_avg:
-                st.metric("HR medio", f"{hr_avg:.0f} bpm", "Oggi")
-            else:
-                st.metric("HR medio", "76 bpm", "Simulato")
-        else:
-            st.metric("HR medio", "76 bpm", "Simulato")
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("---")
 
-    with r1c3:
-        st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
-        if meals_today:
-            kcal_total = meals_today[0].get('kcal_total', 0)
-            st.metric("Calorie", f"{kcal_total:,} kcal", "Oggi")
-        else:
-            st.metric("Calorie", "1,932 kcal", "Simulato")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    st.divider()
-    st.markdown("#### Ultime attività")
-    
-    # Fetch recent activities from gateway
-    recent_activities = fetch_gateway_data("/activities/facts", {
-        "user_id": user_id,
-        "limit": 5
-    })
-    
-    if recent_activities:
-        for activity in recent_activities:
-            with st.expander(f"🏃 {activity.get('activity_name', 'N/A')} - {activity.get('start_ts', '')[:10]}"):
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.metric("Durata", f"{activity.get('duration_min', 0):.0f} min")
-                with col2:
-                    st.metric("Calorie", f"{activity.get('calories_total', 0)} kcal")
-                with col3:
-                    st.metric("Passi", f"{activity.get('steps_total', 0):,}")
+    # Sezione KPI (rimane invariata)
+    st.markdown("#### Riepilogo Ultimi Dati")
+    latest_metrics = db.get_latest_daily_metrics(user_id)
+    if not latest_metrics:
+        st.info("Nessun dato giornaliero disponibile al momento.")
     else:
-        # Fallback con dati simulati
-        with st.expander("🏃 Corsa mattutina - 2025-08-25 (simulato)"):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Durata", "35 min")
-            with col2:
-                st.metric("Calorie", "287 kcal")
-            with col3:
-                st.metric("Passi", "4,521")
-        
-        with st.expander("🚴 Bici al parco - 2025-08-24 (simulato)"):
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Durata", "52 min")
-            with col2:
-                st.metric("Calorie", "398 kcal")
-            with col3:
-                st.metric("Passi", "0")
-
-    st.divider()
-    st.markdown("#### Ultimi pasti")
-    
-    # Fetch recent meals from gateway
-    recent_meals = fetch_gateway_data("/meals/facts", {
-        "user_id": user_id,
-        "limit": 5
-    })
-    
-    if recent_meals:
-        for meal in recent_meals:
-            with st.expander(f"🍽️ {meal.get('meal_name', 'N/A')} - {meal.get('event_ts', '')[:10]}"):
-                col1, col2, col3, col4 = st.columns(4)
-                with col1:
-                    st.metric("Calorie", f"{meal.get('kcal', 0)} kcal")
-                with col2:
-                    st.metric("Carboidrati", f"{meal.get('carbs_g', 0)} g")
-                with col3:
-                    st.metric("Proteine", f"{meal.get('protein_g', 0)} g")
-                with col4:
-                    st.metric("Grassi", f"{meal.get('fat_g', 0)} g")
-    else:
-        # Fallback con dati simulati
-        with st.expander("🍽️ Colazione - 2025-08-25 (simulato)"):
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.metric("Calorie", "312 kcal")
-            with col2:
-                st.metric("Carboidrati", "45 g")
-            with col3:
-                st.metric("Proteine", "18 g")
-            with col4:
-                st.metric("Grassi", "8 g")
-                
-        with st.expander("🍽️ Pranzo - 2025-08-25 (simulato)"):
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.metric("Calorie", "485 kcal")
-            with col2:
-                st.metric("Carboidrati", "52 g")
-            with col3:
-                st.metric("Proteine", "28 g")
-            with col4:
-                st.metric("Grassi", "15 g")
+        # ... (il resto del codice per i KPI rimane identico)
+        steps = int(latest_metrics.get("steps_total", 0))
+        hr_avg = int(latest_metrics.get("hr_bpm_avg", 0))
+        sleep_minutes = int(latest_metrics.get("sleep_total_minutes", 0))
+        calories = int(latest_metrics.get("calories_total", 0))
+        sleep_hours = sleep_minutes // 60
+        sleep_rem_minutes = sleep_minutes % 60
+        sleep_formatted = f"{sleep_hours}h {sleep_rem_minutes}m"
+        r1c1, r1c2 = st.columns(2)
+        with r1c1:
+            st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
+            st.metric("Passi", f"{steps:,}".replace(",", "."))
+            st.markdown('</div>', unsafe_allow_html=True)
+        with r1c2:
+            st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
+            st.metric("HR medio", f"{hr_avg} bpm")
+            st.markdown('</div>', unsafe_allow_html=True)
+        r2c1, r2c2 = st.columns(2)
+        with r2c1:
+            st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
+            st.metric("Sonno", sleep_formatted)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with r2c2:
+            st.markdown('<div class="kpi-card">', unsafe_allow_html=True)
+            st.metric("Calorie", f"{calories} kcal")
+            st.markdown('</div>', unsafe_allow_html=True)

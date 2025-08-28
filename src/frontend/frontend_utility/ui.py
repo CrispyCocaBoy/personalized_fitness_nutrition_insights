@@ -1,10 +1,11 @@
-# utility/ui.py
+# frontend_utility/ui.py
 import streamlit as st
 import time
 from utility import database_connection as db
 
 # questo contiene la sidebar uguale per tutte le pagine
 
+# BASE_CSS rimane invariato...
 BASE_CSS = """
 <style>
 .block-container{max-width:1500px;padding-top:.8rem;padding-bottom:2rem;}
@@ -43,11 +44,13 @@ def render_sidebar(name: str, surname: str, user_id: str):
     # usa sempre questi link: saranno uguali ovunque
     st.page_link("pages/dashboard.py", label="Home", icon="🏠")
     st.page_link("pages/health.py", label="Heart", icon="❤️")
+    st.page_link("pages/recommendations.py", label="Consigli", icon="💡")
     st.page_link("pages/meals.py", label="Meals", icon="🍽️")
     st.page_link("pages/activity.py", label="Activity", icon="🔥")
     st.page_link("pages/settings.py", label="Setting", icon="⚙️")
     st.page_link("pages/sleep.py", label="Sleep", icon="🛌")
 
+# render_header e render_recommendation_card rimangono invariati...
 def render_header(title: str, subtitle: str, settings_page="pages/settings.py"):
     left, right = st.columns([6, 1])
     with left:
@@ -55,19 +58,9 @@ def render_header(title: str, subtitle: str, settings_page="pages/settings.py"):
         st.caption(subtitle)
 
 def render_recommendation_card(recommendation: dict, key_prefix: str, on_like, on_dislike):
-    """
-    Renderizza una card generica per una raccomandazione (workout o nutrizione)
-    e gestisce il feedback tramite funzioni di callback.
-
-    Args:
-        recommendation (dict): Dizionario contenente i dati della raccomandazione.
-                               Deve avere le chiavi 'recommendation_id', 'workout_type', 'details'.
-        key_prefix (str): Un prefisso unico ('workout' o 'nutrition') per le chiavi dei widget.
-        on_like (function): La funzione da chiamare quando si clicca 'Fatto'.
-        on_dislike (function): La funzione da chiamare quando si clicca 'Non mi piace'.
-    """
     rec_id = recommendation['recommendation_id']
-    title = recommendation['workout_type']  # Usiamo 'workout_type' come chiave generica per il titolo
+    # Modifica per generalizzare il titolo
+    title = recommendation.get('workout_type') or recommendation.get('nutrition_plan') or "Consiglio"
     details = recommendation['details']
 
     with st.container(border=True):
@@ -76,7 +69,6 @@ def render_recommendation_card(recommendation: dict, key_prefix: str, on_like, o
         
         b_col1, b_col2 = st.columns(2)
         with b_col1:
-            # Pulsante "Fatto" (feedback positivo)
             if st.button("Fatto 👍", key=f"{key_prefix}_like_{rec_id}", use_container_width=True):
                 if on_like():
                     st.toast("Grazie per il tuo feedback!")
@@ -86,7 +78,6 @@ def render_recommendation_card(recommendation: dict, key_prefix: str, on_like, o
                 st.rerun()
 
         with b_col2:
-            # Pulsante "Non mi piace" (blacklist)
             if st.button("Non mi piace 👎", key=f"{key_prefix}_dislike_{rec_id}", use_container_width=True):
                 if on_dislike():
                     st.toast("Ok, non te lo mostreremo più.")

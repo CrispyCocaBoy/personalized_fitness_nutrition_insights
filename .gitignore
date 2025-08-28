@@ -1,44 +1,33 @@
-# Byte-compiled / optimized / DLL files
+# File .gitignore finale per il progetto Big Data
+
+# 1. Cache e file compilati di Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
 
-# Distribution / packaging
-.Python
+# 2. Artefatti di distribuzione (versione pulita)
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
 
-# PyInstaller
-*.spec
-
-# Folders to ignore for this project
-volumes/
-jars/
-
-# Environment variables
+# 3. Cartelle degli ambienti virtuali
 .env
 .venv
 env/
 venv/
 ENV/
-env.bak
-venv.bak
+
+# 4. File di configurazione specifici dell'ambiente/utente
+.wslconfig
+.env.*
+
+# 5. Cartelle specifiche del progetto da ignorare
+logs/
+volumes/
+spark_jars/
+.jar
+
+# 6. Cartelle di configurazione degli editor di codice
+.vscode/
+.idea/

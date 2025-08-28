@@ -1,0 +1,7 @@
+# Partiamo da un'immagine Spark ufficiale di Bitnami, che è ben configurata
+# Usiamo una versione compatibile con il nostro codice (3.5.x)
+FROM bitnami/spark:3.5
+
+# Copiamo i file JAR che abbiamo scaricato dalla nostra cartella locale 'spark_jars'
+# alla cartella dei JAR dentro il container Spark.
+COPY ./spark_jars/ /opt/bitnami/spark/jars/
