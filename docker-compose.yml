@@ -359,3 +359,35 @@ services:
       - spark-master
 
 
+
+
+# Machine learning
+  build_features:
+    build:
+      context: .
+      dockerfile: src/machine_learning/build_features/Dockerfile
+    container_name: build_features
+    depends_on:
+      - broker_kafka
+      - spark-master
+      - emqx1
+
+  run_clustering:
+    build:
+      context: .
+      dockerfile: src/machine_learning/run_clustering/Dockerfile
+    container_name: run_clustering
+    depends_on:
+      - broker_kafka
+      - spark-master
+      - emqx1
+
+  generate_recommendations:
+    build:
+      context: .
+      dockerfile: src/machine_learning/generate_recommendations/Dockerfile
+    container_name: generate_recommendations
+    depends_on:
+      - broker_kafka
+      - spark-master
+      - emqx1
