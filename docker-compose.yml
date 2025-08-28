@@ -109,7 +109,6 @@ services:
       - broker_kafka
     container_name: init_kafka
 
-
   kafka-ui:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
@@ -123,6 +122,7 @@ services:
       - broker_kafka
 
 # Databases
+
   # SQL-type
   cockroachdb:
     image: cockroachdb/cockroach:v25.2.0
@@ -377,6 +377,16 @@ services:
       context: .
       dockerfile: src/machine_learning/run_clustering/Dockerfile
     container_name: run_clustering
+    depends_on:
+      - broker_kafka
+      - spark-master
+      - emqx1
+
+  train_classifiers:
+    build:
+      context: .
+      dockerfile: src/machine_learning/train_classifiers/Dockerfile
+    container_name: train_classifiers
     depends_on:
       - broker_kafka
       - spark-master

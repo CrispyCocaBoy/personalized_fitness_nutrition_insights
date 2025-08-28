@@ -1,8 +1,12 @@
 # spark_scripts/generate_recommendations.py
+
 import os
 import sys
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, current_timestamp, lit, row_number, collect_set, explode, element_at
+from pyspark.sql.functions import (
+    col, current_timestamp, row_number, collect_set, explode,
+    element_at
+)
 from pyspark.ml.functions import vector_to_array
 from pyspark.sql.window import Window
 from pyspark.ml.pipeline import PipelineModel
@@ -13,7 +17,7 @@ CONFIG = {
         "user_cluster_map_path": "s3a://gold/models/nutrition/user_cluster_map/",
         "recommendations_path": "s3a://gold/nutrition/recommendations/",     # catalogo raccomandazioni
         "classification_models_path": "s3a://gold/models/nutrition/classification_models/",
-        "historical_data_path": "s3a://gold/nutrition/training_data/",        # per candidate generation
+        "historical_data_path": "s3a://gold/nutrition/training_data/",
         "db_table": "user_nutrition_rankings"
     },
     "workout": {
@@ -26,12 +30,11 @@ CONFIG = {
 }
 
 K_CLUSTERS = 4
-TOP_N_RECS = 10  # quante raccomandazioni salvare per utente
+TOP_N_RECS = 10  # quante raccomandazioni per utente
 
 # ---------- Spark & S3A ----------
 def get_spark_session():
     builder = SparkSession.builder.appName("recommendation")
-
     s3_endpoint = os.getenv("S3_ENDPOINT", "http://minio:9000")
     s3_path_style = os.getenv("S3_PATH_STYLE", "true")
     s3_ssl = os.getenv("S3_SSL_ENABLED", "false")
@@ -66,6 +69,41 @@ def get_spark_session():
 
     return builder.getOrCreate()
 
+# ---------- Helpers ----------
+def normalize_schema_for_history(df):
+    """
+    Normalizza le colonne chiave nel dataset storico:
+    - recommendation_id -> id_recommendation (se necessario)
+    - ricava una colonna 'feedback_positive' booleana da:
+        * feedback == 'positive'  (se esiste)
+        * is_positive in {True, 1, 'true', '1'}  (fallback)
+    """
+    cols = set(df.columns)
+
+    # Uniforma recommendation id
+    if "id_recommendation" not in cols and "recommendation_id" in cols:
+        df = df.withColumnRenamed("recommendation_id", "id_recommendation")
+        cols.add("id_recommendation")
+
+    # Crea flag feedback_positive
+    if "feedback" in cols:
+        df = df.withColumn("feedback_positive", col("feedback") == "positive")
+    elif "is_positive" in cols:
+        # gestiamo True/False, 1/0, 'true'/'false'
+        df = df.withColumn(
+            "feedback_positive",
+            (col("is_positive") == True) | (col("is_positive") == 1) | (col("is_positive") == "true") | (col("is_positive") == "1")
+        )
+    else:
+        raise ValueError("Nel dataset storico mancano sia 'feedback' sia 'is_positive' — non posso definire positività.")
+
+    required = {"user_id", "id_recommendation", "feedback_positive"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Mancano colonne richieste nel dataset storico: {missing}")
+
+    return df
+
 # ---------- Pipeline ----------
 def generate_for_domain(spark: SparkSession, domain: str):
     print("\n===================================================")
@@ -77,10 +115,12 @@ def generate_for_domain(spark: SparkSession, domain: str):
     # FASE 1: Candidate Generation
     print(f"[{domain}] 1) Carico dati storici → {config['historical_data_path']}")
     historical_df = spark.read.parquet(config['historical_data_path'])
-
     if historical_df.rdd.isEmpty():
         print(f"[{domain}] ⚠️ Nessun dato storico disponibile. Skip dominio.")
         return
+
+    print(f"[{domain}] 1) Normalizzo schema storico (id_recommendation, feedback_positive)...")
+    historical_df = normalize_schema_for_history(historical_df)
 
     print(f"[{domain}] 1) Carico mappa cluster → {config['user_cluster_map_path']}")
     user_cluster_map_df = spark.read.parquet(config['user_cluster_map_path'])
@@ -88,9 +128,9 @@ def generate_for_domain(spark: SparkSession, domain: str):
         print(f"[{domain}] ⚠️ Nessuna mappa utente→cluster. Skip dominio.")
         return
 
-    print(f"[{domain}] 1) Calcolo raccomandazioni popolari per cluster (feedback=positive)...")
+    print(f"[{domain}] 1) Candidati: raccomandazioni con feedback positivo per cluster...")
     popular_recs_per_cluster_df = (
-        historical_df.filter(col("feedback") == "positive")
+        historical_df.filter(col("feedback_positive") == True)
         .join(user_cluster_map_df, "user_id")
         .groupBy("cluster_id")
         .agg(collect_set("id_recommendation").alias("candidate_recs"))
@@ -109,6 +149,10 @@ def generate_for_domain(spark: SparkSession, domain: str):
     if recommendations_catalog_df.rdd.isEmpty():
         print(f"[{domain}] ⚠️ Catalogo raccomandazioni vuoto. Skip dominio.")
         return
+
+    # Assicuriamoci che il catalogo abbia id_recommendation
+    if "id_recommendation" not in recommendations_catalog_df.columns and "recommendation_id" in recommendations_catalog_df.columns:
+        recommendations_catalog_df = recommendations_catalog_df.withColumnRenamed("recommendation_id", "id_recommendation")
 
     print(f"[{domain}] 2) Costruisco coppie (utente, raccomandazione) da valutare...")
     live_users_df = user_cluster_map_df
@@ -154,10 +198,8 @@ def generate_for_domain(spark: SparkSession, domain: str):
     for df in all_predictions[1:]:
         full_predictions_df = full_predictions_df.unionByName(df)
 
-    # Probabilità di successo (classe positiva = indice 2 perché 1-based)
     predictions_with_prob = full_predictions_df.withColumn(
-        "success_prob",
-        element_at(vector_to_array(col("probability")), 2)  # indice 2 perché gli array Spark sono 1-based
+        "success_prob", element_at(vector_to_array(col("probability")), 2)  # 1-based
     )
 
     window_spec = Window.partitionBy("user_id").orderBy(col("success_prob").desc())
@@ -167,8 +209,7 @@ def generate_for_domain(spark: SparkSession, domain: str):
     print(f"[{domain}] 🏆 Top {TOP_N_RECS} raccomandazioni per alcuni utenti:")
     top_recs_df.orderBy("user_id", "rank").show(20, truncate=False)
 
-    # Salvataggio su S3/Delta/Parquet (qui: solo show; aggiungi write() se vuoi persistere altrove)
-    # Esempio di salvataggio parquet accanto alle predictions (se necessario):
+    # Esempio salvataggio (se vuoi persistere):
     # out_path = f"{config['recommendations_path']}ranked_top_{TOP_N_RECS}"
     # print(f"[{domain}] 💾 Salvo ranking in: {out_path}")
     # top_recs_df.write.mode("overwrite").parquet(out_path)
@@ -180,9 +221,7 @@ if __name__ == "__main__":
     print("\n=== START JOB: RECOMMENDATIONS (WORKOUT → NUTRITION) ===")
     spark = get_spark_session()
     try:
-        # 1) Workout
         generate_for_domain(spark, "workout")
-        # 2) Nutrition
         generate_for_domain(spark, "nutrition")
         print("\n🎉 TUTTO COMPLETATO: workout ✓  |  nutrition ✓")
     finally:
