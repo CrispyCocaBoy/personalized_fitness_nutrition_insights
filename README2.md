@@ -17,6 +17,8 @@ Main results achieved:
 
 - [Team Composition](#team-composition)
 - [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Component Versions](#component-versions)
 - [Data Pipeline and Infrastructure](#data-pipeline-and-infrastructure)
 - [Data Flow Diagram](#data-flow-diagram)
 - [Getting Started](#getting-started)
@@ -26,7 +28,7 @@ Main results achieved:
 
 ## Team Composition
 
-Questo progetto è stato sviluppato dal Gruppo numero X rappresentato da:
+This project was developed by group number 2:
 
 1. **Matteo Massari** - matteo.massari@studenti.unitn.it
 2. **Andrea Battaglia** - andrea.battaglia-1@studenti.unitn.it
@@ -43,6 +45,34 @@ Questo progetto è stato sviluppato dal Gruppo numero X rappresentato da:
 -  **Feedback Loop** – Continuous improvement of recommendations based on user interactions and goal tracking.
 
 ---
+## Prerequisites
+
+- **Docker Engine** with Compose V2 installed
+- **System Requirements**: At least 10 GB RAM recommended
+- **Disk Space**: Minimum 10 GB free space for containers and data volumes
+
+---
+
+## Component Versions
+
+The platform uses the following technology stack:
+
+| Component | Version |
+|-----------|---------|
+| **EMQX** | 5.10.0 | 
+| **CockroachDB** | v25.2.0 |
+| **Apache Spark** | 3.5.5 | 
+| **PySpark** | 3.5.5 |  
+| **Delta Lake** | 3.3.1 |  
+| **Apache Kafka** | latest 
+| **Kafka UI** | latest 
+| **MinIO** | latest 
+| **Redis** | latest 
+| **RedisInsight** | latest 
+| **Ofelia Scheduler** | latest | 
+| **Streamlit** | latest | 
+
+---
 
 ## Data Pipeline and Infrastructure
 <img width="2048" height="1399" alt="system architecture" src="https://github.com/user-attachments/assets/034bb336-3f4a-4603-8565-e4b81e95b4cf" />
@@ -50,7 +80,7 @@ Questo progetto è stato sviluppato dal Gruppo numero X rappresentato da:
 
 ---
 
-Semi-structured data flows through **streaming brokers** (e.g., **Kafka** or **MQTT**) for near-real-time processing, and get structured via the delta-table format in a datalakehouse in minio.  
+Semi-structured data flows through **streaming brokers** (e.g., **Kafka** or **MQTT**) for near-real-time processing, and get structured via the delta-table format in a data lakehouse in minio.  
 Structured data is ingested from **relational databases**. 
 
 ---
@@ -70,7 +100,7 @@ The processing layer handles real-time transformations, cleaning, and enrichment
 ### Storage Layer
 
 This layer provides **durable, structured storage** for both raw and processed data:
-- Semi-structured logs are persisted into **datalakehouse** in a objcet store, minio in a delta table format
+- Semi-structured logs are ingested into the datalakehouse and persisted in an object store (MinIO) using the Delta Lake table format
 - Structured datasets are stored in **relational stores** (CockroachDB) for transactional queries.
 - Redis or caching layers may be used for fast access to device configurations or session-based values.
 
@@ -101,8 +131,8 @@ The final layer delivers insights and recommendations back to the end-user:
     - Personalized recommendations (workouts, meals)
 - Users can provide **feedback** directly in the UI, which flows back into the ingestion layer to improve future recommendations.
 - The user can login, logout, sign in, change settings, change sensor or wearables and much more
-- 
-
+  
+---
 
 ## Getting Started
 
@@ -110,8 +140,7 @@ Install docker desktop app
 
 ```bash
 # Clone repository
-git clone https://github.com/your-repo/fitness-nutrition-insight.git
-cd fitness-nutrition-insight
+git clone https://github.com/CrispyCocaBoy/personalized_fitness_nutrition_insight.git
 
 # Start services with our entrypoint 
 ./entrypoint.sh
@@ -128,13 +157,8 @@ Please use one of our account
   - Username: luca.bianchi',  
   - password: 'password1',
   - E-mail: luca.bianchi@example.com
-    
+
 ---
-    
--Marco Verdi:
-  - Username: marco.verdi',  
-  - password: 'password2',
-  - E-mail: marco.verdi@example.com
 
 ### How to access to the UI services  
 - Streamlit: http://localhost:8501  
@@ -206,5 +230,7 @@ The "Daily Tips" section offers personalized recommendations based on your data 
 - **Continuous Personalization**: The system learns from your preferences to improve suggestions over time  
 
 This intelligent recommendation system aims to help maintain motivation and optimize results on your fitness journey.
+
+
 
 
