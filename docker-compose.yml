@@ -400,6 +400,8 @@ services:
   ofelia:
     image: mcuadros/ofelia:latest
     command: daemon --docker
+    # NON parte automaticamente: serve il profilo "scheduler"
+    profiles: [ "scheduler" ]
     depends_on:
       - broker_kafka
       - spark-master
@@ -408,31 +410,30 @@ services:
       - run_clustering_image
       - train_classifiers_image
       - generate_recommendations_image
+    environment:
+      - TZ=Europe/Rome
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # opzionale: salva report esecuzioni
-      - ./ofelia-reports:/reports
+      # opzionale: persisti i report
+      - ./ofelia_reports:/reports
+
     labels:
-      # === Global logging (facoltativo, salva report json) ===
+      # === Logging globale (facoltativo) ===
       ofelia.global.save-folder: "/reports"
       ofelia.global.save-only-on-error: "false"
 
-      # === JOBS ===
-      # Nota: il formato cron di Ofelia include i SECONDI come 1° campo.
-
-      # 1) build_features — ogni 15 minuti
-      ofelia.job-run.build_features.schedule: "@every 15m"
+      # === JOBS (cron a SECONDI inclusi) ===
+      # 1) build_features — tutti i giorni alle 02:00
+      ofelia.job-run.build_features.schedule: "0 0 2 * * *"
       ofelia.job-run.build_features.image: "ml/build_features:latest"
-      # Se il tuo Dockerfile ha già il CMD che lancia spark-submit, puoi omettere "command".
-      # Per essere espliciti, specifico il comando (adatta se il tuo CMD è diverso):
       ofelia.job-run.build_features.command: >
         spark-submit --master spark://spark-master:7077 --deploy-mode client
         --name build_features /app/build_features.py
       ofelia.job-run.build_features.network: "bdt_net"
       ofelia.job-run.build_features.no-overlap: "true"
 
-      # 2) run_clustering — ogni ora al minuto 05
-      ofelia.job-run.run_clustering.schedule: "0 5 * * * *"
+      # 2) run_clustering — tutti i giorni alle 02:20
+      ofelia.job-run.run_clustering.schedule: "0 20 2 * * *"
       ofelia.job-run.run_clustering.image: "ml/run_clustering:latest"
       ofelia.job-run.run_clustering.command: >
         spark-submit --master spark://spark-master:7077 --deploy-mode client
@@ -440,8 +441,8 @@ services:
       ofelia.job-run.run_clustering.network: "bdt_net"
       ofelia.job-run.run_clustering.no-overlap: "true"
 
-      # 3) train_classifiers — tutti i giorni alle 02:30
-      ofelia.job-run.train_classifiers.schedule: "0 30 2 * * *"
+      # 3) train_classifiers — tutti i giorni alle 02:40
+      ofelia.job-run.train_classifiers.schedule: "0 40 2 * * *"
       ofelia.job-run.train_classifiers.image: "ml/train_classifiers:latest"
       ofelia.job-run.train_classifiers.command: >
         spark-submit --master spark://spark-master:7077 --deploy-mode client
@@ -449,12 +450,11 @@ services:
       ofelia.job-run.train_classifiers.network: "bdt_net"
       ofelia.job-run.train_classifiers.no-overlap: "true"
 
-      # 4) generate_recommendations — ogni 10 minuti
-      ofelia.job-run.generate_recommendations.schedule: "@every 10m"
+      # 4) generate_recommendations — tutti i giorni alle 03:00
+      ofelia.job-run.generate_recommendations.schedule: "0 0 3 * * *"
       ofelia.job-run.generate_recommendations.image: "ml/generate_recommendations:latest"
       ofelia.job-run.generate_recommendations.command: >
         spark-submit --master spark://spark-master:7077 --deploy-mode client
         --name generate_recommendations /app/generate_recommendations.py
       ofelia.job-run.generate_recommendations.network: "bdt_net"
       ofelia.job-run.generate_recommendations.no-overlap: "true"
-
