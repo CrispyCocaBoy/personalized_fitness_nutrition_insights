@@ -27,7 +27,7 @@ fi
 EXTRA_ARGS="$*"
 
 # ===== Conferma avvio =====
-read -r -p "Let's start the fitness and nutrition insight app? [Y/n] " REPLY
+read -r -p "Let's start the Personaliazed fitness and nutrition insight app? [Y/n] " REPLY
 REPLY=${REPLY:-Y}
 case "$REPLY" in
   [Yy]* ) ;;
