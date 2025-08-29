@@ -12,6 +12,7 @@ USER 1001
 
 # Copia gli script nello container
 COPY src/machine_learning/build_features .
+COPY data_ml data
 
 # Avvio dello script con i pacchetti necessari: Delta + Kafka
 CMD spark-submit \

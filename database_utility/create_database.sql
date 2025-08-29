@@ -1,3 +1,5 @@
+CREATE DATABASE user_device_db
+
 -- Switch to the desired database
 USE user_device_db;
 
@@ -182,69 +184,119 @@ CREATE TABLE meal_foods (
     FOREIGN KEY (user_food_id) REFERENCES user_foods(user_food_id)
 );
 
+
+
 -- 15. NUTRITION_RECOMMENDATION
 --     Predefined nutrition recommendations catalog
-CREATE TABLE nutrition_recommendation (
+CREATE TABLE IF NOT EXISTS nutrition_recommendation (
     recommendation_id SERIAL PRIMARY KEY,
-    description TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    description       TEXT NOT NULL,
+    created_at        TIMESTAMPTZ DEFAULT now()
 );
 
--- 16. NUTRITION_RECOMMENDATION_FEEDBACK
---     User feedback on nutrition recommendations (positive/negative)
-CREATE TABLE nutrition_recommendation_feedback (
-    user_id INT NOT NULL,
-    recommendation_id INT NOT NULL,
-    is_positive SMALLINT NOT NULL, -- values: 0 or 1
-    noted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    comment TEXT,
+
+-- ===============================
+-- NUTRITION: RANKINGS per utente
+-- ===============================
+CREATE TABLE IF NOT EXISTS user_nutrition_rankings (
+    user_id            INT  NOT NULL,
+    cluster_id         INT,
+    recommendation_id  INT NOT NULL,
+    title              TEXT,
+    description        TEXT,
+    success_prob       DOUBLE PRECISION,
+    rank               INT,
+    generated_at       TIMESTAMPTZ DEFAULT now(),
     PRIMARY KEY (user_id, recommendation_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (recommendation_id) REFERENCES nutrition_recommendation(recommendation_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_unr_user_rank ON user_nutrition_rankings (user_id, rank);
+
+-- feedback collegato ai RANKINGS (FK composita)
+CREATE TABLE IF NOT EXISTS nutrition_recommendation_feedback (
+    user_id           INT  NOT NULL,
+    recommendation_id INT NOT NULL,
+    is_positive       SMALLINT NOT NULL DEFAULT 1,
+    noted_at          TIMESTAMPTZ DEFAULT now(),
+    comment           TEXT,
+    PRIMARY KEY (user_id, recommendation_id),
+    FOREIGN KEY (user_id, recommendation_id)
+        REFERENCES user_nutrition_rankings (user_id, recommendation_id)
+        ON DELETE CASCADE,
+    CONSTRAINT chk_nrf_ispos CHECK (is_positive IN (0,1))
 );
 
+-- trigger: quando inserisci un ranking, crea feedback positivo
+CREATE OR REPLACE FUNCTION trg_unr_autofeedback()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO nutrition_recommendation_feedback (user_id, recommendation_id, is_positive)
+  VALUES ((NEW).user_id, (NEW).recommendation_id, 1)
+  ON CONFLICT (user_id, recommendation_id) DO NOTHING;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS after_insert_unr ON user_nutrition_rankings;
+CREATE TRIGGER after_insert_unr
+AFTER INSERT ON user_nutrition_rankings
+FOR EACH ROW
+EXECUTE FUNCTION trg_unr_autofeedback();
+
+
+
+-- ===============================
 -- 17. WORKOUT_RECOMMENDATION
---     Predefined workout recommendations catalog
-CREATE TABLE workout_recommendation (
+-- ===============================
+CREATE TABLE IF NOT EXISTS workout_recommendation (
     recommendation_id SERIAL PRIMARY KEY,
-    description TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    description       TEXT NOT NULL,
+    created_at        TIMESTAMPTZ DEFAULT now()
 );
 
--- 18. WORKOUT_RECOMMENDATION_FEEDBACK
---     User feedback on workout recommendations (positive/negative)
-CREATE TABLE workout_recommendation_feedback (
-    user_id INT NOT NULL,
-    recommendation_id INT NOT NULL,
-    is_positive SMALLINT NOT NULL, -- values: 0 or 1
-    noted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    comment TEXT,
+
+CREATE TABLE IF NOT EXISTS user_workout_rankings (
+    user_id            INT  NOT NULL,
+    cluster_id         INT,
+    recommendation_id  INT NOT NULL,
+    title              TEXT,
+    description        TEXT,
+    success_prob       DOUBLE PRECISION,
+    rank               INT,
+    generated_at       TIMESTAMPTZ DEFAULT now(),
     PRIMARY KEY (user_id, recommendation_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (recommendation_id) REFERENCES workout_recommendation(recommendation_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+CREATE INDEX IF NOT EXISTS idx_uwr_user_rank ON user_workout_rankings (user_id, rank);
+
+CREATE TABLE IF NOT EXISTS workout_recommendation_feedback (
+    user_id           INT  NOT NULL,
+    recommendation_id INT NOT NULL,
+    is_positive       SMALLINT NOT NULL DEFAULT 1,
+    noted_at          TIMESTAMPTZ DEFAULT now(),
+    comment           TEXT,
+    PRIMARY KEY (user_id, recommendation_id),
+    FOREIGN KEY (user_id, recommendation_id)
+        REFERENCES user_workout_rankings (user_id, recommendation_id)
+        ON DELETE CASCADE,
+    CONSTRAINT chk_wrf_ispos CHECK (is_positive IN (0,1))
 );
 
--- 19. NUTRITION_RECOMMENDATION_BLACKLIST
---     User blacklist for nutrition recommendations to exclude
-CREATE TABLE nutrition_recommendation_blacklist (
-    user_id INT NOT NULL,
-    recommendation_id INT NOT NULL,
-    noted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, recommendation_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (recommendation_id) REFERENCES nutrition_recommendation(recommendation_id)
-);
+CREATE OR REPLACE FUNCTION trg_uwr_autofeedback()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO workout_recommendation_feedback (user_id, recommendation_id, is_positive)
+  VALUES ((NEW).user_id, (NEW).recommendation_id, 1)
+  ON CONFLICT (user_id, recommendation_id) DO NOTHING;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
 
--- 20. WORKOUT_RECOMMENDATION_BLACKLIST
---     User blacklist for workout recommendations to exclude
-CREATE TABLE workout_recommendation_blacklist (
-    user_id INT NOT NULL,
-    recommendation_id INT NOT NULL,
-    noted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, recommendation_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (recommendation_id) REFERENCES workout_recommendation(recommendation_id)
-);
+DROP TRIGGER IF EXISTS after_insert_uwr ON user_workout_rankings;
+CREATE TRIGGER after_insert_uwr
+AFTER INSERT ON user_workout_rankings
+FOR EACH ROW
+EXECUTE FUNCTION trg_uwr_autofeedback();
 
 -- 21. Activity
 --     Activity included in the datatbase
@@ -254,7 +306,7 @@ CREATE TABLE activity_default(
     icon VARCHAR(20)
 );
 
--- 21. Activity
+-- 21. sensor sattus
 --     sensor_status
 CREATE TABLE IF NOT EXISTS sensor_status (
   sensor_id  INT PRIMARY KEY REFERENCES sensor_to_user(sensor_id) ON DELETE CASCADE,
@@ -691,4 +743,3 @@ INSERT INTO activity_default (activity_id, name, icon) VALUES
 (28, 'Weightlifting', '🏋️‍♀️'),
 (29, 'Pilates', '🤸‍♀️'),
 (30, 'Crossfit', '💪');
-

@@ -101,14 +101,6 @@ services:
     volumes:
       - ./volumes/kafka_setting/broker:/var/lib/kafka
 
-  init_kafka:
-    build:
-      context: .
-      dockerfile: ./src/kafka_topics/Dockerfile
-    depends_on:
-      - broker_kafka
-    container_name: init_kafka
-
   kafka-ui:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
@@ -121,7 +113,16 @@ services:
     depends_on:
       - broker_kafka
 
-# Databases
+  kafka_init:
+    build:
+      context: .
+      dockerfile: ./src/kafka_init/Dockerfile
+    depends_on:
+      - broker_kafka
+    container_name: kafka_init
+
+
+  # Databases
 
   # SQL-type
   cockroachdb:
@@ -228,7 +229,9 @@ services:
 # ETL process
   ## Spark Master
   spark-master:
-    image: bitnamilegacy/spark:3.5.5
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     container_name: spark-master
     command: /opt/bitnami/scripts/spark/run.sh master
     environment:
@@ -239,20 +242,24 @@ services:
 
   ## Spark Worker 1
   spark-worker-1:
-    image: bitnamilegacy/spark:3.5.5
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     container_name: spark-worker-1
     command: /opt/bitnami/scripts/spark/run.sh worker
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=3
+      - SPARK_WORKER_CORES=2
     depends_on:
       - spark-master
 
   ## Spark Worker 2
   spark-worker-2:
-    image: bitnamilegacy/spark:3.5.5
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     container_name: spark-worker-2
     command: /opt/bitnami/scripts/spark/run.sh worker
     environment:
@@ -264,7 +271,9 @@ services:
       - spark-master
 
   spark-worker-3:
-    image: bitnamilegacy/spark:3.5.5
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     container_name: spark-worker-3
     command: /opt/bitnami/scripts/spark/run.sh worker
     environment:
@@ -274,6 +283,7 @@ services:
       - SPARK_WORKER_CORES=2
     depends_on:
       - spark-master
+
 
   ## Bronze layer job
   bronze_layer:
@@ -361,43 +371,90 @@ services:
 
 
 
-# Machine learning
-  build_features:
+    # --- Build delle immagini job (una tantum, tag locali) ---
+  build_features_image:
     build:
       context: .
       dockerfile: src/machine_learning/build_features/Dockerfile
-    container_name: build_features
-    depends_on:
-      - broker_kafka
-      - spark-master
-      - emqx1
+    image: ml/build_features:latest
 
-  run_clustering:
+  run_clustering_image:
     build:
       context: .
       dockerfile: src/machine_learning/run_clustering/Dockerfile
-    container_name: run_clustering
-    depends_on:
-      - broker_kafka
-      - spark-master
-      - emqx1
+    image: ml/run_clustering:latest
 
-  train_classifiers:
+  train_classifiers_image:
     build:
       context: .
       dockerfile: src/machine_learning/train_classifiers/Dockerfile
-    container_name: train_classifiers
-    depends_on:
-      - broker_kafka
-      - spark-master
-      - emqx1
+    image: ml/train_classifiers:latest
 
-  generate_recommendations:
+  generate_recommendations_image:
     build:
       context: .
       dockerfile: src/machine_learning/generate_recommendations/Dockerfile
-    container_name: generate_recommendations
+    image: ml/generate_recommendations:latest
+
+  # --- Ofelia scheduler ---
+  ofelia:
+    image: mcuadros/ofelia:latest
+    command: daemon --docker
     depends_on:
       - broker_kafka
       - spark-master
       - emqx1
+      - build_features_image
+      - run_clustering_image
+      - train_classifiers_image
+      - generate_recommendations_image
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # opzionale: salva report esecuzioni
+      - ./ofelia-reports:/reports
+    labels:
+      # === Global logging (facoltativo, salva report json) ===
+      ofelia.global.save-folder: "/reports"
+      ofelia.global.save-only-on-error: "false"
+
+      # === JOBS ===
+      # Nota: il formato cron di Ofelia include i SECONDI come 1° campo.
+
+      # 1) build_features — ogni 15 minuti
+      ofelia.job-run.build_features.schedule: "@every 15m"
+      ofelia.job-run.build_features.image: "ml/build_features:latest"
+      # Se il tuo Dockerfile ha già il CMD che lancia spark-submit, puoi omettere "command".
+      # Per essere espliciti, specifico il comando (adatta se il tuo CMD è diverso):
+      ofelia.job-run.build_features.command: >
+        spark-submit --master spark://spark-master:7077 --deploy-mode client
+        --name build_features /app/build_features.py
+      ofelia.job-run.build_features.network: "bdt_net"
+      ofelia.job-run.build_features.no-overlap: "true"
+
+      # 2) run_clustering — ogni ora al minuto 05
+      ofelia.job-run.run_clustering.schedule: "0 5 * * * *"
+      ofelia.job-run.run_clustering.image: "ml/run_clustering:latest"
+      ofelia.job-run.run_clustering.command: >
+        spark-submit --master spark://spark-master:7077 --deploy-mode client
+        --name run_clustering /app/run_clustering.py
+      ofelia.job-run.run_clustering.network: "bdt_net"
+      ofelia.job-run.run_clustering.no-overlap: "true"
+
+      # 3) train_classifiers — tutti i giorni alle 02:30
+      ofelia.job-run.train_classifiers.schedule: "0 30 2 * * *"
+      ofelia.job-run.train_classifiers.image: "ml/train_classifiers:latest"
+      ofelia.job-run.train_classifiers.command: >
+        spark-submit --master spark://spark-master:7077 --deploy-mode client
+        --name train_classifiers /app/train_classifiers.py
+      ofelia.job-run.train_classifiers.network: "bdt_net"
+      ofelia.job-run.train_classifiers.no-overlap: "true"
+
+      # 4) generate_recommendations — ogni 10 minuti
+      ofelia.job-run.generate_recommendations.schedule: "@every 10m"
+      ofelia.job-run.generate_recommendations.image: "ml/generate_recommendations:latest"
+      ofelia.job-run.generate_recommendations.command: >
+        spark-submit --master spark://spark-master:7077 --deploy-mode client
+        --name generate_recommendations /app/generate_recommendations.py
+      ofelia.job-run.generate_recommendations.network: "bdt_net"
+      ofelia.job-run.generate_recommendations.no-overlap: "true"
+

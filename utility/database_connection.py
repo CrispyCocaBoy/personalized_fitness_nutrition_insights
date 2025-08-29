@@ -797,4 +797,108 @@ def toggle_sensor_status(sensor_id: int, user_id: int) -> tuple[bool, str, bool]
     finally:
         cur.close(); conn.close()
 
+# utility/database_connection.py  —— PATCH
 
+import psycopg
+
+def _get_recommendations(user_id: int, domain: str):
+    """
+    Legge dai rankings user_{domain}_rankings e filtra con {domain}_recommendation_feedback.
+    Mostra solo is_positive=1 (default) e ordina per rank (poi success_prob).
+    """
+    rankings_tbl = f"user_{domain}_rankings"
+    feedback_tbl = f"{domain}_recommendation_feedback"
+
+    conn = connection()
+    cur = conn.cursor(row_factory=psycopg.rows.dict_row)
+    try:
+        sql = f"""
+            SELECT
+                r.recommendation_id,
+                COALESCE(r.title, '')        AS title,
+                COALESCE(r.description, '')  AS description,
+                COALESCE(r.success_prob, 1.0) AS success_prob,
+                r.rank
+            FROM {rankings_tbl} AS r
+            LEFT JOIN {feedback_tbl} AS fb
+              ON fb.user_id = r.user_id
+             AND fb.recommendation_id = r.recommendation_id
+            WHERE r.user_id = %s
+              AND COALESCE(fb.is_positive, 1) = 1
+            ORDER BY r.rank ASC, r.success_prob DESC;
+        """
+        cur.execute(sql, (user_id,))
+        return cur.fetchall()
+    finally:
+        cur.close()
+        conn.close()
+
+
+# alias usati dal frontend
+def get_available_recommendations(user_id: int):
+    return _get_recommendations(user_id, "workout")
+
+def get_available_nutrition_recommendations(user_id: int):
+    return _get_recommendations(user_id, "nutrition")
+
+
+# ---------- FEEDBACK (no blacklist) ----------
+def _log_feedback(user_id: int, recommendation_id: str, domain: str, is_positive: bool, comment: str | None = None):
+    """
+    Upsert in {domain}_recommendation_feedback: 1=mostra, 0=nascondi.
+    (recommendation_id è TEXT ora!)
+    """
+    table = f"{domain}_recommendation_feedback"
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        sql = f"""
+            INSERT INTO {table} (user_id, recommendation_id, is_positive, noted_at, comment)
+            VALUES (%s, %s, %s, NOW(), %s)
+            ON CONFLICT (user_id, recommendation_id)
+            DO UPDATE SET
+                is_positive = EXCLUDED.is_positive,
+                noted_at    = NOW(),
+                comment     = COALESCE(EXCLUDED.comment, {table}.comment);
+        """
+        cur.execute(sql, (user_id, str(recommendation_id), 1 if is_positive else 0, comment))
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()
+
+# workout
+def log_positive_feedback(user_id: int, recommendation_id: str, comment: str | None = None):
+    _log_feedback(user_id, recommendation_id, "workout", True, comment)
+
+def log_negative_feedback(user_id: int, recommendation_id: str, comment: str | None = None):
+    _log_feedback(user_id, recommendation_id, "workout", False, comment)
+
+# nutrition
+def log_positive_nutrition_feedback(user_id: int, recommendation_id: str, comment: str | None = None):
+    _log_feedback(user_id, recommendation_id, "nutrition", True, comment)
+
+def log_negative_nutrition_feedback(user_id: int, recommendation_id: str, comment: str | None = None):
+    _log_feedback(user_id, recommendation_id, "nutrition", False, comment)
+
+# ---------- RESET (rimette tutto visibile) ----------
+def _reset_user_history(user_id: int, domain: str) -> bool:
+    table = f"{domain}_recommendation_feedback"
+    conn = connection()
+    cur = conn.cursor()
+    try:
+        cur.execute(f"UPDATE {table} SET is_positive = 1, noted_at = NOW() WHERE user_id = %s;", (user_id,))
+        conn.commit()
+        return True
+    except Exception:
+        conn.rollback()
+        return False
+    finally:
+        cur.close()
+        conn.close()
+
+def reset_user_workout_preferences(user_id: int) -> bool:
+    return _reset_user_history(user_id, "workout")
+
+def reset_user_nutrition_preferences(user_id: int) -> bool:
+    return _reset_user_history(user_id, "nutrition")

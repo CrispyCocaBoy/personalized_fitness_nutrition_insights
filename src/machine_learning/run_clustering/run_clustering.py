@@ -1,13 +1,15 @@
 # spark_scripts/run_clustering.py
 import os
-from pyspark.sql.functions import col, current_date, date_sub, row_number
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, row_number
 from pyspark.sql.window import Window
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import VectorAssembler, StringIndexer, StandardScaler
 from pyspark.ml.clustering import KMeans
-from pyspark.sql import SparkSession
 
-# --- CONFIGURAZIONE GLOBALE ---
+# =========================
+# CONFIG
+# =========================
 CONFIG = {
     "nutrition": {
         "training_data_path": "s3a://gold/nutrition/training_data/",
@@ -29,9 +31,13 @@ CONFIG = {
         ]
     }
 }
-K_CLUSTERS = 4
-RECENCY_DAYS = 90  # giorni indietro per definire il profilo
 
+K_CLUSTERS = 4
+
+
+# =========================
+# Spark Session
+# =========================
 def get_spark_session():
     builder = SparkSession.builder.appName("clustering")
 
@@ -69,79 +75,117 @@ def get_spark_session():
 
     return builder.getOrCreate()
 
+
+# =========================
+# Utils
+# =========================
+def safe_drop(df, cols):
+    for c in cols:
+        if c in df.columns:
+            df = df.drop(c)
+    return df
+
+
+# =========================
+# Clustering per dominio
+# =========================
 def run_clustering_for_domain(spark: SparkSession, domain: str):
     print(f"\n==============================")
     print(f"🚀 AVVIO CLUSTERING: {domain.upper()}")
     print(f"==============================")
 
-    config = CONFIG[domain]
-    print(f"[{domain}] 📦 Lettura dati: {config['training_data_path']}")
-    full_df = spark.read.parquet(config['training_data_path'])
+    cfg = CONFIG[domain]
+    print(f"[{domain}] 📦 Lettura dati: {cfg['training_data_path']}")
+    full_df = spark.read.parquet(cfg['training_data_path'])
 
-    # Cast robusto di 'date' a tipo date (se viene letto come stringa)
+    # Assicuro 'date' come date (serve per ordinare l'ultima riga per utente)
     if "date" not in full_df.columns:
         raise ValueError(f"[{domain}] La colonna 'date' non è presente nel dataset.")
     full_df = full_df.withColumn("date", col("date").cast("date"))
 
-    print(f"[{domain}] 🧪 Schema:")
+    print(f"[{domain}] 🧪 Schema completo sorgente:")
     full_df.printSchema()
 
-    # Finestra temporale: da (ieri - RECENCY_DAYS) a ieri
-    yesterday = date_sub(current_date(), 1)
-    start_date = date_sub(yesterday, RECENCY_DAYS)
-    training_df = full_df.filter((col("date") >= start_date) & (col("date") <= yesterday))
+    # 🚫 NESSUN FILTRO TEMPORALE: uso tutte le righe disponibili
+    training_df = full_df
 
-    # Check dati disponibili
-    has_rows = training_df.limit(1).count() > 0
-    if not has_rows:
-        print(f"[{domain}] ⚠️ Nessun dato nel periodo selezionato (ultimi {RECENCY_DAYS} giorni). Skip.")
-        return
-
-    print(f"[{domain}] 📊 Esempio righe (post filtro):")
+    print(f"[{domain}] 📊 Sample righe (tutte le date):")
     training_df.show(5, truncate=False)
 
-    # Ultimo stato per utente
+    # Ultimo stato per utente (righe più recenti per ogni user_id)
     print(f"[{domain}] 🧮 Calcolo ultimo stato per utente...")
     window_spec = Window.partitionBy("user_id").orderBy(col("date").desc())
     user_features_df = (
         training_df
         .withColumn("rank", row_number().over(window_spec))
         .filter(col("rank") == 1)
-        .drop("rank", "date", "id_recommendation", "feedback", "noted_at")
+        .drop("rank")
     )
 
-    print(f"[{domain}] 🧾 Prime righe delle feature:")
+    # Drop di colonne non utili al modello (se presenti)
+    user_features_df = safe_drop(
+        user_features_df,
+        ["date", "recommendation_id", "is_positive", "noted_at", "id_cluster"]
+    )
+
+    print(f"[{domain}] 🧾 Prime righe delle feature (pre-pipeline):")
     user_features_df.show(5, truncate=False)
 
-    # Pipeline ML
-    print(f"[{domain}] 🏗️ Costruzione pipeline ML...")
-    gender_indexer = StringIndexer(inputCol="gender", outputCol="gender_indexed", handleInvalid="skip")
-    assembler = VectorAssembler(inputCols=config['features'], outputCol="unscaled_features", handleInvalid="skip")
+    # =========================
+    # PIPELINE ML (pulita)
+    # =========================
+    required = list(cfg["features"])
+    needs_gender_indexed = "gender_indexed" in required
+
+    # validazione leggera
+    missing = [c for c in required if c != "gender_indexed" and c not in user_features_df.columns]
+    if needs_gender_indexed and "gender" not in user_features_df.columns:
+        raise ValueError(f"[{domain}] 'gender_indexed' richiede la colonna 'gender' che non è presente.")
+    if missing:
+        raise ValueError(f"[{domain}] Mancano colonne feature: {missing}")
+
+    stages = []
+    if needs_gender_indexed:
+        stages.append(StringIndexer(
+            inputCol="gender",
+            outputCol="gender_indexed",
+            handleInvalid="skip"
+        ))
+
+    assembler_inputs = required[:] if needs_gender_indexed else [c for c in required if c != "gender_indexed"]
+
+    assembler = VectorAssembler(
+        inputCols=assembler_inputs,
+        outputCol="unscaled_features",
+        handleInvalid="skip"
+    )
     scaler = StandardScaler(inputCol="unscaled_features", outputCol="scaled_features")
     kmeans = KMeans(featuresCol="scaled_features", k=K_CLUSTERS, seed=42, predictionCol="cluster_id")
-    pipeline = Pipeline(stages=[gender_indexer, assembler, scaler, kmeans])
 
-    # Fit
+    pipeline = Pipeline(stages=stages + [assembler, scaler, kmeans])
+
     print(f"[{domain}] 🤖 Training KMeans (k={K_CLUSTERS})...")
     model = pipeline.fit(user_features_df)
 
-    # Salvataggi
-    print(f"[{domain}] 💾 Salvataggio modello → {config['model_output_path']}")
-    model.write().overwrite().save(config['model_output_path'])
+    # Salva modello e mappa utente→cluster
+    print(f"[{domain}] 💾 Salvataggio modello → {cfg['model_output_path']}")
+    model.write().overwrite().save(cfg['model_output_path'])
 
-    print(f"[{domain}] 🗺️ Generazione mappa utente→cluster → {config['map_output_path']}")
+    print(f"[{domain}] 🗺️ Generazione mappa utente→cluster → {cfg['map_output_path']}")
     user_cluster_map = model.transform(user_features_df).select("user_id", "cluster_id")
-    user_cluster_map.write.mode("overwrite").parquet(config['map_output_path'])
+    user_cluster_map.write.mode("overwrite").parquet(cfg['map_output_path'])
 
     print(f"[{domain}] ✅ Clustering COMPLETATO.")
 
+
+# =========================
+# Main
+# =========================
 if __name__ == "__main__":
     print("\n=== START JOB: WORKOUT poi NUTRITION ===")
     spark = get_spark_session()
     try:
-        # 1) Workout
         run_clustering_for_domain(spark, "workout")
-        # 2) Nutrition
         run_clustering_for_domain(spark, "nutrition")
         print("\n🎉 TUTTO COMPLETATO: workout ✓  |  nutrition ✓")
     finally:

@@ -1,12 +1,15 @@
 # build_features.py
-from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import col, to_date, round, expr
-from pyspark.sql.window import Window
 import os
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType, \
-    TimestampType  # Per definire lo schema
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.functions import col, to_date, round, expr, regexp_replace
+from pyspark.sql.window import Window
+from pyspark.sql.types import (
+    StructType, StructField, IntegerType, DoubleType, StringType, TimestampType
+)
 
-
+# -------------------------
+# Spark Session
+# -------------------------
 def get_spark_session():
     builder = SparkSession.builder.appName("FeatureEngineering")
 
@@ -44,28 +47,149 @@ def get_spark_session():
 
     return builder.getOrCreate()
 
+# -------------------------
+# Utils
+# -------------------------
 def calculate_bmi(df: DataFrame) -> DataFrame:
-    """Aggiunge una colonna 'bmi' a un DataFrame che contiene 'avg_weight_last7d' e 'height'."""
-    print("    - Calculating BMI...")
-    return df.withColumn("bmi", round(col("avg_weight_last7d") / ((col("height") / 100) ** 2), 2))
-
+    """Aggiunge 'bmi' assumendo: height in cm, avg_weight_last7d in kg."""
+    return df.withColumn(
+        "bmi",
+        round(col("avg_weight_last7d") / ((col("height") / 100.0) ** 2), 2)
+    )
 
 def process_recommendations_catalog(spark: SparkSession, source_path: str, destination_path: str):
-    """Legge un catalogo di raccomandazioni in CSV e lo salva in Parquet."""
     print(f"  - Processing recommendations from {source_path}")
     df = spark.read.option("header", "true").csv(source_path)
-    # Potremmo aggiungere qui logica più complessa se necessario (es. rinominare colonne dinamicamente)
     df.write.mode("overwrite").parquet(destination_path)
     print(f"    -> Catalog saved to {destination_path}")
 
+# -------------------------
+# Nutrition (feedback)
+# -------------------------
+def process_nutrition_feedback(spark: SparkSession, bronze_base_path: str, gold_base_path: str):
+    print("\n[2A] Processing Nutrition Feedback...")
+    nutrition_schema = StructType([
+        StructField("user_id", IntegerType(), True),
+        StructField("id_cluster", IntegerType(), True),  # opzionale, verrà ignorato a valle
+        StructField("gender", StringType(), True),
+        StructField("age", IntegerType(), True),
+        StructField("height", DoubleType(), True),  # numerico
+        StructField("avg_weight_last7d", DoubleType(), True),  # numerico
+        StructField("noted_at", TimestampType(), True),
+        StructField("calories_consumed_last_3_days_avg", DoubleType(), True),
+        StructField("protein_intake_last_3_days_avg", DoubleType(), True),
+        StructField("carbs_intake_last_3_days_avg", DoubleType(), True),
+        StructField("fat_intake_last_3_days_avg", DoubleType(), True),
+        StructField("recommendation_id", IntegerType(), True),
+        StructField("is_positive", IntegerType(), True),
+    ])
 
+    src = f"{bronze_base_path}/user_feedback_nutrition.csv"
+    df = (spark.read
+                .option("header", "true")
+                .schema(nutrition_schema)
+                .csv(src))
+
+    # Normalizza eventuali virgole decimali
+    numeric_cols = [
+        "height", "avg_weight_last7d",
+        "calories_consumed_last_3_days_avg",
+        "protein_intake_last_3_days_avg",
+        "carbs_intake_last_3_days_avg",
+        "fat_intake_last_3_days_avg"
+    ]
+    for c in numeric_cols:
+        if c in df.columns:
+            df = df.withColumn(c, regexp_replace(col(c).cast("string"), ",", ".").cast("double"))
+
+    df = df.withColumn("date", to_date(col("noted_at")))
+    df = calculate_bmi(df)
+
+    print("\n[NUTRITION] Schema normalizzato:")
+    df.printSchema()
+    print("\n[NUTRITION] Sample righe:")
+    df.show(5, truncate=False)
+
+    dst = f"{gold_base_path}/nutrition/training_data"
+    (df.write.mode("overwrite").partitionBy("date").parquet(dst))
+    print(f"  -> Nutrition training data saved to {dst}")
+
+# -------------------------
+# Workout (feedback)
+# -------------------------
+def process_workout_feedback(spark: SparkSession, bronze_base_path: str, gold_base_path: str):
+    print("\n[2B] Processing Workout Feedback...")
+    workout_schema = StructType([
+        StructField("user_id", IntegerType(), True),
+        StructField("id_cluster", IntegerType(), True),  # opzionale, verrà ignorato a valle
+        StructField("gender", StringType(), True),
+        StructField("age", IntegerType(), True),
+        StructField("height", DoubleType(), True),                 # numerico
+        StructField("avg_weight_last7d", DoubleType(), True),      # numerico
+        StructField("avg_steps_last7d", IntegerType(), True),
+        StructField("avg_bpm_last7d", DoubleType(), True),         # numerico
+        StructField("avg_active_minutes_last7d", IntegerType(), True),
+        StructField("noted_at", TimestampType(), True),
+        StructField("recommendation_id", IntegerType(), True),
+        StructField("is_positive", IntegerType(), True),
+    ])
+
+    src = f"{bronze_base_path}/user_feedback_workout.csv"
+    df = (spark.read
+                .option("header", "true")
+                .schema(workout_schema)
+                .csv(src))
+
+    # Normalizza eventuali virgole decimali
+    for c in ["height", "avg_weight_last7d", "avg_bpm_last7d"]:
+        if c in df.columns:
+            df = df.withColumn(c, regexp_replace(col(c).cast("string"), ",", ".").cast("double"))
+
+    df = df.withColumn("date", to_date(col("noted_at")))
+    df = calculate_bmi(df)
+
+    print("\n[WORKOUT] Schema normalizzato:")
+    df.printSchema()
+    print("\n[WORKOUT] Sample righe:")
+    df.show(5, truncate=False)
+
+    dst = f"{gold_base_path}/workout/training_data"
+    (df.write.mode("overwrite").partitionBy("date").parquet(dst))
+    print(f"  -> Workout training data saved to {dst}")
+
+# -------------------------
+# Workout (live features da daily metrics)
+# -------------------------
+def process_workout_live_features(spark: SparkSession, bronze_base_path: str, gold_base_path: str):
+    print("\n[3] Building 'live' workout features from daily metrics...")
+    metrics = (spark.read
+                    .option("header", "true")
+                    .option("inferSchema", "true")
+                    .csv(f"{bronze_base_path}/daily_user_metrics_live.csv")
+                    .withColumn("date", to_date(col("date"))))
+
+    window_spec = Window.partitionBy("user_id").orderBy(col("date").cast("long")).rowsBetween(-7, -1)
+
+    features_df = (metrics
+        .withColumn("avg_steps_last7d", round(expr("avg(total_steps)").over(window_spec)))
+        .withColumn("avg_bpm_last7d", round(expr("avg(avg_bpm)").over(window_spec)))
+        .withColumn("avg_active_minutes_last7d", round(expr("avg(active_minutes)").over(window_spec)))
+    )
+
+    dst = f"{gold_base_path}/workout/features_live"
+    (features_df
+        .select("user_id", "date", "avg_steps_last7d", "avg_bpm_last7d", "avg_active_minutes_last7d")
+        .na.drop()
+        .write.mode("overwrite").partitionBy("date").parquet(dst))
+    print(f"  -> Live workout features saved to {dst}")
+
+# -------------------------
+# Orchestrazione
+# -------------------------
 def process_data(spark: SparkSession, bronze_base_path: str, gold_base_path: str):
-    """
-    Esegue l'intero processo di feature engineering per dati di nutrizione e workout.
-    """
     print("\n--- Inizio Elaborazione Dati ---")
 
-    # --- FASE 1: CATALOGHI ---
+    # [1] Cataloghi
     print("\n[1] Processing Catalogs...")
     process_recommendations_catalog(
         spark,
@@ -78,57 +202,25 @@ def process_data(spark: SparkSession, bronze_base_path: str, gold_base_path: str
         f"{gold_base_path}/workout/recommendations"
     )
 
-    # --- FASE 2: DATI DI FEEDBACK (NUTRITION & WORKOUT) ---
-    print("\n[2] Processing User Feedback Data...")
+    # [2] Feedback
+    process_nutrition_feedback(spark, bronze_base_path, gold_base_path)
+    process_workout_feedback(spark, bronze_base_path, gold_base_path)
 
-    # Nutrition
-    feedback_nutrition_df = spark.read.option("header", "true").option("inferSchema", "true").csv(
-        f"{bronze_base_path}/user_feedback_nutrition.csv")
-    feedback_nutrition_df = feedback_nutrition_df.withColumn("date", to_date(col("noted_at")))
-    feedback_nutrition_df = calculate_bmi(feedback_nutrition_df)
+    # [3] Live features (workout)
+    process_workout_live_features(spark, bronze_base_path, gold_base_path)
 
-    nutrition_training_path = f"{gold_base_path}/nutrition/training_data"
-    feedback_nutrition_df.write.mode("overwrite").partitionBy("date").parquet(nutrition_training_path)
-    print(f"  -> Nutrition training data saved to {nutrition_training_path}")
+    print("\n--- Fine Elaborazione Dati ---")
 
-    # Workout
-    feedback_workout_df = spark.read.option("header", "true").option("inferSchema", "true").csv(
-        f"{bronze_base_path}/user_feedback_workout.csv")
-    feedback_workout_df = feedback_workout_df.withColumn("date", to_date(col("noted_at")))
-    feedback_workout_df = calculate_bmi(feedback_workout_df)
-
-    workout_training_path = f"{gold_base_path}/workout/training_data"
-    feedback_workout_df.write.mode("overwrite").partitionBy("date").parquet(workout_training_path)
-    print(f"  -> Workout training data saved to {workout_training_path}")
-
-    # --- FASE 3: FEATURE 'LIVE' DALLE METRICHE GIORNALIERE (WORKOUT) ---
-    print("\n[3] Building 'live' workout features from daily metrics...")
-    metrics_df = spark.read.option("header", "true").option("inferSchema", "true").csv(
-        f"{bronze_base_path}/daily_user_metrics_live.csv") \
-        .withColumn("date", to_date(col("date")))
-
-    window_spec = Window.partitionBy("user_id").orderBy(col("date").cast("long")).rowsBetween(-7, -1)
-
-    features_df = metrics_df \
-        .withColumn("avg_steps_last7d", round(expr("avg(total_steps)").over(window_spec))) \
-        .withColumn("avg_bpm_last7d", round(expr("avg(avg_bpm)").over(window_spec))) \
-        .withColumn("avg_active_minutes_last7d", round(expr("avg(active_minutes)").over(window_spec)))
-
-    features_live_path = f"{gold_base_path}/workout/features_live"
-    features_df.select("user_id", "date", "avg_steps_last7d", "avg_bpm_last7d", "avg_active_minutes_last7d") \
-        .na.drop() \
-        .write.mode("overwrite").partitionBy("date").parquet(features_live_path)
-    print(f"  -> Live workout features saved to {features_live_path}")
-
-
+# -------------------------
+# Main
+# -------------------------
 if __name__ == "__main__":
-    spark_session = get_spark_session()
+    spark = get_spark_session()
 
-    # Definiamo i percorsi S3a. Ora leggiamo i dati grezzi dal bucket 'bronze'.
-    BRONZE_S3_PATH = 's3a://bronze'
-    GOLD_S3_PATH = 's3a://gold'
+    BRONZE_S3_PATH = "s3a://bronze"
+    GOLD_S3_PATH = "s3a://gold"
 
-    process_data(spark_session, BRONZE_S3_PATH, GOLD_S3_PATH)
+    process_data(spark, BRONZE_S3_PATH, GOLD_S3_PATH)
 
-    spark_session.stop()
+    spark.stop()
     print("\n--- Esecuzione Job PySpark Completata ---")

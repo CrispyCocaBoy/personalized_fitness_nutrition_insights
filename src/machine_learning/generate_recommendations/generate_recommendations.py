@@ -1,291 +1,332 @@
 # spark_scripts/generate_recommendations.py
-
 import os
-import sys
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import (
-    col, current_timestamp, row_number, collect_set, explode, trim,
-    regexp_extract, regexp_replace, lit
-)
-from pyspark.sql.window import Window
-from pyspark.ml.pipeline import PipelineModel
-from pyspark.ml.functions import vector_to_array  # <-- per estrarre p(classe=1) lato JVM
+import psycopg
+from typing import List, Iterable, Tuple
 
-# =============== CONFIG ===============
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+from pyspark.sql.types import IntegerType, StringType, StructType, StructField, DoubleType
+from pyspark.ml.pipeline import PipelineModel
+import time
+
 CONFIG = {
     "nutrition": {
         "user_cluster_map_path": "s3a://gold/models/nutrition/user_cluster_map/",
         "recommendations_path": "s3a://gold/nutrition/recommendations/",
         "classification_models_path": "s3a://gold/models/nutrition/classification_models/",
         "historical_data_path": "s3a://gold/nutrition/training_data/",
-        "training_data_path": "s3a://gold/nutrition/training_data/",
-        "output_path": "s3a://gold/nutrition/generated_recommendations/"
+        "db_table": "user_nutrition_rankings",
+        "user_feature_cols": [
+            "gender", "age", "height", "avg_weight_last7d", "bmi",
+            "calories_consumed_last_3_days_avg", "protein_intake_last_3_days_avg",
+            "carbs_intake_last_3_days_avg", "fat_intake_last_3_days_avg"
+        ],
+        "rec_catalog_mappings": {
+            "recommendation_type": {"fallback_from": ["type", "category"]}
+        }
     },
     "workout": {
         "user_cluster_map_path": "s3a://gold/models/workout/user_cluster_map/",
         "recommendations_path": "s3a://gold/workout/recommendations/",
         "classification_models_path": "s3a://gold/models/workout/classification_models/",
         "historical_data_path": "s3a://gold/workout/training_data/",
-        "training_data_path": "s3a://gold/workout/training_data/",
-        "output_path": "s3a://gold/workout/generated_recommendations/"
+        "db_table": "user_workout_rankings",
+        "user_feature_cols": [
+            "gender", "age", "height", "avg_weight_last7d", "bmi",
+            "avg_steps_last7d", "avg_bpm_last7d", "avg_active_minutes_last7d"
+        ],
+        "rec_catalog_mappings": {
+            "type": {"fallback_from": ["category"]},
+            "difficulty": {"fallback_from": []},
+            "duration": {"fallback_from": ["duration_minutes"]},
+        }
     }
 }
+
 K_CLUSTERS = 4
-TOP_N_RECS = int(os.getenv("TOP_N_RECS", "10"))
+TOP_N_RECS = 10
 
-# =============== SPARK & S3 ===============
+# ---- Spark ----
 def get_spark_session():
-    builder = SparkSession.builder.appName("generate_recommendations")
-
-    s3_endpoint = os.getenv("S3_ENDPOINT", "http://minio:9000")
+    builder = SparkSession.builder.appName("RecommendationPipeline")
+    s3_endpoint   = os.getenv("S3_ENDPOINT", "http://minio:9000")
     s3_path_style = os.getenv("S3_PATH_STYLE", "true")
-    s3_ssl = os.getenv("S3_SSL_ENABLED", "false")
+    s3_ssl        = os.getenv("S3_SSL_ENABLED", "false")
+    aws_key     = os.getenv("AWS_ACCESS_KEY_ID")
+    aws_secret  = os.getenv("AWS_SECRET_ACCESS_KEY")
+    minio_key   = os.getenv("MINIO_ROOT_USER", "minioadmin")
+    minio_secret= os.getenv("MINIO_ROOT_PASSWORD", "minioadmin")
 
-    aws_key = os.getenv("AWS_ACCESS_KEY_ID")
-    aws_secret = os.getenv("AWS_SECRET_ACCESS_KEY")
-    minio_key = os.getenv("MINIO_ROOT_USER", "minioadmin")
-    minio_secret = os.getenv("MINIO_ROOT_PASSWORD", "minioadmin")
-
-    builder = (
-        builder
+    builder = (builder
         .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
         .config("spark.hadoop.fs.s3a.endpoint", s3_endpoint)
         .config("spark.hadoop.fs.s3a.path.style.access", s3_path_style)
         .config("spark.hadoop.fs.s3a.connection.ssl.enabled", s3_ssl)
         .config("spark.hadoop.fs.s3a.endpoint.region", os.getenv("S3_REGION", "us-east-1"))
     )
-
     if aws_key and aws_secret:
-        builder = builder.config(
-            "spark.hadoop.fs.s3a.aws.credentials.provider",
-            "org.apache.hadoop.fs.s3a.EnvironmentVariableCredentialsProvider"
-        )
+        builder = builder.config("spark.hadoop.fs.s3a.aws.credentials.provider",
+                                 "org.apache.hadoop.fs.s3a.EnvironmentVariableCredentialsProvider")
     else:
-        builder = (
-            builder.config("spark.hadoop.fs.s3a.aws.credentials.provider",
-                           "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
-                   .config("spark.hadoop.fs.s3a.access.key", minio_key)
-                   .config("spark.hadoop.fs.s3a.secret.key", minio_secret)
+        builder = (builder
+            .config("spark.hadoop.fs.s3a.aws.credentials.provider",
+                    "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
+            .config("spark.hadoop.fs.s3a.access.key", minio_key)
+            .config("spark.hadoop.fs.s3a.secret.key", minio_secret)
         )
-
     return builder.getOrCreate()
 
+# ---- Cockroach (psycopg) ----
+def connection():
+    host = os.getenv("CRDB_HOST", "cockroachdb")
+    port = int(os.getenv("CRDB_PORT", "26257"))
+    db   = os.getenv("CRDB_DB",   "user_device_db")
+    user = os.getenv("CRDB_USER", "root")
+    pwd  = os.getenv("CRDB_PASSWORD")
+    kwargs = dict(host=host, port=port, dbname=db, user=user)
+    if pwd: kwargs["password"] = pwd
+    return psycopg.connect(**kwargs)
 
-def path_exists(spark, uri: str) -> bool:
-    try:
-        jvm = spark._jvm
-        conf = spark._jsc.hadoopConfiguration()
-        p = jvm.org.apache.hadoop.fs.Path(uri)
-        fs = jvm.org.apache.hadoop.fs.FileSystem.get(p.toUri(), conf)
-        return fs.exists(p)
-    except Exception:
-        return False
+def load_live_user_ids_from_db() -> List[int]:
+    with connection() as conn, conn.cursor() as cur:
+        cur.execute("SELECT user_id FROM users;")
+        return [int(r[0]) for r in cur.fetchall()]
 
-# =============== SCHEMA HELPERS ===============
-def to_double_from_messy_string(col_expr):
-    # Estrae numero (con . o ,) e lo cast a double
-    num = regexp_extract(trim(col_expr), r'(\d+(?:[.,]\d+)?)', 1)
-    return regexp_replace(num, ",", ".").cast("double")
-
-def normalize_training_schema(df):
-    # uniforma la chiave id raccomandazione nello storico
-    if "id_recommendation" not in df.columns and "recommendation_id" in df.columns:
-        df = df.withColumnRenamed("recommendation_id", "id_recommendation")
-    # crea label se manca (da feedback o is_positive)
-    if "label" not in df.columns:
-        from pyspark.sql.functions import when
-        if "feedback" in df.columns:
-            df = df.withColumn("label", when(col("feedback") == "positive", 1).otherwise(0))
-        elif "is_positive" in df.columns:
-            df = df.withColumn(
-                "label",
-                when((col("is_positive") == True) | (col("is_positive") == 1) |
-                     (col("is_positive") == "true") | (col("is_positive") == "1"), 1).otherwise(0)
-            )
-    return df
-
-def normalize_catalog_schema(df, domain):
-    # Allinea chiave primaria
-    if "id_recommendation" not in df.columns and "recommendation_id" in df.columns:
-        df = df.withColumnRenamed("recommendation_id", "id_recommendation")
-    # Normalizzazioni specifiche
-    if domain == "workout":
-        if "type" not in df.columns and "category" in df.columns:
-            df = df.withColumn("type", col("category"))
-        if "duration" not in df.columns and "duration_minutes" in df.columns:
-            df = df.withColumn("duration", col("duration_minutes"))
-        dtypes = dict(df.dtypes)
-        if "duration" in dtypes and dtypes["duration"] == "string":
-            df = df.withColumn("duration", to_double_from_messy_string(col("duration")))
-    if domain == "nutrition":
-        if "recommendation_type" not in df.columns and "type" in df.columns:
-            df = df.withColumnRenamed("type", "recommendation_type")
-    return df
-
-def build_user_latest_features(spark, domain, cfg):
+# ---- Staging persistente (no temp) ----
+def _ensure_staging_exists(conn, target_tbl: str) -> str:
     """
-    Ultimo record per utente dal training_data del dominio.
-    Restituisce le colonne utente che il modello si aspetta.
+    Crea una staging persistente {target_tbl}_stg se non esiste.
+    1) Prova CREATE TABLE IF NOT EXISTS ... LIKE target
+    2) Se LIKE non è supportato, fallback a CTAS con 0 righe (niente PK/FK, ma ok per staging)
     """
-    td = spark.read.parquet(cfg['training_data_path'])
-    if td.rdd.isEmpty():
-        return None
-
-    w = Window.partitionBy("user_id").orderBy(col("date").desc())
-    td_last = td.withColumn("rn", row_number().over(w)).filter(col("rn") == 1).drop("rn")
-
-    if domain == "nutrition":
-        user_feats = [
-            "age", "gender_indexed", "height", "avg_weight_last7d", "bmi",
-            "calories_consumed_last_3_days_avg", "protein_intake_last_3_days_avg",
-            "carbs_intake_last_3_days_avg", "fat_intake_last_3_days_avg"
-        ]
-    else:
-        user_feats = [
-            "age", "gender_indexed", "height", "avg_weight_last7d", "bmi",
-            "avg_steps_last7d", "avg_bpm_last7d", "avg_active_minutes_last7d"
-        ]
-
-    needed = set(user_feats) | {
-        "user_id", "gender", "age", "height", "avg_weight_last7d", "bmi",
-        "avg_steps_last7d", "avg_bpm_last7d", "avg_active_minutes_last7d",
-        "calories_consumed_last_3_days_avg", "protein_intake_last_3_days_avg",
-        "carbs_intake_last_3_days_avg", "fat_intake_last_3_days_avg"
-    }
-    present = [c for c in td_last.columns if c in needed]
-
-    # assicurati che 'gender' (grezzo) ci sia per eventuali indexer nel modello
-    if "gender" not in present and "gender" in td_last.columns:
-        present.append("gender")
-
-    return td_last.select(*present)
-
-# =============== PIPELINE PER DOMINIO ===============
-def generate_for_domain(spark, domain: str):
-    print("\n===================================================")
-    print(f"AVVIO GENERAZIONE RACCOMANDAZIONI: {domain.upper()}")
-    print("===================================================")
-
-    cfg = CONFIG[domain]
-
-    # 1) Candidate generation (positivi per cluster)
-    print("Fase 1: Candidate generation (positivi per cluster)...")
-    historical_df = spark.read.parquet(cfg['historical_data_path'])
-    if historical_df.rdd.isEmpty():
-        print(f"[{domain}] Storico vuoto. Stop.")
-        return
-    historical_df = normalize_training_schema(historical_df)
-
-    user_cluster_map_df = spark.read.parquet(cfg['user_cluster_map_path'])
-    if user_cluster_map_df.rdd.isEmpty():
-        print(f"[{domain}] user_cluster_map vuoto. Stop.")
-        return
-
-    if "label" in historical_df.columns:
-        positives_df = historical_df.filter(col("label") == 1)
-    elif "feedback" in historical_df.columns:
-        positives_df = historical_df.filter(col("feedback") == "positive")
-    else:
-        print(f"[{domain}] Nessun segnale di positività (label/feedback). Stop.")
-        return
-
-    popular_recs_per_cluster_df = (
-        positives_df.join(user_cluster_map_df, "user_id")
-                    .groupBy("cluster_id")
-                    .agg(collect_set("id_recommendation").alias("candidate_recs"))
-    )
-    popular_recs_per_cluster_df.show(truncate=False)
-
-    # 2) Preparazione input per inferenza
-    print("\nFase 2: Preparazione input per inferenza...")
-    user_latest = build_user_latest_features(spark, domain, cfg)
-    if user_latest is None or user_latest.rdd.isEmpty():
-        print(f"[{domain}] Nessun profilo utente disponibile. Stop.")
-        return
-
-    recommendations_catalog_df = spark.read.parquet(cfg['recommendations_path'])
-    if recommendations_catalog_df.rdd.isEmpty():
-        print(f"[{domain}] Catalogo vuoto. Stop.")
-        return
-    recommendations_catalog_df = normalize_catalog_schema(recommendations_catalog_df, domain)
-
-    inference_input_df = (
-        user_cluster_map_df
-        .join(user_latest, "user_id")
-        .join(popular_recs_per_cluster_df, "cluster_id", "left")
-        .withColumn("id_recommendation", explode(col("candidate_recs")))
-        .join(recommendations_catalog_df, "id_recommendation")
-    )
-
-    total_pairs = inference_input_df.count()
-    print(f"Numero di coppie (utente, raccomandazione) da valutare: {total_pairs}")
-    if total_pairs == 0:
-        print(f"[{domain}] Nessun candidato da valutare. Stop.")
-        return
-
-    # 3) Inferenza per cluster
-    print("\nFase 3: Inferenza per cluster...")
-    all_predictions = []
-    for i in range(K_CLUSTERS):
-        model_path = f"{cfg['classification_models_path']}cluster_{i}"
-        print(f"  - Cluster {i}: cerco modello in {model_path}")
-        if not path_exists(spark, model_path):
-            print(f"    -> Modello assente, skip cluster {i}.")
-            continue
-
+    stg = f"{target_tbl}_stg"
+    with conn.cursor() as cur:
         try:
-            classification_model = PipelineModel.load(model_path)
-        except Exception as e:
-            print(f"    -> Errore load modello cluster {i}: {e}. Skip.")
-            continue
+            cur.execute(f"CREATE TABLE IF NOT EXISTS {stg} (LIKE {target_tbl});")
+        except Exception:
+            # Fallback: CTAS (crea solo colonne/nomi; niente vincoli)
+            cur.execute(f"CREATE TABLE IF NOT EXISTS {stg} AS SELECT * FROM {target_tbl} LIMIT 0;")
+    return stg
 
-        cluster_inference_df = inference_input_df.filter(col("cluster_id") == i)
-        if cluster_inference_df.rdd.isEmpty():
-            print(f"    -> Nessun record per cluster {i}. Skip.")
-            continue
+def _clear_staging(conn, stg_tbl: str):
+    with conn.cursor() as cur:
+        cur.execute(f"DELETE FROM {stg_tbl};")  # pulizia sicura (niente FK in staging)
 
-        preds = classification_model.transform(cluster_inference_df)
-        # estrai p(classe=1) dalla colonna VectorUDT 'probability' senza UDF Python
-        preds = preds.withColumn("success_prob", vector_to_array(col("probability"))[1])
+def _bulk_insert(conn, tbl: str, rows: Iterable[Tuple[int, int, str, str, str, float, int]], batch_size: int = 1000):
+    """
+    Inserisce in bulk nella tabella indicata (staging o target).
+    Schema atteso: (user_id, cluster_id, recommendation_id, title, description, success_prob, rank)
+    """
+    sql = (f"INSERT INTO {tbl} "
+           "(user_id, cluster_id, recommendation_id, title, description, success_prob, rank) "
+           "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+    with conn.cursor() as cur:
+        batch = []
+        for row in rows:
+            batch.append(row)
+            if len(batch) >= batch_size:
+                cur.executemany(sql, batch)
+                batch.clear()
+        if batch:
+            cur.executemany(sql, batch)
 
-        all_predictions.append(
-            preds.select("user_id", "cluster_id", "id_recommendation",
-                         "title", "description", "success_prob")
+def _upsert_from_staging(conn, target_tbl: str, stg_tbl: str):
+    """
+    UPSERT (INSERT ... ON CONFLICT DO UPDATE) dalla staging alla target.
+    """
+    upsert_sql = f"""
+    INSERT INTO {target_tbl} (user_id, cluster_id, recommendation_id, title, description, success_prob, rank)
+    SELECT user_id, cluster_id, recommendation_id, title, description, success_prob, rank
+    FROM {stg_tbl}
+    ON CONFLICT (user_id, recommendation_id)
+    DO UPDATE SET
+        cluster_id   = EXCLUDED.cluster_id,
+        title        = EXCLUDED.title,
+        description  = EXCLUDED.description,
+        success_prob = EXCLUDED.success_prob,
+        rank         = EXCLUDED.rank;
+    """
+    with conn.cursor() as cur:
+        cur.execute(upsert_sql)
+
+def _cleanup_obsolete(conn, target_tbl: str, stg_tbl: str):
+    """
+    Elimina dalla target SOLO le coppie (user_id, recommendation_id) non presenti nella staging,
+    limitandosi agli utenti presenti nella staging. Le relative righe di feedback cadranno per FK CASCADE.
+    """
+    delete_sql = f"""
+    DELETE FROM {target_tbl} t
+    WHERE t.user_id IN (SELECT DISTINCT user_id FROM {stg_tbl})
+      AND NOT EXISTS (
+            SELECT 1
+            FROM {stg_tbl} s
+            WHERE s.user_id = t.user_id
+              AND s.recommendation_id = t.recommendation_id
+      );
+    """
+    with conn.cursor() as cur:
+        cur.execute(delete_sql)
+
+def write_rankings_atomic(target_tbl: str, rows: Iterable[Tuple[int, int, str, str, str, float, int]]):
+    """
+    Scrittura ATOMICA con staging persistente:
+      1) ensure staging {target}_stg
+      2) clear staging
+      3) bulk insert staging
+      4) upsert -> target
+      5) cleanup obsolete per gli utenti toccati
+    """
+    with connection() as conn:
+        try:
+            stg_tbl = _ensure_staging_exists(conn, target_tbl)
+            _clear_staging(conn, stg_tbl)
+            _bulk_insert(conn, stg_tbl, rows)
+            _upsert_from_staging(conn, target_tbl, stg_tbl)
+            _cleanup_obsolete(conn, target_tbl, stg_tbl)
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+
+# ---- Utils ----
+def iter_rows(df: DataFrame):
+    cols = ["user_id", "cluster_id", "recommendation_id", "title", "description", "success_prob", "rank"]
+    for r in df.select(*cols).toLocalIterator():
+        yield (
+            int(r["user_id"]) if r["user_id"] is not None else None,
+            int(r["cluster_id"]) if r["cluster_id"] is not None else None,
+            str(r["recommendation_id"]) if r["recommendation_id"] is not None else "",
+            r["title"] if r["title"] is not None else None,
+            r["description"] if r["description"] is not None else None,
+            float(r["success_prob"]) if r["success_prob"] is not None else None,
+            int(r["rank"]) if r["rank"] is not None else None,
         )
 
-    if not all_predictions:
-        print(f"[{domain}] Nessuna predizione generata (modelli mancanti?). Stop.")
+def ensure_columns_for_domain(df, domain_cfg):
+    for target_col, mapping in domain_cfg.get("rec_catalog_mappings", {}).items():
+        if target_col not in df.columns:
+            for fb in mapping.get("fallback_from", []):
+                if fb in df.columns:
+                    df = df.withColumn(target_col, F.col(fb))
+                    break
+    return df
+
+# ---- Pipeline per dominio ----
+def run_for_domain(spark: SparkSession, domain: str):
+    print(f"\n=== {domain.upper()} ===")
+    cfg = CONFIG[domain]
+
+    print("[LIVE] Carico utenti dal DB...")
+    live_user_ids = load_live_user_ids_from_db()
+    if not live_user_ids:
+        print("[LIVE] Nessun utente live. STOP.")
+        return
+    live_users_df = spark.createDataFrame([(int(uid),) for uid in live_user_ids],
+                                          StructType([StructField("user_id", IntegerType(), True)]))
+
+    print("[LOAD] Leggo mappe/storico/catalogo...")
+    user_cluster_map = spark.read.parquet(cfg["user_cluster_map_path"]).withColumn("user_id", F.col("user_id").cast(IntegerType()))
+    historical_df   = spark.read.parquet(cfg["historical_data_path"]).withColumn("recommendation_id", F.col("recommendation_id").cast(StringType()))
+    catalog_df      = ensure_columns_for_domain(spark.read.parquet(cfg["recommendations_path"]), cfg)\
+                        .withColumn("recommendation_id", F.col("recommendation_id").cast(StringType()))
+    live_users_df   = live_users_df.withColumn("user_id", F.col("user_id").cast(IntegerType()))
+
+    live_user_map = (live_users_df.alias("u")
+                     .join(user_cluster_map.alias("m"), "user_id", "inner")
+                     .select("user_id", "cluster_id").dropDuplicates())
+    if live_user_map.rdd.isEmpty():
+        print("[LIVE] Nessuna mappa user->cluster. STOP."); return
+
+    popular_recs_per_cluster = (historical_df.filter(F.col("is_positive") == 1)
+                                .join(user_cluster_map.select("user_id","cluster_id"), "user_id")
+                                .groupBy("cluster_id")
+                                .agg(F.collect_set("recommendation_id").alias("candidate_recs")))
+    if popular_recs_per_cluster.rdd.isEmpty():
+        print("[CANDIDATES] Nessuna raccomandazione positiva. STOP."); return
+
+    user_feat_cols = ["user_id","date"] + [c for c in cfg["user_feature_cols"] if c in historical_df.columns]
+    latest_w = Window.partitionBy("user_id").orderBy(F.col("date").desc())
+    latest_user_features = (historical_df.select(*[c for c in user_feat_cols if c in historical_df.columns])
+                            .withColumn("rn", F.row_number().over(latest_w))
+                            .filter(F.col("rn")==1).drop("rn","date").dropDuplicates(["user_id"]))
+    if latest_user_features.rdd.isEmpty():
+        print("[FEATURES] Nessuna feature utente. STOP."); return
+
+    inference_input = (live_user_map.alias("um")
+                       .join(popular_recs_per_cluster.alias("pc"), "cluster_id")
+                       .withColumn("recommendation_id", F.explode("pc.candidate_recs"))
+                       .join(catalog_df.alias("cat"), "recommendation_id")
+                       .join(latest_user_features.alias("uf"), "user_id")
+                       .select("user_id","cluster_id","recommendation_id","title","description",
+                               *[F.col(f"uf.{c}") for c in cfg["user_feature_cols"] if c in latest_user_features.columns],
+                               *[F.col(f"cat.{c}") for c in ["recommendation_type","type","difficulty","duration","duration_minutes","category"] if c in catalog_df.columns]
+                       ))
+
+    if domain == "workout":
+        if "type" not in inference_input.columns and "category" in inference_input.columns:
+            inference_input = inference_input.withColumn("type", F.col("category"))
+        if "duration" not in inference_input.columns and "duration_minutes" in inference_input.columns:
+            inference_input = inference_input.withColumn("duration", F.col("duration_minutes"))
+
+    total_pairs = inference_input.count()
+    print(f"[INFERENCE] Coppie (user,rec) da valutare: {total_pairs}")
+    if total_pairs == 0:
+        print("[INFERENCE] Nessun candidato. STOP."); return
+
+    def prob_pos(v):
+        try: return float(v[1])
+        except Exception: return None
+    prob_pos_udf = F.udf(prob_pos, DoubleType())
+
+    all_preds = []
+    for i in range(K_CLUSTERS):
+        print(f"[MODEL] cluster_{i}")
+        cluster_input = inference_input.filter(F.col("cluster_id")==i)
+        if cluster_input.rdd.isEmpty():
+            print("  -> no data"); continue
+        model_path = f"{cfg['classification_models_path']}cluster_{i}"
+        try:
+            model = PipelineModel.load(model_path)
+            preds = model.transform(cluster_input).withColumn("success_prob", prob_pos_udf(F.col("probability")))
+            all_preds.append(preds.select("user_id","cluster_id","recommendation_id","title","description","success_prob"))
+        except Exception as e:
+            print(f"  -> modello non disponibile/errore: {e}")
+            continue
+
+    if not all_preds:
+        print("[INFERENCE] Nessuna predizione generata. STOP."); return
+
+    full_preds = all_preds[0]
+    for df in all_preds[1:]:
+        full_preds = full_preds.unionByName(df)
+
+    win = Window.partitionBy("user_id").orderBy(F.col("success_prob").desc_nulls_last())
+    ranked = full_preds.withColumn("rank", F.row_number().over(win))
+    top_recs = ranked.filter(F.col("rank") <= TOP_N_RECS).orderBy("user_id","rank")
+
+    out_cnt = top_recs.count()
+    print(f"[RESULT] {domain}: righe da inserire = {out_cnt}")
+    top_recs.show(30, truncate=False)
+
+    target_table = cfg["db_table"]
+    if out_cnt == 0:
+        print(f"[DB] {domain}: nessuna riga. SKIP write su {target_table}.")
         return
 
-    # 4) Ranking & Salvataggio
-    print("\nFase 4: Ranking e salvataggio Top-N...")
-    full_predictions_df = all_predictions[0]
-    for df in all_predictions[1:]:
-        full_predictions_df = full_predictions_df.unionByName(df)
+    print(f"[DB] {domain}: UPSERT + CLEANUP su {target_table} (staging persistente)...")
+    write_rankings_atomic(target_table, iter_rows(top_recs))
+    print(f"[DB] {domain}: DONE.")
 
-    w = Window.partitionBy("user_id").orderBy(col("success_prob").desc())
-    ranked = full_predictions_df.withColumn("rank", row_number().over(w))
-    topn = ranked.filter(col("rank") <= TOP_N_RECS).select(
-        "user_id", "id_recommendation", "title", "description",
-        "success_prob", "rank", current_timestamp().alias("generated_at")
-    )
-
-    topn.show(20, truncate=False)
-
-    out_path = cfg["output_path"]
-    print(f"[{domain}] Salvo Top-{TOP_N_RECS} → {out_path}")
-    topn.write.mode("overwrite").parquet(out_path)
-
-    print(f"[{domain}] Generazione completata.")
-
-# =============== MAIN ===============
-if __name__ == "__main__":
-    print("\n=== START: GENERATE RECOMMENDATIONS (WORKOUT → NUTRITION) ===")
+def main():
     spark = get_spark_session()
     try:
-        generate_for_domain(spark, "workout")
-        generate_for_domain(spark, "nutrition")
+        run_for_domain(spark, "nutrition")
+        run_for_domain(spark, "workout")
         print("\nDONE: workout | nutrition")
     finally:
         spark.stop()
         print("SparkSession chiusa.")
+
+if __name__ == "__main__":
+    main()
